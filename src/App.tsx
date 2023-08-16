@@ -5,6 +5,7 @@ import {
   Route as DefaultRoute,
 } from "react-router-dom";
 import Homepage from "./pages/Homepage";
+import Login from "./pages/Login";
 
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
       <Router>
         <Routes>
           <DefaultRoute path="/" element={<Homepage />} />
+          <DefaultRoute path="/login" element={<Login />} />
         </Routes>
       </Router>
     </ChakraProvider>
