@@ -7,6 +7,7 @@ import {
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <DefaultRoute path="/" element={<Homepage />} />
           <DefaultRoute path="/login" element={<Login />} />
           <DefaultRoute path="/register" element={<Register />} />
+          <DefaultRoute path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </ChakraProvider>
