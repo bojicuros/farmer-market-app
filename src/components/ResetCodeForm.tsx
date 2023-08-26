@@ -43,9 +43,9 @@ const ResetCodeForm = (props: Props) => {
   };
 
   return (
-    <Box mt={isSmallerScreen ? "16" : "0"} alignItems="flex-start">
+    <Box mt={isSmallerScreen ? "16" : "0"} alignItems="flex-start" p={isSmallerScreen ? "10" : "0"}>
       <form onSubmit={handleSubmit}>
-        <Flex direction="column" mt="8" p={5}>
+        <Flex direction="column" p={5}>
           <Input
             placeholder="Code"
             size="md"
