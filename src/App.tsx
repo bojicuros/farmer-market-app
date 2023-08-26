@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import ForgotPassword from "./pages/ForgotPassword";
+import SearchPage from "./pages/SearchPage";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <DefaultRoute path="/login" element={<Login />} />
           <DefaultRoute path="/register" element={<Register />} />
           <DefaultRoute path="/forgot-password" element={<ForgotPassword />} />
+          <DefaultRoute path="/search" element={<SearchPage />} />
           <DefaultRoute path="*" element={<NotFound />} />
         </Routes>
       </Router>
