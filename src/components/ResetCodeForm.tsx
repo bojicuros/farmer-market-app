@@ -7,17 +7,22 @@ import {
   Button,
   useBreakpointValue,
   useColorMode,
-  Link,
+  Text,
 } from "@chakra-ui/react";
 
-const LoginForm = () => {
+type Props = {
+  setIsCodeConfirmed: (arg0 : boolean) => void;
+};
+
+const ResetCodeForm = (props: Props) => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
+
+  const [isIncorrectCode, setIsIncorrectCode] = useState(false);
 
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    code: "",
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +31,8 @@ const LoginForm = () => {
       ...prevFormData,
       [name]: value,
     }));
+    setIsIncorrectCode(false);
+    props.setIsCodeConfirmed(true);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -40,22 +47,12 @@ const LoginForm = () => {
       <form onSubmit={handleSubmit}>
         <Flex direction="column" mt="8" p={5}>
           <Input
-            placeholder="Email"
+            placeholder="Code"
             size="md"
             mb="4"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
-          <Input
-            placeholder="Password"
-            size="md"
-            mb="4"
-            type="password"
-            name="password"
-            value={formData.password}
+            name="code"
+            type="number"
+            value={formData.code}
             onChange={handleInputChange}
             required
           />
@@ -65,28 +62,17 @@ const LoginForm = () => {
             _hover={{ opacity: 0.8 }}
             type="submit"
           >
-            Login
+            Confirm
           </Button>
-          <Flex direction="column" mt="4" align="center">
-            <Link
-              color={colorMode === "light" ? "green.500" : "green.300"}
-              fontSize="sm"
-              href="/forgot-password"
-            >
-              Forgot Password?
-            </Link>
-            <Link
-              color={colorMode === "light" ? "green.500" : "green.300"}
-              fontSize="sm"
-              href="/register"
-            >
-              Not registered? Register here.
-            </Link>
-          </Flex>
+          {isIncorrectCode && (
+            <Text mt="2" color="red">
+              Incorrect code. Please try again.
+            </Text>
+          )}
         </Flex>
       </form>
     </Box>
   );
 };
 
-export default LoginForm;
+export default ResetCodeForm;

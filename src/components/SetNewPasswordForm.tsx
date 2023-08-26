@@ -7,18 +7,20 @@ import {
   Button,
   useBreakpointValue,
   useColorMode,
-  Link,
+  Text,
 } from "@chakra-ui/react";
 
-const LoginForm = () => {
+const SetNewPasswordForm = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
 //   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    email: "",
     password: "",
+    confirmPassword: "",
   });
+
+  const [passwordsDoNotMatch, setPasswordsDoNotMatch] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -32,6 +34,7 @@ const LoginForm = () => {
     event.preventDefault();
 
     console.log(formData);
+    setPasswordsDoNotMatch(false);
     // navigate("/");
   };
 
@@ -40,22 +43,22 @@ const LoginForm = () => {
       <form onSubmit={handleSubmit}>
         <Flex direction="column" mt="8" p={5}>
           <Input
-            placeholder="Email"
+            placeholder="New password"
             size="md"
             mb="4"
-            name="email"
-            type="email"
-            value={formData.email}
+            name="password"
+            type="password"
+            value={formData.password}
             onChange={handleInputChange}
             required
           />
           <Input
-            placeholder="Password"
+            placeholder="Confirm new password"
             size="md"
             mb="4"
             type="password"
-            name="password"
-            value={formData.password}
+            name="confirmPassword"
+            value={formData.confirmPassword}
             onChange={handleInputChange}
             required
           />
@@ -65,28 +68,17 @@ const LoginForm = () => {
             _hover={{ opacity: 0.8 }}
             type="submit"
           >
-            Login
+            Continue
           </Button>
-          <Flex direction="column" mt="4" align="center">
-            <Link
-              color={colorMode === "light" ? "green.500" : "green.300"}
-              fontSize="sm"
-              href="/forgot-password"
-            >
-              Forgot Password?
-            </Link>
-            <Link
-              color={colorMode === "light" ? "green.500" : "green.300"}
-              fontSize="sm"
-              href="/register"
-            >
-              Not registered? Register here.
-            </Link>
-          </Flex>
+          {passwordsDoNotMatch && (
+            <Text mt="2" color="red">
+              Passwords do not match.
+            </Text>
+          )}
         </Flex>
       </form>
     </Box>
   );
 };
 
-export default LoginForm;
+export default SetNewPasswordForm;

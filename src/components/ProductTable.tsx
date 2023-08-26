@@ -76,7 +76,7 @@ import {
         mt={10}
         w={isSmallerScreen ? undefined : "60%"}
       >
-        <Table>
+        <Table cursor={"normal"}>
           <Thead>
             <Tr cursor={"pointer"}>
               <Th
