@@ -10,17 +10,20 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const SetNewPasswordForm = () => {
+type Props = {
+  setIsEmailConfirmed: (arg0: boolean) => void;
+};
+
+const EmailOfForgottenAccountForm = (props: Props) => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
+
+  const [isValidEmail, setIsValidEmail] = useState(true);
 
   const [formData, setFormData] = useState({
-    password: "",
-    confirmPassword: "",
+    email: "",
   });
-
-  const [passwordsDoNotMatch, setPasswordsDoNotMatch] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -28,37 +31,31 @@ const SetNewPasswordForm = () => {
       ...prevFormData,
       [name]: value,
     }));
-    setPasswordsDoNotMatch(true);
+    setIsValidEmail(false);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    props.setIsEmailConfirmed(true);
     console.log(formData);
     // navigate("/");
   };
 
   return (
-    <Box mt={isSmallerScreen ? "16" : "0"} alignItems="flex-start" p={isSmallerScreen ? "6" : "0"}>
+    <Box
+      mt={isSmallerScreen ? "16" : "0"}
+      alignItems="flex-start"
+      p={isSmallerScreen ? "10" : "0"}
+    >
       <form onSubmit={handleSubmit}>
         <Flex direction="column" p={5}>
           <Input
-            placeholder="New password"
+            placeholder="Email"
             size="md"
             mb="4"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            required
-          />
-          <Input
-            placeholder="Confirm new password"
-            size="md"
-            mb="4"
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
+            name="email"
+            type="email"
+            value={formData.email}
             onChange={handleInputChange}
             required
           />
@@ -68,11 +65,11 @@ const SetNewPasswordForm = () => {
             _hover={{ opacity: 0.8 }}
             type="submit"
           >
-            Continue
+            Confirm
           </Button>
-          {passwordsDoNotMatch && (
+          {!isValidEmail && (
             <Text mt="2" color="red">
-              Passwords do not match.
+              Invalid email. Please try again.
             </Text>
           )}
         </Flex>
@@ -81,4 +78,4 @@ const SetNewPasswordForm = () => {
   );
 };
 
-export default SetNewPasswordForm;
+export default EmailOfForgottenAccountForm;
