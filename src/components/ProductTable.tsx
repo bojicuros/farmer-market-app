@@ -8,8 +8,10 @@ import {
   Td,
   useColorMode,
   useBreakpointValue,
+  Box,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios, { API_URL } from "../config/general";
 
 type Product = {
   id: number;
@@ -18,25 +20,40 @@ type Product = {
   measureUnit: string;
 };
 
-export const ProductTable = () => {
+interface ProductTableProps {
+  activeMarket: string | null;
+}
+
+export const ProductTable = ({ activeMarket }: ProductTableProps) => {
   const { colorMode } = useColorMode();
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const [sortConfig, setSortConfig] = useState({ key: "name", direction: "" });
+  const [products, setProducts] = useState<Product[]>([]);
 
-  const products = [
-    { name: "Apples", price: 2.99, measureUnit: "Kilos", id: 1 },
-    { name: "Carrots", price: 1.49, measureUnit: "Bags", id: 2 },
-    { name: "Tomatoes", price: 3.75, measureUnit: "Kilos", id: 3 },
-    { name: "Apples", price: 2.99, measureUnit: "Kilos", id: 4 },
-    { name: "Carrots", price: 1.49, measureUnit: "Bags", id: 5 },
-    { name: "Tomatoes", price: 3.75, measureUnit: "Kilos", id: 6 },
-    { name: "Apples", price: 2.99, measureUnit: "Kilos", id: 7 },
-    { name: "Carrots", price: 1.49, measureUnit: "Bags", id: 8 },
-    { name: "Tomatoes", price: 3.75, measureUnit: "Kilos", id: 9 },
-    { name: "Apples", price: 2.99, measureUnit: "Kilos", id: 10 },
-    { name: "Carrots", price: 1.49, measureUnit: "Bags", id: 11 },
-    { name: "Tomatoes", price: 3.75, measureUnit: "Kilos", id: 12 },
-  ] as Product[];
+  useEffect(() => {
+    async function fetchProductsAndPrices() {
+      if (!activeMarket) return;
+
+      try {
+        const response = await axios.get(
+          `${API_URL}/prices/get-latest-prices?market_id=${activeMarket}`
+        );
+
+        const fetchedProducts = response.data.map((priceData: any) => ({
+          name: priceData.product.name,
+          price: priceData.price_value,
+          measureUnit: priceData.product.unit_of_measurement,
+          id: priceData.product.id,
+        }));
+
+        setProducts(fetchedProducts);
+      } catch (error) {
+        console.error("Error fetching prices:", error);
+      }
+    }
+
+    fetchProductsAndPrices();
+  }, [activeMarket]);
 
   const sortedProducts = [...products].sort((a, b) => {
     const aValue = a[sortConfig.key as keyof Product];
@@ -67,6 +84,10 @@ export const ProductTable = () => {
     }
     setSortConfig({ key, direction });
   };
+
+  if (products.length === 0) {
+    return <Box mt={10}>Currently there are no products in this market.</Box>;
+  }
 
   return (
     <TableContainer mt={10} w={isSmallerScreen ? undefined : "60%"}>

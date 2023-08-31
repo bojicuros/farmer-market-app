@@ -11,6 +11,7 @@ type Props = {
   isActive: boolean;
   toggleActive: () => void;
   name: string;
+  img_url: string;
 };
 
 export const MarketCard = (props: Props) => {
@@ -36,7 +37,7 @@ export const MarketCard = (props: Props) => {
       onClick={props.toggleActive}
     >
       <Image
-        src="https://mediaproxy.salon.com/width/1200/https://media.salon.com/2021/08/farmers-market-produce-0812211.jpg"
+        src={props.img_url}
         alt={props.name}
         h={"80%"}
         w={"90%"}

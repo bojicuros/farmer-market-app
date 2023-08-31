@@ -4,15 +4,18 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { ProductTable } from "../components/ProductTable";
 import { Markets } from "../components/Markets";
+import { useState } from "react";
 
 const Homepage = () => {
+  const [activeMarket, setActiveMarket] = useState<string | null>(null);
+
   return (
     <Flex minHeight="100vh" flexDirection="column">
       <VStack flex="1" p={5}>
         <Navbar />
         <Header />
-        <Markets />
-        <ProductTable />
+        <Markets setActiveMarket={setActiveMarket} />
+        <ProductTable activeMarket={activeMarket} />
       </VStack>
       <Footer />
     </Flex>
