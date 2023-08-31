@@ -4,10 +4,12 @@ import Footer from "../components/Footer";
 import ResetCodeForm from "../components/ResetCodeForm";
 import SetNewPasswordForm from "../components/SetNewPasswordForm";
 import { useState } from "react";
+import EmailOfForgottenAccountForm from "../components/EmailOfForgottenAccountForm";
 
 const ForgotPassword = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const flexDirection = isSmallerScreen ? "column" : "row";
+  const [isEmailConfirmed, setIsEmailConfirmed] = useState(false);
   const [isCodeConfirmed, setIsCodeConfirmed] = useState(false);
 
   return (
@@ -37,8 +39,9 @@ const ForgotPassword = () => {
             Please enter the code you've received to reset your password.
             </Text>
           </Box>
-          {!isCodeConfirmed && <ResetCodeForm setIsCodeConfirmed={setIsCodeConfirmed} />}
-          {isCodeConfirmed && <SetNewPasswordForm />}
+          {!isEmailConfirmed && <EmailOfForgottenAccountForm setIsEmailConfirmed={setIsEmailConfirmed} />}
+          {isEmailConfirmed && !isCodeConfirmed && <ResetCodeForm setIsCodeConfirmed={setIsCodeConfirmed} />}
+          {isEmailConfirmed && isCodeConfirmed && <SetNewPasswordForm />}
         </Flex>
       </VStack>
       <Footer />
