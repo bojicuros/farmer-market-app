@@ -11,7 +11,11 @@ import NotFound from "./pages/NotFound";
 import ForgotPassword from "./pages/ForgotPassword";
 import SearchPage from "./pages/SearchPage";
 import Dashboard from "./pages/Dashboard";
+import Unauthorized from "./pages/Unauthorized";
 import { AuthContextProvider } from "./context/AuthContext";
+import RequireAuth from "./util/RequireAuth";
+
+type AllowedRole = "Admin" | "Vendor";
 
 const App = () => {
   return (
@@ -27,8 +31,16 @@ const App = () => {
               element={<ForgotPassword />}
             />
             <DefaultRoute path="/search" element={<SearchPage />} />
-            <DefaultRoute path="/dashboard" element={<Dashboard />} />
+            <DefaultRoute path="/unauthorized" element={<Unauthorized />} />
             <DefaultRoute path="*" element={<NotFound />} />
+
+            <DefaultRoute
+              element={
+                <RequireAuth allowedRoles={["Admin", "Vendor"] as AllowedRole[]} />
+              }
+            >
+              <DefaultRoute path="/dashboard" element={<Dashboard />} />
+            </DefaultRoute>
           </Routes>
         </Router>
       </AuthContextProvider>
