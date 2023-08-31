@@ -1,16 +1,43 @@
 import { Flex, SimpleGrid, Text, useBreakpointValue } from "@chakra-ui/react";
-import { nanoid } from "nanoid";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MarketCard } from "./MarketCard";
+import axios, { API_URL } from "../config/general";
 
-export const Markets = () => {
-  const marketsData = [
-    { name: "Market 1", isActive: true, id: nanoid() },
-    { name: "Market 2", isActive: false, id: nanoid() },
-    { name: "Market 3", isActive: false, id: nanoid() },
-  ];
+export interface Market {
+  id: string;
+  name: string;
+  image_url: string;
+  isActive: boolean;
+}
+interface MarketsProps {
+  setActiveMarket: (id: string | null) => void;
+}
 
-  const [markets, setMarkets] = useState(marketsData);
+export const Markets = ({ setActiveMarket }: MarketsProps) => {
+  const [markets, setMarkets] = useState<Market[]>([]);
+
+  const fetchMarkets = useCallback(async () => {
+    try {
+      const response = await axios.get(`${API_URL}/markets/get-all`);
+      const fetchedMarkets = response.data.map(
+        (market: Market, index: number) => ({
+          ...market,
+          isActive: index === 0,
+        })
+      );
+      setMarkets(fetchedMarkets);
+
+      if (fetchedMarkets.length > 0) {
+        setActiveMarket(fetchedMarkets[0].id);
+      }
+    } catch (error) {
+      console.error("Error fetching markets:", error);
+    }
+  }, [setActiveMarket]);
+
+  useEffect(() => {
+    fetchMarkets();
+  }, [fetchMarkets]);
 
   function toggleActive(id: string) {
     setMarkets((oldMarkets) =>
@@ -20,6 +47,7 @@ export const Markets = () => {
           : { ...market, isActive: false }
       )
     );
+    setActiveMarket(id);
   }
 
   const paddingValue = useBreakpointValue({ base: 0, md: 20, lg: 32 });
@@ -51,6 +79,7 @@ export const Markets = () => {
           <MarketCard
             key={market.id}
             name={market.name}
+            img_url={market.image_url}
             isActive={market.isActive}
             toggleActive={() => toggleActive(market.id)}
           />
