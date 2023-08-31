@@ -1,5 +1,3 @@
-import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -8,12 +6,21 @@ import {
   useBreakpointValue,
   useColorMode,
   Link,
+  Text,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import jwt_decode from "jwt-decode";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import axios, { API_URL } from "../config/general";
 
 const LoginForm = () => {
-  const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
-//   const navigate = useNavigate();
+  const isSmallerScreen = useBreakpointValue({ base: true, md: false });
+
+  const navigate = useNavigate();
+  const { setAuth } = useAuth();
+  const [areCredentialsIncorrect, setAreCredentialsIncorrect] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -28,15 +35,25 @@ const LoginForm = () => {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    console.log(formData);
-    // navigate("/");
+    try {
+      const response = await axios.post(`${API_URL}/auth/login`, formData);
+      const token = response.data.accessToken;
+      const decodedToken = jwt_decode(token);
+      setAuth({ accessToken: token, user: decodedToken });
+      navigate("/dashboard");
+    } catch (error) {
+      setAreCredentialsIncorrect(true);
+    }
   };
 
   return (
-    <Box mt={isSmallerScreen ? "16" : "0"} alignItems="flex-start" p={isSmallerScreen ? "6" : "0"}>
+    <Box
+      mt={isSmallerScreen ? "16" : "0"}
+      alignItems="flex-start"
+      p={isSmallerScreen ? "6" : "0"}
+    >
       <form onSubmit={handleSubmit}>
         <Flex direction="column" p={5}>
           <Input
@@ -67,6 +84,11 @@ const LoginForm = () => {
           >
             Login
           </Button>
+          {areCredentialsIncorrect && (
+            <Text mt="2" color="red">
+              Incorrect credentials. Try again
+            </Text>
+          )}
           <Flex direction="column" mt="4" align="center">
             <Link
               color={colorMode === "light" ? "green.500" : "green.300"}
