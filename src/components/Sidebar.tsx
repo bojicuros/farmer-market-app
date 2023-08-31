@@ -15,14 +15,20 @@ import { FaShoppingBasket, FaStore } from "react-icons/fa";
 import { FiHome, FiSettings, FiMenu } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiFillDollarCircle } from "react-icons/ai";
 
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+
 const Sidebar = () => {
   const { colorMode } = useColorMode();
   const [isSmallerScreen] = useMediaQuery("(max-width: 768px)");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(isSmallerScreen);
   const [collapsedForEffect, setCollapsedForEffect] =
     useState(isSidebarCollapsed);
-
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+
+  const navigate = useNavigate();
+  const { auth, setAuth } = useAuth();
+  const user = auth.user;
 
   useEffect(() => {
     if (isSmallerScreen !== collapsedForEffect) {
@@ -35,12 +41,13 @@ const Sidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
 
-  const handleLogoutPopup= () => {
+  const handleLogoutPopup = () => {
     setShowLogoutPopup(!showLogoutPopup);
   };
 
-  const handleLogout= () => {
-    console.log("Logged out");
+  const handleLogout = () => {
+    setAuth(null);
+    navigate("/login");
   };
 
   return (
@@ -89,7 +96,7 @@ const Sidebar = () => {
             cursor="pointer"
             onClick={handleLogoutPopup}
           >
-            {showLogoutPopup && ( 
+            {showLogoutPopup && (
               <Box
                 position="absolute"
                 top="90%"
@@ -107,18 +114,22 @@ const Sidebar = () => {
               </Box>
             )}
             <Avatar size="sm" src="avatar-1.jpg" />
-            <Flex flexDir="column" ml={4} display="flex">
-              <Heading
-                as="h3"
-                size="sm"
-                color={colorMode === "light" ? "gray.100" : "black"}
-              >
-                Jane Doe
-              </Heading>
-              <Text color={colorMode === "light" ? "gray.200" : "black"}>
-                Admin
-              </Text>
-            </Flex>
+            {user && (
+              <Flex flexDir="column" ml={4} display="flex">
+                <Heading
+                  as="h3"
+                  size="sm"
+                  color={colorMode === "light" ? "gray.100" : "black"}
+                >
+                  {user.name}
+                </Heading>
+                <Text color={colorMode === "light" ? "gray.200" : "black"}>
+                  {user.roles.length === 2
+                    ? user.roles[0] + "," + user.roles[1]
+                    : user.roles[0]}
+                </Text>
+              </Flex>
+            )}
           </Flex>
         </Flex>
       )}

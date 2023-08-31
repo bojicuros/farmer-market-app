@@ -11,21 +11,27 @@ import NotFound from "./pages/NotFound";
 import ForgotPassword from "./pages/ForgotPassword";
 import SearchPage from "./pages/SearchPage";
 import Dashboard from "./pages/Dashboard";
+import { AuthContextProvider } from "./context/AuthContext";
 
 const App = () => {
   return (
     <ChakraProvider theme={theme}>
-      <Router>
-        <Routes>
-          <DefaultRoute path="/" element={<Homepage />} />
-          <DefaultRoute path="/login" element={<Login />} />
-          <DefaultRoute path="/register" element={<Register />} />
-          <DefaultRoute path="/forgot-password" element={<ForgotPassword />} />
-          <DefaultRoute path="/search" element={<SearchPage />} />
-          <DefaultRoute path="/dashboard" element={<Dashboard />} />
-          <DefaultRoute path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
+      <AuthContextProvider>
+        <Router>
+          <Routes>
+            <DefaultRoute path="/" element={<Homepage />} />
+            <DefaultRoute path="/login" element={<Login />} />
+            <DefaultRoute path="/register" element={<Register />} />
+            <DefaultRoute
+              path="/forgot-password"
+              element={<ForgotPassword />}
+            />
+            <DefaultRoute path="/search" element={<SearchPage />} />
+            <DefaultRoute path="/dashboard" element={<Dashboard />} />
+            <DefaultRoute path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </AuthContextProvider>
     </ChakraProvider>
   );
 };
