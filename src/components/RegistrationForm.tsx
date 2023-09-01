@@ -9,7 +9,6 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 import axios, { API_URL } from "../config/general";
 import PopupNotification from "./PopupNotification";
 
@@ -30,14 +29,22 @@ const initialFormData = {
   phone_number: "",
 };
 
-const RegistrationForm = () => {
+type RegistrationFormProps = {
+  setIsRegistrationCompleted: (arg0: boolean) => void;
+  setCreatedUserId: (arg0: null) => void;
+};
+
+const RegistrationForm = ({
+  setIsRegistrationCompleted,
+  setCreatedUserId,
+}: RegistrationFormProps) => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
 
   const [formData, setFormData] = useState(initialFormData);
   const [doPasswordsMatch, setDoPasswordsMatch] = useState(true);
+  const [emailAvailable, setEmailAvailable] = useState(true);
 
-  const navigate = useNavigate();
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(true);
   const [notificationMessage, setNotificationMessage] = useState("");
@@ -75,8 +82,19 @@ const RegistrationForm = () => {
         payload.phone_number = formData.phone_number;
       }
       try {
-        await axios.post(`${API_URL}/auth/register`, payload);
-        navigate("/login");
+        const res = await axios.post(
+          `${API_URL}/auth/email-available?email=${payload.email}`
+        );
+        if (res.data.available) {
+          const response = await axios.post(
+            `${API_URL}/auth/register`,
+            payload
+          );
+          setCreatedUserId(response.data.id);
+          setIsRegistrationCompleted(true);
+        } else {
+          setEmailAvailable(false);
+        }
       } catch (error) {
         resetFormData();
         handleOpenNotification(false, "An error occurred during registration.");
@@ -162,6 +180,11 @@ const RegistrationForm = () => {
           {!doPasswordsMatch && (
             <Text mt="2" color="red">
               Passwords do not match
+            </Text>
+          )}
+          {!emailAvailable && (
+            <Text mt="2" color="red">
+              Email already taken
             </Text>
           )}
           <Flex mt="4" justify="center" align="center">
