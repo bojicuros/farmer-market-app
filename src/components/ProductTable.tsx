@@ -85,6 +85,10 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
     setSortConfig({ key, direction });
   };
 
+  if(activeMarket === null){
+    return <></>
+  }
+
   if (products.length === 0) {
     return <Box mt={10}>Currently there are no products in this market.</Box>;
   }

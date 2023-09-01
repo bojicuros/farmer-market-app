@@ -31,13 +31,13 @@ const ResetCodeForm = (props: Props) => {
       ...prevFormData,
       [name]: value,
     }));
-    setIsIncorrectCode(true);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     props.setIsCodeConfirmed(true);
     console.log(formData);
+    setIsIncorrectCode(true);
     // navigate("/");
   };
 

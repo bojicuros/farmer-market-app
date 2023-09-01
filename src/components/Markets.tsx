@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid, Text, useBreakpointValue } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { MarketCard } from "./MarketCard";
 import axios, { API_URL } from "../config/general";
@@ -52,6 +52,10 @@ export const Markets = ({ setActiveMarket }: MarketsProps) => {
 
   const paddingValue = useBreakpointValue({ base: 0, md: 20, lg: 32 });
   const paddingText = useBreakpointValue({ base: 0, md: 12, lg: 0 });
+
+  if(markets.length === 0){
+    return <Box mt={10}>Sorry. We currently do not have open markets</Box>
+  }
 
   return (
     <Flex
