@@ -1,5 +1,3 @@
-import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -8,12 +6,24 @@ import {
   useBreakpointValue,
   useColorMode,
   Text,
+  Link,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios, { API_URL } from "../config/general";
 
-const SetNewPasswordForm = () => {
+type SetNewPasswordFormProps = {
+  userEmail: string;
+  userCode: string;
+};
+
+const SetNewPasswordForm = ({
+  userEmail,
+  userCode,
+}: SetNewPasswordFormProps) => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     password: "",
@@ -21,6 +31,8 @@ const SetNewPasswordForm = () => {
   });
 
   const [passwordsDoNotMatch, setPasswordsDoNotMatch] = useState(false);
+  const [isChangingPasswordFailed, setIsChangingPasswordFailed] =
+    useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -28,18 +40,34 @@ const SetNewPasswordForm = () => {
       ...prevFormData,
       [name]: value,
     }));
-    setPasswordsDoNotMatch(true);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log(formData);
-    // navigate("/");
+    if (formData.password !== formData.confirmPassword)
+      setPasswordsDoNotMatch(true);
+    else {
+      setPasswordsDoNotMatch(false);
+      try {
+        await axios.post(`${API_URL}/auth/password-token-confirm`, {
+          email: userEmail,
+          token: userCode,
+          password: formData.password,
+        });
+        navigate("/login");
+      } catch (e) {
+        setIsChangingPasswordFailed(true);
+      }
+    }
   };
 
   return (
-    <Box mt={isSmallerScreen ? "16" : "0"} alignItems="flex-start" p={isSmallerScreen ? "6" : "0"}>
+    <Box
+      mt={isSmallerScreen ? "16" : "0"}
+      alignItems="flex-start"
+      p={isSmallerScreen ? "6" : "0"}
+    >
       <form onSubmit={handleSubmit}>
         <Flex direction="column" p={5}>
           <Input
@@ -74,6 +102,20 @@ const SetNewPasswordForm = () => {
             <Text mt="2" color="red">
               Passwords do not match.
             </Text>
+          )}
+          {isChangingPasswordFailed && (
+            <Flex mt="4" justify="center" align="center">
+              <Text mt="2" color="red">
+                Password reset failed.
+              </Text>
+              <Link
+                color={colorMode === "light" ? "green.500" : "green.300"}
+                fontSize="sm"
+                href="/forgot-password"
+              >
+                Try again here.
+              </Link>
+            </Flex>
           )}
         </Flex>
       </form>
