@@ -11,6 +11,8 @@ const ForgotPassword = () => {
   const flexDirection = isSmallerScreen ? "column" : "row";
   const [isEmailConfirmed, setIsEmailConfirmed] = useState(false);
   const [isCodeConfirmed, setIsCodeConfirmed] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [userCode, setUserCode] = useState("");
 
   return (
     <Flex minHeight="100vh" flexDirection="column">
@@ -25,7 +27,7 @@ const ForgotPassword = () => {
         >
           <Box mt={isSmallerScreen ? "16" : "0"}>
             <Text fontSize="3xl" fontWeight="semibold">
-            Forgot Password?
+              Forgot Password?
             </Text>
             <Text
               fontSize="4xl"
@@ -33,15 +35,21 @@ const ForgotPassword = () => {
               bgGradient="linear(to-r, green.500, yellow.300, green.300)"
               bgClip="text"
             >
-               Enter the code to reset password
+              Enter the code to reset password
             </Text>
             <Text>
-            Please enter the code you've received to reset your password.
+              Please enter the code you've received to reset your password.
             </Text>
           </Box>
-          {!isEmailConfirmed && <EmailOfForgottenAccountForm setIsEmailConfirmed={setIsEmailConfirmed} />}
-          {isEmailConfirmed && !isCodeConfirmed && <ResetCodeForm setIsCodeConfirmed={setIsCodeConfirmed} />}
-          {isEmailConfirmed && isCodeConfirmed && <SetNewPasswordForm />}
+          {!isEmailConfirmed && (
+            <EmailOfForgottenAccountForm
+              setIsEmailConfirmed={setIsEmailConfirmed} setUserEmail={setUserEmail}
+            />
+          )}
+          {isEmailConfirmed && !isCodeConfirmed && (
+            <ResetCodeForm userEmail={userEmail} setIsCodeConfirmed={setIsCodeConfirmed} setUserCode={setUserCode}/>
+          )}
+          {isEmailConfirmed && isCodeConfirmed && <SetNewPasswordForm userCode={userCode} userEmail={userEmail} />}
         </Flex>
       </VStack>
       <Footer />

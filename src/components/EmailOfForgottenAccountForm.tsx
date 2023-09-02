@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -9,18 +8,21 @@ import {
   useColorMode,
   Text,
 } from "@chakra-ui/react";
+import axios, { API_URL } from "../config/general";
 
-type Props = {
+type EmailOfForgottenAccountFormProps = {
   setIsEmailConfirmed: (arg0: boolean) => void;
+  setUserEmail: (arg0: string) => void;
 };
 
-const EmailOfForgottenAccountForm = (props: Props) => {
+const EmailOfForgottenAccountForm = ({
+  setIsEmailConfirmed,
+  setUserEmail,
+}: EmailOfForgottenAccountFormProps) => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
-  //   const navigate = useNavigate();
 
   const [isValidEmail, setIsValidEmail] = useState(true);
-
   const [formData, setFormData] = useState({
     email: "",
   });
@@ -31,14 +33,25 @@ const EmailOfForgottenAccountForm = (props: Props) => {
       ...prevFormData,
       [name]: value,
     }));
-    setIsValidEmail(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    props.setIsEmailConfirmed(true);
-    console.log(formData);
-    // navigate("/");
+
+    try {
+      const res = await axios.post(
+        `${API_URL}/auth/email-available?email=${formData.email}`
+      );
+      if (!res.data.available) {
+        await axios.post(
+          `${API_URL}/auth/forgot-password?email=${formData.email}`
+        );
+        setIsEmailConfirmed(true);
+        setUserEmail(formData.email);
+      }
+    } catch (e) {
+      setIsValidEmail(false);
+    }
   };
 
   return (

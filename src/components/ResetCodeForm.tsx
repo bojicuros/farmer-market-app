@@ -1,5 +1,3 @@
-import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -9,17 +7,27 @@ import {
   useColorMode,
   Text,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import axios, { API_URL } from "../config/general";
 
-type Props = {
-  setIsCodeConfirmed: (arg0 : boolean) => void;
+const CODE_LENGTH = 6;
+
+type ResetCodeFormProps = {
+  setIsCodeConfirmed: (arg0: boolean) => void;
+  setUserCode: (arg0: string) => void;
+  userEmail: string;
 };
 
-const ResetCodeForm = (props: Props) => {
+const ResetCodeForm = ({
+  setIsCodeConfirmed,
+  userEmail,
+  setUserCode
+}: ResetCodeFormProps) => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
-  //   const navigate = useNavigate();
 
   const [isIncorrectCode, setIsIncorrectCode] = useState(false);
+  const [isLengthInvalid, setIsLengthInvalid] = useState(false);
 
   const [formData, setFormData] = useState({
     code: "",
@@ -31,18 +39,30 @@ const ResetCodeForm = (props: Props) => {
       ...prevFormData,
       [name]: value,
     }));
+    if (value.length === CODE_LENGTH) setIsLengthInvalid(false);
+    else setIsLengthInvalid(true);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    props.setIsCodeConfirmed(true);
-    console.log(formData);
-    setIsIncorrectCode(true);
-    // navigate("/");
+    try {
+      await axios.post(`${API_URL}/auth/validate-reset-token`, {
+        email: userEmail,
+        token: formData.code,
+      });
+      setIsCodeConfirmed(true);
+      setUserCode(formData.code);
+    } catch (e) {
+      setIsIncorrectCode(true);
+    }
   };
 
   return (
-    <Box mt={isSmallerScreen ? "16" : "0"} alignItems="flex-start" p={isSmallerScreen ? "10" : "0"}>
+    <Box
+      mt={isSmallerScreen ? "16" : "0"}
+      alignItems="flex-start"
+      p={isSmallerScreen ? "10" : "0"}
+    >
       <form onSubmit={handleSubmit}>
         <Flex direction="column" p={5}>
           <Input
@@ -60,12 +80,18 @@ const ResetCodeForm = (props: Props) => {
             color={colorMode === "light" ? "white" : "gray.700"}
             _hover={{ opacity: 0.8 }}
             type="submit"
+            disabled={!isLengthInvalid}
           >
             Confirm
           </Button>
           {isIncorrectCode && (
             <Text mt="2" color="red">
               Incorrect code. Please try again.
+            </Text>
+          )}
+          {isLengthInvalid && (
+            <Text mt="2" color="red">
+              Code must have {CODE_LENGTH} digits.
             </Text>
           )}
         </Flex>
