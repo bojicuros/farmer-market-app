@@ -6,6 +6,7 @@ type AuthUser = {
   exp: number;
   iat: number;
   is_approved: boolean;
+  is_confirmed: boolean;
   roles: string[];
   userId: string;
 };

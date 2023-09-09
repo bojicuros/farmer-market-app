@@ -20,8 +20,8 @@ const Footer = () => {
         </Text>
         <Text fontSize="sm" mt="4">
           For inquiries and support, please email us at{" "}
-          <a href="mailto:info@marketpricecheck.com">
-            info@marketpricecheck.com
+          <a href="mailto:pijacnibarometar@gmail.com">
+            pijacnibarometar@gmail.com
           </a>
         </Text>
         <Text fontSize="sm" mt="4">
@@ -33,4 +33,4 @@ const Footer = () => {
   );
 };
 
-export default Footer
+export default Footer;
