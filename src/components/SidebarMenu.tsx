@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { FaShoppingBasket, FaStore } from "react-icons/fa";
 import { FiHome, FiSettings, FiMenu } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiFillDollarCircle } from "react-icons/ai";
+import { BiLogOut } from "react-icons/bi";
 
 type SidebarMenuProps = {
   isSidebarCollapsed: boolean;
@@ -32,7 +33,6 @@ const SidebarMenu = ({
 
   const { colorMode } = useColorMode();
   const [isSmallerScreen] = useMediaQuery("(max-width: 768px)");
-  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const [collapsedForEffect, setCollapsedForEffect] =
     useState(isSidebarCollapsed);
 
@@ -45,10 +45,6 @@ const SidebarMenu = ({
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
-  };
-
-  const handleLogoutPopup = () => {
-    setShowLogoutPopup(!showLogoutPopup);
   };
 
   const handleLogout = () => {
@@ -118,27 +114,10 @@ const SidebarMenu = ({
   const userPart = (
     <Flex p="5%" flexDir="column" w="100%" alignItems="flex-start" ml="4">
       <Divider ml={"-4"} />
-      <Flex mt={4} align="center" cursor="pointer" onClick={handleLogoutPopup}>
-        {showLogoutPopup && (
-          <Box
-            position="absolute"
-            bottom="2"
-            right={isSmallerScreen ? "5%" : "-100"}
-            width="90px"
-            p="1rem"
-            bg="green.500"
-            borderRadius="10px"
-            color={colorMode === "light" ? "white" : "black"}
-            zIndex="1"
-            opacity="70%"
-            onClick={handleLogout}
-          >
-            Log out
-          </Box>
-        )}
+      <Flex mt={4} align="center">
         <Avatar size="sm" src="avatar-1.jpg" />
         {user && (
-          <Flex flexDir="column" ml={4} display="flex">
+          <Flex flexDir="column" ml={4} display="flex" w={isSmallerScreen ? "38vw" : "130px"}>
             <Heading
               as="h3"
               size="sm"
@@ -153,6 +132,14 @@ const SidebarMenu = ({
             </Text>
           </Flex>
         )}
+        <Box position={"absolute"} left={isSmallerScreen ? "60%" : "225px"}>
+          <BiLogOut
+            color={colorMode === "light" ? "white" : "black"}
+            onClick={handleLogout}
+            cursor="pointer"
+            size={20}
+          />
+        </Box>
       </Flex>
     </Flex>
   );
