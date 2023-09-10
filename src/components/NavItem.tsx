@@ -10,18 +10,30 @@ import {
 } from "@chakra-ui/react";
 import { IconBaseProps } from "react-icons";
 
-type Props = {
+type NavItemProps = {
   icon: React.ElementType<IconBaseProps>;
   title: string;
-  active?: boolean;
+  active: boolean;
+  onClick: () => void; // Ensure onClick prop is defined
 };
 
-export default function NavItem(props: Props) {
-  const { icon, title, active } = props;
+export default function NavItem({
+  icon,
+  title,
+  active,
+  onClick,
+}: NavItemProps) {
   const { colorMode } = useColorMode();
 
   return (
-    <Flex mt={30} flexDir="column" w="100%" alignItems="flex-start" h="5vh">
+    <Flex
+      mt={30}
+      flexDir="column"
+      w="100%"
+      alignItems="flex-start"
+      h="5vh"
+      onClick={onClick}
+    >
       <Menu placement="right">
         <Link
           backgroundColor={active ? "green.500" : undefined}
@@ -36,10 +48,7 @@ export default function NavItem(props: Props) {
             color={colorMode === "light" ? "white" : "black"}
           >
             <Flex>
-              <Icon
-                as={icon}
-                fontSize="xl"
-              />
+              <Icon as={icon} fontSize="xl" />
               <Text ml={5} display="flex">
                 {title}
               </Text>

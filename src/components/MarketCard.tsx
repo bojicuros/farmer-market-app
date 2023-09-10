@@ -6,15 +6,14 @@ import {
   Image,
 } from "@chakra-ui/react";
 
-type Props = {
-  shadow?: string;
+type MarketCardProps = {
   isActive: boolean;
   toggleActive: () => void;
   name: string;
   img_url: string;
 };
 
-export const MarketCard = (props: Props) => {
+export const MarketCard = ({ isActive, toggleActive, name, img_url}: MarketCardProps) => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
 
@@ -25,20 +24,20 @@ export const MarketCard = (props: Props) => {
       ml={isSmallerScreen ? 0 : 6}
       bg={colorMode === "light" ? "gray.50" : "gray.700"}
       alignItems="center"
-      border={props.isActive ? "1.5px solid" : "none"}
+      border={isActive ? "1.5px solid" : "none"}
       borderColor={colorMode === "light" ? "green.600" : "green.200"}
-      h="32vh"
+      h={isSmallerScreen ? "50vw" : "32vh"}
       p={3}
       justify="center"
       cursor="pointer"
       _hover={{
         bgGradient: "linear(to-tr, green.500, yellow.300)",
       }}
-      onClick={props.toggleActive}
+      onClick={toggleActive}
     >
       <Image
-        src={props.img_url}
-        alt={props.name}
+        src={img_url}
+        alt={name}
         h={"80%"}
         w={"90%"}
         mb={"-2"}
@@ -52,7 +51,7 @@ export const MarketCard = (props: Props) => {
         fontSize="xl"
         fontWeight="semibold"
       >
-        {props.name}
+        {name}
       </Text>
     </Flex>
   );

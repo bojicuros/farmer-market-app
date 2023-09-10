@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import axios, { API_URL } from "../config/general";
 
 type Product = {
-  id: number;
+  id: string;
   name: string;
   price: number;
   measureUnit: string;

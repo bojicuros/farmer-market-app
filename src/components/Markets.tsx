@@ -78,6 +78,7 @@ export const Markets = ({ setActiveMarket }: MarketsProps) => {
         minWidth={"70vw"}
         p={paddingValue === 0 ? 10 : 0}
         mt={paddingValue === 0 ? 0 : 10}
+        justifyContent={"center"}
       >
         {markets.map((market) => (
           <MarketCard

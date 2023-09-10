@@ -10,13 +10,14 @@ import {
 } from "@chakra-ui/react";
 import useAuth from "../hooks/useAuth";
 import NavItem from "../components/NavItem";
+import { BiLogOut } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import { BsPeopleFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { IoAnalyticsOutline } from "react-icons/io5";
 import { FaShoppingBasket, FaStore } from "react-icons/fa";
 import { FiHome, FiSettings, FiMenu } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiFillDollarCircle } from "react-icons/ai";
-import { BiLogOut } from "react-icons/bi";
 
 type SidebarMenuProps = {
   isSidebarCollapsed: boolean;
@@ -36,6 +37,21 @@ const SidebarMenu = ({
   const [collapsedForEffect, setCollapsedForEffect] =
     useState(isSidebarCollapsed);
 
+  const [activeItem, setActiveItem] = useState("");
+
+  useEffect(() => {
+    if (user.roles.includes("Admin")) {
+      setActiveItem("Dashboard");
+    } else {
+      setActiveItem("Prices");
+    }
+  }, [user.roles]);
+
+  const handleNavItemClick = (itemTitle: string) => {
+    setActiveItem(itemTitle);
+    console.log(activeItem);
+  };
+
   useEffect(() => {
     if (isSmallerScreen !== collapsedForEffect) {
       setIsSidebarCollapsed(isSmallerScreen);
@@ -54,30 +70,76 @@ const SidebarMenu = ({
 
   const commonMenuItems = (
     <>
-      <NavItem icon={FiSettings} title="Settings" />
+      <NavItem
+        icon={FiSettings}
+        title="Settings"
+        active={activeItem === "Settings"}
+        onClick={() => handleNavItemClick("Settings")}
+      />
     </>
   );
 
   const adminMenuItems = (
     <>
-      <NavItem icon={FiHome} title="Dashboard" active />
-      <NavItem icon={FaStore} title="Markets" />
-      <NavItem icon={BsPeopleFill} title="Vendors" />
-      <NavItem icon={AiOutlineCheckCircle} title="Confirmations" />
+      <NavItem
+        icon={FiHome}
+        title="Dashboard"
+        active={activeItem === "Dashboard"}
+        onClick={() => handleNavItemClick("Dashboard")}
+      />
+      <NavItem
+        icon={IoAnalyticsOutline}
+        title="Price Analytic"
+        active={activeItem === "Price Analytic"}
+        onClick={() => handleNavItemClick("Price Analytic")}
+      />
+      <NavItem
+        icon={AiOutlineCheckCircle}
+        title="Confirmations"
+        active={activeItem === "Confirmations"}
+        onClick={() => handleNavItemClick("Confirmations")}
+      />
+      <NavItem
+        icon={BsPeopleFill}
+        title="Manage Vendors"
+        active={activeItem === "Manage Vendors"}
+        onClick={() => handleNavItemClick("Manage Vendors")}
+      />
+      <NavItem
+        icon={FaStore}
+        title="Manage Markets"
+        active={activeItem === "Manage Markets"}
+        onClick={() => handleNavItemClick("Manage Markets")}
+      />
     </>
   );
 
   const vendorMenuItems = (
     <>
-      <NavItem icon={AiFillDollarCircle} title="Prices" />
-      <NavItem icon={FaShoppingBasket} title="Products" />
+      <NavItem
+        icon={AiFillDollarCircle}
+        title="Prices"
+        active={activeItem === "Prices"}
+        onClick={() => handleNavItemClick("Prices")}
+      />
+      <NavItem
+        icon={FaShoppingBasket}
+        title="Products"
+        active={activeItem === "Products"}
+        onClick={() => handleNavItemClick("Products")}
+      />
     </>
   );
 
   const menuItems = (
     <>
       {!user.is_confirmed && (
-        <NavItem icon={AiOutlineCheckCircle} title="Email confirm" />
+        <NavItem
+          icon={AiOutlineCheckCircle}
+          title="Email confirmation"
+          active={activeItem === "Email confirmation"}
+          onClick={() => handleNavItemClick("Email confirmation")}
+        />
       )}
       {user.is_approved && user.is_confirmed && (
         <>
@@ -117,7 +179,12 @@ const SidebarMenu = ({
       <Flex mt={4} align="center">
         <Avatar size="sm" src="avatar-1.jpg" />
         {user && (
-          <Flex flexDir="column" ml={4} display="flex" w={isSmallerScreen ? "38vw" : "130px"}>
+          <Flex
+            flexDir="column"
+            ml={4}
+            display="flex"
+            w={isSmallerScreen ? "38vw" : "130px"}
+          >
             <Heading
               as="h3"
               size="sm"
