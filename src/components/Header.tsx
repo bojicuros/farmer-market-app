@@ -13,7 +13,6 @@ import {
     return (
       <Flex
         direction={!isSmallerScreen ? "row" : "column"}
-        mt={isSmallerScreen ? "16" : "0"}
         p={isSmallerScreen ? "0" : "28"}
         alignSelf="flex-start"
         mb={isSmallerScreen ? "0" : "-16"}
