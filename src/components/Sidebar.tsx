@@ -8,14 +8,11 @@ const Sidebar = () => {
 
   return (
     <Flex
-      pos="absolute"
-      left="5"
-      top="3"
-      h={isSidebarCollapsed ? "10" : "95vh"}
+      h={isSmallerScreen ? (isSidebarCollapsed ? "10" : "80vh") : "95vh"}
       marginTop="1"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       borderRadius="30px"
-      w={isSmallerScreen ? (isSidebarCollapsed ? "15" : "70%") : "220px"}
+      w={isSmallerScreen ? (isSidebarCollapsed ? "16" : "70%") : "250px"}
       flexDir="column"
       justifyContent="space-between"
       bgGradient={"linear(to-tr, green.500, yellow.300)"}
