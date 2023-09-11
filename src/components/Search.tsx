@@ -1,112 +1,52 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
+  Input,
+  Button,
   Box,
   Text,
+  useColorMode,
   Flex,
-  Heading,
-  Spacer,
-  useBreakpointValue,
-  HStack,
+  Center,
 } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
-import axios, { API_URL } from "../config/general";
-
-type SearchRecord = {
-  type: string;
-  market_name: string;
-  product_name: string;
-};
 
 const Search = () => {
-  const { query } = useParams();
-  const [searchResults, setSearchResults] = useState<SearchRecord[]>([]);
-  const isSmallerScreen = useBreakpointValue({ base: true, md: false });
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<string[]>([]);
+  const { colorMode } = useColorMode();
 
-  useEffect(() => {
-    if (query) {
-      const fetchSearchResults = async () => {
-        try {
-          const response = await axios.get(
-            `${API_URL}/search?query=${encodeURIComponent(query)}`
-          );
-          setSearchResults(response.data);
-        } catch (error) {
-          console.log("Error while searching");
-        }
-      };
-      fetchSearchResults();
-    }
-  }, [query]);
-
-  const markets = searchResults.filter((result) => result.type === "Market");
-  const products = searchResults.filter((result) => result.type === "Product");
+  const handleSearch = () => {
+    setSearchResults(["Result 1", "Result 2", "Result 3"]);
+  };
 
   return (
-    <Flex
-      direction="column"
-      mt="8"
-      p={5}
-      w={isSmallerScreen ? undefined : "60%"}
-    >
-      {searchResults.length > 0 ? (
-        <Flex
-          direction={isSmallerScreen ? "column" : "row"}
-          alignContent={"center"}
-          justifyContent={"center"}
-        >
-          {products.length > 0 && (
-            <Flex
-              direction={"column"}
-              w={
-                markets.length === 0
-                  ? isSmallerScreen
-                    ? undefined
-                    : "60%"
-                  : undefined
-              }
-              mb={isSmallerScreen ? "6" : undefined}
-              mr={6}
-            >
-              <Heading size="xl" mb={3}>
-                Products
-              </Heading>
-              <HStack mb={2}>
-                <Text fontSize={"lg"} fontWeight="bold">
-                  Name
-                </Text>
-                <Spacer />
-                <Text fontSize={"lg"} fontWeight="bold">
-                  Available at
-                </Text>
-              </HStack>
-              {products.map((product, index) => (
-                <HStack key={`product-${index}`} mb={1}>
-                  <Text fontSize={"md"}>{product.product_name}</Text>
-                  <Spacer />
-                  <Text>{product.market_name}</Text>
-                </HStack>
-              ))}
-            </Flex>
+    <Flex direction="column" mt="8" p={5}>
+      <Box>
+        <Input
+          placeholder="Enter your search query"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <Center mt="5">
+          <Button
+            bgGradient="linear(to-tr, green.400, yellow.300)"
+            color={colorMode === "light" ? "white" : "gray.700"}
+            _hover={{ opacity: 0.8 }}
+            onClick={handleSearch}
+          >
+            Search
+          </Button>
+        </Center>
+
+        <Box mt="4">
+          {searchResults.length > 0 ? (
+            searchResults.map((result, index) => (
+              <Text key={index}>{result}</Text>
+            ))
+          ) : (
+            <Text>No results found.</Text>
           )}
-          {products.length > 0 && <Spacer />}
-          {markets.length > 0 && (
-            <Box>
-              <Heading size="xl" mb={3}>
-                Available Markets
-              </Heading>
-              {markets.map((market, index) => (
-                <Text key={`market-${index}`} mb={1}>
-                  {market.market_name}
-                </Text>
-              ))}
-            </Box>
-          )}
-        </Flex>
-      ) : (
-        <Flex w="100%" justifyContent={"center"}>
-          <Text fontSize={"xl"} mt={10}>No results found.</Text>
-        </Flex>
-      )}
+        </Box>
+      </Box>
     </Flex>
   );
 };

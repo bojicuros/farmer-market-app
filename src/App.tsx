@@ -30,7 +30,7 @@ const App = () => {
               path="/forgot-password"
               element={<ForgotPassword />}
             />
-            <DefaultRoute path="/search/:query?" element={<SearchPage />} />
+            <DefaultRoute path="/search" element={<SearchPage />} />
             <DefaultRoute path="/unauthorized" element={<Unauthorized />} />
             <DefaultRoute path="*" element={<NotFound />} />
 
