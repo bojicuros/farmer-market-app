@@ -5,21 +5,43 @@ import {
   Spacer,
   Input,
   InputGroup,
-  InputLeftElement,
   useBreakpointValue,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const [isSearchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isSearchOpen, setSearchOpen] = useState<boolean>(false);
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
+
+  const navigate = useNavigate();
 
   const handleSearchToggle = () => {
     if (isSmallerScreen) {
       setSearchOpen((prev) => !prev);
     }
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery("");
+    navigate(`/search/${encodeURIComponent(query)}`);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSearch(searchQuery);
+    }
+  };
+
+  const handleSearchIconClick = () => {
+    handleSearch(searchQuery);
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
   };
 
   return (
@@ -39,23 +61,25 @@ const Navbar = () => {
 
       <Spacer />
 
-      {isSmallerScreen && (
-        <InputGroup maxW="180px" display={isSearchOpen ? "block" : "none"}>
-          <InputLeftElement pointerEvents="none">
-            <SearchIcon color="gray.300" />
-          </InputLeftElement>
-          <Input type="text" placeholder="Search markets" />
-        </InputGroup>
-      )}
-
-      {!isSmallerScreen && (
-        <InputGroup maxW="180px">
-          <InputLeftElement pointerEvents="none">
-            <SearchIcon color="gray.300" />
-          </InputLeftElement>
-          <Input type="text" placeholder="Search markets" />
-        </InputGroup>
-      )}
+      <InputGroup
+        maxW="180px"
+        display={isSmallerScreen ? (isSearchOpen ? "block" : "none") : "block"}
+      >
+        <Input
+          type="text"
+          placeholder="Search markets"
+          onKeyDown={handleKeyDown}
+          value={searchQuery}
+          onChange={handleInputChange}
+        />
+        <InputRightElement>
+          <SearchIcon
+            color="gray.300"
+            cursor={"pointer"}
+            onClick={handleSearchIconClick}
+          />
+        </InputRightElement>
+      </InputGroup>
 
       {isSmallerScreen && (
         <SearchIcon
@@ -66,10 +90,9 @@ const Navbar = () => {
         />
       )}
 
-      <ColorModeSwitcher  />
+      <ColorModeSwitcher />
     </Flex>
   );
 };
 
-
-export default Navbar
+export default Navbar;
