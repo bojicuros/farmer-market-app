@@ -9,8 +9,8 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import axios, { API_URL } from "../config/general";
-import PopupNotification from "./PopupNotification";
+import axios, { API_URL } from "../../config/general";
+import PopupNotification from "../Common/PopupNotification";
 
 interface FormData {
   first_name: string;

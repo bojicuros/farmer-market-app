@@ -8,8 +8,8 @@ import {
   useMediaQuery,
   Box,
 } from "@chakra-ui/react";
-import useAuth from "../hooks/useAuth";
-import NavItem from "../components/NavItem";
+import useAuth from "../../hooks/useAuth";
+import NavItem from "../Nav/NavItem";
 import { BiLogOut } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import { BsPeopleFill } from "react-icons/bs";

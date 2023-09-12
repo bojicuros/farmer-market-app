@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   Flex,
@@ -8,23 +7,30 @@ import {
   useColorMode,
   Text,
 } from "@chakra-ui/react";
-import axios, { API_URL } from "../config/general";
+import { useState } from "react";
+import axios, { API_URL } from "../../config/general";
 
-type EmailOfForgottenAccountFormProps = {
-  setIsEmailConfirmed: (arg0: boolean) => void;
-  setUserEmail: (arg0: string) => void;
+const CODE_LENGTH = 6;
+
+type ResetCodeFormProps = {
+  setIsCodeConfirmed: (arg0: boolean) => void;
+  setUserCode: (arg0: string) => void;
+  userEmail: string;
 };
 
-const EmailOfForgottenAccountForm = ({
-  setIsEmailConfirmed,
-  setUserEmail,
-}: EmailOfForgottenAccountFormProps) => {
+const ResetCodeForm = ({
+  setIsCodeConfirmed,
+  userEmail,
+  setUserCode
+}: ResetCodeFormProps) => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
 
-  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isIncorrectCode, setIsIncorrectCode] = useState(false);
+  const [isLengthInvalid, setIsLengthInvalid] = useState(false);
+
   const [formData, setFormData] = useState({
-    email: "",
+    code: "",
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,24 +39,21 @@ const EmailOfForgottenAccountForm = ({
       ...prevFormData,
       [name]: value,
     }));
+    if (value.length === CODE_LENGTH) setIsLengthInvalid(false);
+    else setIsLengthInvalid(true);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     try {
-      const res = await axios.post(
-        `${API_URL}/auth/email-available?email=${formData.email}`
-      );
-      if (!res.data.available) {
-        await axios.post(
-          `${API_URL}/auth/forgot-password?email=${formData.email}`
-        );
-        setIsEmailConfirmed(true);
-        setUserEmail(formData.email);
-      }
+      await axios.post(`${API_URL}/auth/validate-reset-token`, {
+        email: userEmail,
+        token: formData.code,
+      });
+      setIsCodeConfirmed(true);
+      setUserCode(formData.code);
     } catch (e) {
-      setIsValidEmail(false);
+      setIsIncorrectCode(true);
     }
   };
 
@@ -63,12 +66,12 @@ const EmailOfForgottenAccountForm = ({
       <form onSubmit={handleSubmit}>
         <Flex direction="column" p={5}>
           <Input
-            placeholder="Email"
+            placeholder="Code"
             size="md"
             mb="4"
-            name="email"
-            type="email"
-            value={formData.email}
+            name="code"
+            type="number"
+            value={formData.code}
             onChange={handleInputChange}
             required
           />
@@ -77,12 +80,18 @@ const EmailOfForgottenAccountForm = ({
             color={colorMode === "light" ? "white" : "gray.700"}
             _hover={{ opacity: 0.8 }}
             type="submit"
+            disabled={!isLengthInvalid}
           >
             Confirm
           </Button>
-          {!isValidEmail && (
+          {isIncorrectCode && (
             <Text mt="2" color="red">
-              Invalid email. Please try again.
+              Incorrect code. Please try again.
+            </Text>
+          )}
+          {isLengthInvalid && (
+            <Text mt="2" color="red">
+              Code must have {CODE_LENGTH} digits.
             </Text>
           )}
         </Flex>
@@ -91,4 +100,4 @@ const EmailOfForgottenAccountForm = ({
   );
 };
 
-export default EmailOfForgottenAccountForm;
+export default ResetCodeForm;

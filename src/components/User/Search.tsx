@@ -9,7 +9,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import axios, { API_URL } from "../config/general";
+import axios, { API_URL } from "../../config/general";
 
 type SearchRecord = {
   type: string;

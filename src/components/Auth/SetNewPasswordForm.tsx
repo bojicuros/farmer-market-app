@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios, { API_URL } from "../config/general";
+import axios, { API_URL } from "../../config/general";
 
 type SetNewPasswordFormProps = {
   userEmail: string;

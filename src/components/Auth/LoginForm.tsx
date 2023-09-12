@@ -10,9 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import axios, { API_URL } from "../config/general";
+import axios, { API_URL } from "../../config/general";
 
 const LoginForm = () => {
   const { colorMode } = useColorMode();

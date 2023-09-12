@@ -1,7 +1,7 @@
 import { Box, Flex, SimpleGrid, Text, useBreakpointValue } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { MarketCard } from "./MarketCard";
-import axios, { API_URL } from "../config/general";
+import axios, { API_URL } from "../../config/general";
 
 export interface Market {
   id: string;
