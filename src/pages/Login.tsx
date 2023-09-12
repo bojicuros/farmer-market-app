@@ -1,7 +1,7 @@
 import { VStack, Flex, Text, Box, useBreakpointValue } from "@chakra-ui/react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import LoginForm from "../components/LoginForm";
+import Navbar from "../components/Common/Navbar";
+import Footer from "../components/Common/Footer";
+import LoginForm from "../components/Auth/LoginForm";
 
 const Login = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });

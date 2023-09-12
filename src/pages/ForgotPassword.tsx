@@ -1,10 +1,10 @@
 import { VStack, Flex, Text, Box, useBreakpointValue } from "@chakra-ui/react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ResetCodeForm from "../components/ResetCodeForm";
-import SetNewPasswordForm from "../components/SetNewPasswordForm";
+import Navbar from "../components/Common/Navbar";
+import Footer from "../components/Common/Footer";
+import ResetCodeForm from "../components/Auth/ResetCodeForm";
+import SetNewPasswordForm from "../components/Auth/SetNewPasswordForm";
 import { useState } from "react";
-import EmailOfForgottenAccountForm from "../components/EmailOfForgottenAccountForm";
+import EmailOfForgottenAccountForm from "../components/Auth/EmailOfForgottenAccountForm";
 
 const ForgotPassword = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });

@@ -11,7 +11,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import axios, { API_URL } from "../config/general";
+import axios, { API_URL } from "../../config/general";
 
 type Product = {
   id: string;

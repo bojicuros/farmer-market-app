@@ -9,7 +9,7 @@ import {
   Text,
   Link
 } from "@chakra-ui/react";
-import axios, { API_URL } from "../config/general";
+import axios, { API_URL } from "../../config/general";
 
 type EmailConfirmCodeFormProps = {
   setIsCodeConfirmed: (arg0: boolean) => void;
