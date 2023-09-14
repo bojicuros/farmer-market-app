@@ -1,4 +1,4 @@
-import { Flex, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
 import Sidebar from "../components/Common/Sidebar";
 import EmployeeTable from "../components/User/EmployeeTable";
 
@@ -12,15 +12,17 @@ const Dashboard = () => {
       p={3}
     >
       <Sidebar />
-      <Flex
-        h={"95vh"}
+      <Box
+        h={isSmallerScreen ? undefined : "95vh"}
+        minH={isSmallerScreen ? "95vh" : undefined}
         w={"80vw"}
         ml={8}
         mt={isSmallerScreen ? 6 : 1}
-        bgColor="red.100"
         flexDirection={"column"}
-      />
-      <EmployeeTable />
+        overflowY={isSmallerScreen ? "hidden" : "auto"}
+      >
+        <EmployeeTable />
+      </Box>
     </Flex>
   );
 };
