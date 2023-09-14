@@ -1,6 +1,6 @@
 import Navbar from "../components/Common/Navbar";
 import Footer from "../components/Common/Footer";
-import Search from "../components/User/Search";
+import Search from "../components/Visitor/Search";
 import { Flex, VStack } from "@chakra-ui/react";
 
 const SearchPage = () => {

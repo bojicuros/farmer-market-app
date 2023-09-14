@@ -10,6 +10,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { FaUserCircle } from "react-icons/fa";
+import { UserRoles } from "../../App";
 
 type EmployeeInfo = {
   email: string;
@@ -40,11 +41,11 @@ const EmployeeTableRow = (props: EmployeeInfo) => {
               Vendor
             </Text>
           </>
-        ) : rolesArray[0] === "Admin" ? (
+        ) : rolesArray[0] === UserRoles.Admin ? (
           <Text fontSize="md" fontWeight="bold">
             Admin
           </Text>
-        ) : rolesArray[0] === "Vendor" ? (
+        ) : rolesArray[0] === UserRoles.Vendor ? (
           <Text fontSize="md" fontWeight="bold">
             Vendor
           </Text>
