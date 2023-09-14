@@ -1,7 +1,6 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-
-type AllowedRole = "Admin" | "Vendor";
+import { AllowedRole } from "../App";
 
 interface RequireAuthProps {
   allowedRoles: AllowedRole[];

@@ -18,15 +18,32 @@ import { IoAnalyticsOutline } from "react-icons/io5";
 import { FaShoppingBasket, FaStore } from "react-icons/fa";
 import { FiHome, FiSettings, FiMenu } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiFillDollarCircle } from "react-icons/ai";
+import { UserRoles } from "../../App";
 
 type SidebarMenuProps = {
+  activeItem: string;
+  setActiveItem: (arg0: string) => void;
   isSidebarCollapsed: boolean;
   setIsSidebarCollapsed: (arg0: boolean) => void;
 };
 
+export enum MenuItems {
+  Dashboard = "Dashboard",
+  PriceAnalytic = "Price Analytic",
+  Confirmations = "Confirmations",
+  ManageMarkets = "Manage Markets",
+  ManageEmployees = "Manage Employees",
+  Prices = "Prices",
+  Products = "Products",
+  EmailConfirmation = "Email confirmation",
+  Settings = "Settings",
+}
+
 const SidebarMenu = ({
+  activeItem,
   isSidebarCollapsed,
   setIsSidebarCollapsed,
+  setActiveItem,
 }: SidebarMenuProps) => {
   const navigate = useNavigate();
   const { auth, setAuth } = useAuth();
@@ -37,19 +54,17 @@ const SidebarMenu = ({
   const [collapsedForEffect, setCollapsedForEffect] =
     useState(isSidebarCollapsed);
 
-  const [activeItem, setActiveItem] = useState("");
-
   useEffect(() => {
-    if (user.roles.includes("Admin")) {
-      setActiveItem("Dashboard");
+    if (user.roles.includes(UserRoles.Admin)) {
+      setActiveItem(MenuItems.Dashboard);
     } else {
-      setActiveItem("Prices");
+      setActiveItem(MenuItems.Prices);
     }
-  }, [user.roles]);
+  }, [user.roles, setActiveItem]);
 
   const handleNavItemClick = (itemTitle: string) => {
     setActiveItem(itemTitle);
-    console.log(activeItem);
+    if (isSmallerScreen && !isSidebarCollapsed) toggleSidebar();
   };
 
   useEffect(() => {
@@ -68,53 +83,53 @@ const SidebarMenu = ({
     navigate("/login");
   };
 
-  const commonMenuItems = (
+  const commonMenuOptions = (
     <>
       <NavItem
         icon={FiSettings}
-        title="Settings"
-        active={activeItem === "Settings"}
-        onClick={() => handleNavItemClick("Settings")}
+        title={MenuItems.Settings}
+        active={activeItem === MenuItems.Settings}
+        onClick={() => handleNavItemClick(MenuItems.Settings)}
       />
     </>
   );
 
-  const adminMenuItems = (
+  const adminMenuOptions = (
     <>
       <NavItem
         icon={FiHome}
-        title="Dashboard"
-        active={activeItem === "Dashboard"}
-        onClick={() => handleNavItemClick("Dashboard")}
+        title={MenuItems.Dashboard}
+        active={activeItem === MenuItems.Dashboard}
+        onClick={() => handleNavItemClick(MenuItems.Dashboard)}
       />
       <NavItem
         icon={IoAnalyticsOutline}
-        title="Price Analytic"
-        active={activeItem === "Price Analytic"}
-        onClick={() => handleNavItemClick("Price Analytic")}
+        title={MenuItems.PriceAnalytic}
+        active={activeItem === MenuItems.PriceAnalytic}
+        onClick={() => handleNavItemClick(MenuItems.PriceAnalytic)}
       />
       <NavItem
         icon={AiOutlineCheckCircle}
-        title="Confirmations"
-        active={activeItem === "Confirmations"}
-        onClick={() => handleNavItemClick("Confirmations")}
+        title={MenuItems.Confirmations}
+        active={activeItem === MenuItems.Confirmations}
+        onClick={() => handleNavItemClick(MenuItems.Confirmations)}
       />
       <NavItem
         icon={FaStore}
-        title="Manage Markets"
-        active={activeItem === "Manage Markets"}
-        onClick={() => handleNavItemClick("Manage Markets")}
+        title={MenuItems.ManageMarkets}
+        active={activeItem === MenuItems.ManageMarkets}
+        onClick={() => handleNavItemClick(MenuItems.ManageMarkets)}
       />
       <NavItem
         icon={BsPeopleFill}
-        title="Manage Employees"
-        active={activeItem === "Manage Employees"}
-        onClick={() => handleNavItemClick("Manage Employees")}
+        title={MenuItems.ManageEmployees}
+        active={activeItem === MenuItems.ManageEmployees}
+        onClick={() => handleNavItemClick(MenuItems.ManageEmployees)}
       />
     </>
   );
 
-  const vendorMenuItems = (
+  const vendorMenuOptions = (
     <>
       <NavItem
         icon={AiFillDollarCircle}
@@ -131,7 +146,7 @@ const SidebarMenu = ({
     </>
   );
 
-  const menuItems = (
+  const MenuOptions = (
     <>
       {!user.is_confirmed && (
         <NavItem
@@ -143,23 +158,23 @@ const SidebarMenu = ({
       )}
       {user.is_approved && user.is_confirmed && (
         <>
-          {user.roles.includes("Admin") && user.roles.includes("Vendor") && (
+          {user.roles.includes(UserRoles.Admin) && user.roles.includes(UserRoles.Vendor) && (
             <>
-              {adminMenuItems}
-              {vendorMenuItems}
-              {commonMenuItems}
+              {adminMenuOptions}
+              {vendorMenuOptions}
+              {commonMenuOptions}
             </>
           )}
-          {user.roles.includes("Admin") && !user.roles.includes("Vendor") && (
+          {user.roles.includes(UserRoles.Admin) && !user.roles.includes(UserRoles.Vendor) && (
             <>
-              {adminMenuItems}
-              {commonMenuItems}
+              {adminMenuOptions}
+              {commonMenuOptions}
             </>
           )}
-          {user.roles.includes("Vendor") && !user.roles.includes("Admin") && (
+          {user.roles.includes(UserRoles.Vendor) && !user.roles.includes(UserRoles.Admin) && (
             <>
-              {vendorMenuItems}
-              {commonMenuItems}
+              {vendorMenuOptions}
+              {commonMenuOptions}
             </>
           )}
         </>
@@ -169,7 +184,7 @@ const SidebarMenu = ({
 
   const sidebarMenu = (
     <Flex p="5%" flexDir="column" w="100%" alignItems="flex-start" as="nav">
-      {menuItems}
+      {MenuOptions}
     </Flex>
   );
 

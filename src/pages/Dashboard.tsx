@@ -1,9 +1,12 @@
-import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
+import { useState } from "react";
 import Sidebar from "../components/Common/Sidebar";
 import EmployeeTable from "../components/User/EmployeeTable";
+import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
+import { MenuItems } from "../components/Common/SidebarMenu";
 
 const Dashboard = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
+  const [activeItem, setActiveItem] = useState("");
 
   return (
     <Flex
@@ -11,7 +14,7 @@ const Dashboard = () => {
       flexDirection={isSmallerScreen ? "column" : "row"}
       p={3}
     >
-      <Sidebar />
+      <Sidebar activeItem={activeItem} setActiveItem={setActiveItem} />
       <Box
         h={isSmallerScreen ? undefined : "95vh"}
         minH={isSmallerScreen ? "95vh" : undefined}
@@ -21,7 +24,7 @@ const Dashboard = () => {
         flexDirection={"column"}
         overflowY={isSmallerScreen ? "hidden" : "auto"}
       >
-        <EmployeeTable />
+        {activeItem === MenuItems.ManageEmployees && <EmployeeTable />}
       </Box>
     </Flex>
   );
