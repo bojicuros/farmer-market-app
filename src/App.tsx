@@ -15,7 +15,12 @@ import Unauthorized from "./pages/Unauthorized";
 import { AuthContextProvider } from "./context/AuthContext";
 import RequireAuth from "./util/RequireAuth";
 
-type AllowedRole = "Admin" | "Vendor";
+export enum UserRoles {
+  Admin = "Admin",
+  Vendor = "Vendor",
+}
+
+export type AllowedRole = UserRoles.Admin | UserRoles.Vendor;
 
 const App = () => {
   return (
@@ -36,7 +41,11 @@ const App = () => {
 
             <DefaultRoute
               element={
-                <RequireAuth allowedRoles={["Admin", "Vendor"] as AllowedRole[]} />
+                <RequireAuth
+                  allowedRoles={
+                    [UserRoles.Admin, UserRoles.Vendor] as AllowedRole[]
+                  }
+                />
               }
             >
               <DefaultRoute path="/dashboard" element={<Dashboard />} />
