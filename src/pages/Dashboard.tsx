@@ -2,7 +2,7 @@ import { useState } from "react";
 import Sidebar from "../components/Common/Sidebar";
 import EmployeeTable from "../components/User/EmployeeTable";
 import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
-import { MenuItems } from "../components/Common/SidebarMenu";
+import { MenuItems } from "../util/enums";
 
 const Dashboard = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });

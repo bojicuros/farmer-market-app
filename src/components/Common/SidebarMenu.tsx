@@ -18,7 +18,7 @@ import { IoAnalyticsOutline } from "react-icons/io5";
 import { FaShoppingBasket, FaStore } from "react-icons/fa";
 import { FiHome, FiSettings, FiMenu } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiFillDollarCircle } from "react-icons/ai";
-import { UserRoles } from "../../App";
+import { MenuItems, UserRoles } from "../../util/enums";
 
 type SidebarMenuProps = {
   activeItem: string;
@@ -26,18 +26,6 @@ type SidebarMenuProps = {
   isSidebarCollapsed: boolean;
   setIsSidebarCollapsed: (arg0: boolean) => void;
 };
-
-export enum MenuItems {
-  Dashboard = "Dashboard",
-  PriceAnalytic = "Price Analytic",
-  Confirmations = "Confirmations",
-  ManageMarkets = "Manage Markets",
-  ManageEmployees = "Manage Employees",
-  Prices = "Prices",
-  Products = "Products",
-  EmailConfirmation = "Email confirmation",
-  Settings = "Settings",
-}
 
 const SidebarMenu = ({
   activeItem,
