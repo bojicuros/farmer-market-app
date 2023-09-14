@@ -14,7 +14,7 @@ type NavItemProps = {
   icon: React.ElementType<IconBaseProps>;
   title: string;
   active: boolean;
-  onClick: () => void; // Ensure onClick prop is defined
+  onClick: () => void; 
 };
 
 export default function NavItem({
@@ -37,7 +37,7 @@ export default function NavItem({
       <Menu placement="right">
         <Link
           backgroundColor={active ? "green.500" : undefined}
-          opacity="70%"
+          opacity="80%"
           p={3}
           borderRadius={10}
           _hover={{ textDecoration: "none", backgroundColor: "green.500" }}

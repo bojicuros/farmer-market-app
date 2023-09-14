@@ -2,7 +2,7 @@ import { VStack, Flex } from "@chakra-ui/react";
 import Header from "../components/Common/Header";
 import Navbar from "../components/Common/Navbar";
 import Footer from "../components/Common/Footer";
-import { ProductTable } from "../components/User/ProductTable";
+import { ProductTable } from "../components/Visitor/ProductTable";
 import { Markets } from "../components/Market/Markets";
 import { useState } from "react";
 
