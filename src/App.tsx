@@ -14,13 +14,7 @@ import Dashboard from "./pages/Dashboard";
 import Unauthorized from "./pages/Unauthorized";
 import { AuthContextProvider } from "./context/AuthContext";
 import RequireAuth from "./util/RequireAuth";
-
-export enum UserRoles {
-  Admin = "Admin",
-  Vendor = "Vendor",
-}
-
-export type AllowedRole = UserRoles.Admin | UserRoles.Vendor;
+import { AllowedRole, UserRoles } from "./util/enums";
 
 const App = () => {
   return (

@@ -10,7 +10,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { FaUserCircle } from "react-icons/fa";
-import { UserRoles } from "../../App";
+import { UserRoles } from "../../util/enums";
 
 type EmployeeInfo = {
   email: string;
