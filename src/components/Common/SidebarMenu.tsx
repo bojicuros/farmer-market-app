@@ -100,16 +100,16 @@ const SidebarMenu = ({
         onClick={() => handleNavItemClick("Confirmations")}
       />
       <NavItem
-        icon={BsPeopleFill}
-        title="Manage Vendors"
-        active={activeItem === "Manage Vendors"}
-        onClick={() => handleNavItemClick("Manage Vendors")}
-      />
-      <NavItem
         icon={FaStore}
         title="Manage Markets"
         active={activeItem === "Manage Markets"}
         onClick={() => handleNavItemClick("Manage Markets")}
+      />
+      <NavItem
+        icon={BsPeopleFill}
+        title="Manage Employees"
+        active={activeItem === "Manage Employees"}
+        onClick={() => handleNavItemClick("Manage Employees")}
       />
     </>
   );
@@ -199,7 +199,7 @@ const SidebarMenu = ({
             </Text>
           </Flex>
         )}
-        <Box position={"absolute"} left={isSmallerScreen ? "60%" : "225px"}>
+        <Box position={"absolute"} left={isSmallerScreen ? "60%" : "220px"}>
           <BiLogOut
             color={colorMode === "light" ? "white" : "black"}
             onClick={handleLogout}

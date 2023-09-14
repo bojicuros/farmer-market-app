@@ -8,15 +8,13 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
-import TablesTableRow from "./TablesTableRow";
+import EmployeeTableRow from "./EmployeeTableRow";
 
 type EmployeeInfo = {
   email: string;
   name: string;
-  logo: string;
-  subdomain: string;
-  domain: string;
-  status: string;
+  role: string;
+  active: boolean;
   date: string;
 };
 
@@ -55,13 +53,12 @@ const Employees = ({ title, captions, data }: EmployeesProps) => {
           <Tbody>
             {data.map((row: EmployeeInfo) => {
               return (
-                <TablesTableRow
+                <EmployeeTableRow
                   key={`${row.email}-${row.name}`}
                   name={row.name}
-                  logo={row.logo}
                   email={row.email}
-                  domain={row.domain}
-                  status={row.status}
+                  role={row.role}
+                  active={row.active}
                   date={row.date}
                 />
               );
