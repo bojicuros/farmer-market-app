@@ -8,7 +8,6 @@ import {
   useMediaQuery,
   Box,
 } from "@chakra-ui/react";
-import useAuth from "../../hooks/useAuth";
 import NavItem from "../Nav/NavItem";
 import { BiLogOut } from "react-icons/bi";
 import { useEffect, useState } from "react";
@@ -19,12 +18,15 @@ import { FaShoppingBasket, FaStore } from "react-icons/fa";
 import { FiHome, FiSettings, FiMenu } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiFillDollarCircle } from "react-icons/ai";
 import { MenuItems, UserRoles } from "../../util/enums";
+import { Auth, AuthUser } from "../../context/AuthContext";
 
 type SidebarMenuProps = {
   activeItem: string;
   setActiveItem: (arg0: string) => void;
   isSidebarCollapsed: boolean;
   setIsSidebarCollapsed: (arg0: boolean) => void;
+  user: AuthUser;
+  setAuth: (auth: Auth | null) => void;
 };
 
 const SidebarMenu = ({
@@ -32,10 +34,10 @@ const SidebarMenu = ({
   isSidebarCollapsed,
   setIsSidebarCollapsed,
   setActiveItem,
+  user,
+  setAuth,
 }: SidebarMenuProps) => {
   const navigate = useNavigate();
-  const { auth, setAuth } = useAuth();
-  const user = auth.user;
 
   const { colorMode } = useColorMode();
   const [isSmallerScreen] = useMediaQuery("(max-width: 768px)");

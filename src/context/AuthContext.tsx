@@ -1,13 +1,15 @@
 import { createContext, useState } from "react";
+import { AllowedRole } from "../util/enums";
 
-type AuthUser = {
+export type AuthUser = {
   email: string;
   name: string;
   exp: number;
   iat: number;
   is_approved: boolean;
   is_confirmed: boolean;
-  roles: string[];
+  is_active: boolean
+  roles: AllowedRole[];
   userId: string;
 };
 
@@ -17,8 +19,8 @@ export type Auth = {
 };
 
 export type AuthContextType = {
-  auth: any;
-  setAuth: any;
+  auth: Auth | null;
+  setAuth: (auth: Auth | null) => void;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
