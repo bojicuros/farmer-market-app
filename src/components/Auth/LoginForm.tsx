@@ -13,6 +13,7 @@ import jwt_decode from "jwt-decode";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import axios, { API_URL } from "../../config/general";
+import { AuthUser } from "../../context/AuthContext";
 
 const LoginForm = () => {
   const { colorMode } = useColorMode();
@@ -40,9 +41,10 @@ const LoginForm = () => {
     try {
       const response = await axios.post(`${API_URL}/auth/login`, formData);
       const token = response.data.accessToken;
-      const decodedToken = jwt_decode(token);
+      const decodedToken = jwt_decode(token) as AuthUser;
       setAuth({ accessToken: token, user: decodedToken });
-      navigate("/dashboard");
+      if (!decodedToken.is_active) navigate("/unauthorized");
+      else navigate("/dashboard");
     } catch (error) {
       setAreCredentialsIncorrect(true);
     }

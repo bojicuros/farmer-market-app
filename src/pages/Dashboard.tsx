@@ -3,10 +3,14 @@ import Sidebar from "../components/Common/Sidebar";
 import EmployeeTable from "../components/User/EmployeeTable";
 import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
 import { MenuItems } from "../util/enums";
+import useAuth from "../hooks/useAuth";
+import { AuthUser } from "../context/AuthContext";
 
 const Dashboard = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const [activeItem, setActiveItem] = useState("");
+  const { auth, setAuth } = useAuth();
+  const user = auth?.user as AuthUser;
 
   return (
     <Flex
@@ -14,7 +18,7 @@ const Dashboard = () => {
       flexDirection={isSmallerScreen ? "column" : "row"}
       p={3}
     >
-      <Sidebar activeItem={activeItem} setActiveItem={setActiveItem} />
+      <Sidebar activeItem={activeItem} setActiveItem={setActiveItem} user={user} setAuth={setAuth}/>
       <Box
         h={isSmallerScreen ? undefined : "95vh"}
         minH={isSmallerScreen ? "95vh" : undefined}
