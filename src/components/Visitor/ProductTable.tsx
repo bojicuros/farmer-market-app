@@ -9,9 +9,13 @@ import {
   useColorMode,
   useBreakpointValue,
   Box,
+  Text,
+  Button,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios, { API_URL } from "../../config/general";
+import { format, parseISO } from "date-fns";
 
 type Product = {
   id: string;
@@ -29,6 +33,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const [sortConfig, setSortConfig] = useState({ key: "name", direction: "" });
   const [products, setProducts] = useState<Product[]>([]);
+  const [date, setDate] = useState("");
 
   useEffect(() => {
     async function fetchProductsAndPrices() {
@@ -45,8 +50,13 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
           measureUnit: priceData.product.unit_of_measurement,
           id: priceData.product.id,
         }));
-
         setProducts(fetchedProducts);
+
+        if (response.data) {
+          const date = response.data[0].price_date;
+          const iso = parseISO(date);
+          setDate(format(iso, "eeee dd. MMM yy"));
+        }
       } catch (error) {
         console.error("Error fetching prices:", error);
       }
@@ -54,6 +64,35 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
 
     fetchProductsAndPrices();
   }, [activeMarket]);
+
+  function NumberButtons() {
+    const buttons: JSX.Element[] = [];
+
+    for (let i = 1; i <= 5; i++) {
+      buttons.push(
+        <Button
+          key={i}
+          bgGradient={"linear(to-tr, green.400, yellow.300)"}
+          color={colorMode === "light" ? "white" : "gray.700"}
+          size={"sm"}
+          fontSize={"md"}
+          borderRadius={"50%"}
+          _hover={{
+            transform: "scale(1.1)",
+            transition: "transform 0.2s ease", 
+          }}
+        >
+          {i}
+        </Button>
+      );
+    }
+
+    return (
+      <ButtonGroup spacing={2} size="md" pt={8} mb={-6}>
+        {buttons}
+      </ButtonGroup>
+    );
+  }
 
   const sortedProducts = [...products].sort((a, b) => {
     const aValue = a[sortConfig.key as keyof Product];
@@ -85,8 +124,8 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
     setSortConfig({ key, direction });
   };
 
-  if(activeMarket === null){
-    return <></>
+  if (activeMarket === null) {
+    return <></>;
   }
 
   if (products.length === 0) {
@@ -94,49 +133,59 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
   }
 
   return (
-    <TableContainer mt={10} w={isSmallerScreen ? undefined : "60%"}>
-      <Table>
-        <Thead>
-          <Tr cursor={"pointer"}>
-            <Th
-              textAlign={"center"}
-              _hover={{
-                color: colorMode === "light" ? "green.600" : "green.200",
-              }}
-              onClick={() => requestSort("name")}
-            >
-              Name
-            </Th>
-            <Th
-              textAlign={"center"}
-              _hover={{
-                color: colorMode === "light" ? "green.600" : "green.200",
-              }}
-              onClick={() => requestSort("price")}
-            >
-              Price
-            </Th>
-            <Th
-              textAlign={"center"}
-              _hover={{
-                color: colorMode === "light" ? "green.600" : "green.200",
-              }}
-              onClick={() => requestSort("measureUnit")}
-            >
-              Measure unit
-            </Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {sortedProducts.map((product) => (
-            <Tr key={product.id}>
-              <Td textAlign={"center"}>{product.name}</Td>
-              <Td textAlign={"center"}>{product.price.toFixed(2)} KM</Td>
-              <Td textAlign={"center"}>{product.measureUnit}</Td>
+    <>
+      <Text
+        mt={isSmallerScreen ? 2 : 8}
+        fontWeight="bold"
+        w={isSmallerScreen ? "80%" : "60%"}
+      >
+        Prices on: {date}
+      </Text>
+      <TableContainer mt={10} w={isSmallerScreen ? undefined : "60%"}>
+        <Table>
+          <Thead>
+            <Tr cursor={"pointer"}>
+              <Th
+                textAlign={"center"}
+                _hover={{
+                  color: colorMode === "light" ? "green.600" : "green.200",
+                }}
+                onClick={() => requestSort("name")}
+              >
+                Name
+              </Th>
+              <Th
+                textAlign={"center"}
+                _hover={{
+                  color: colorMode === "light" ? "green.600" : "green.200",
+                }}
+                onClick={() => requestSort("price")}
+              >
+                Price
+              </Th>
+              <Th
+                textAlign={"center"}
+                _hover={{
+                  color: colorMode === "light" ? "green.600" : "green.200",
+                }}
+                onClick={() => requestSort("measureUnit")}
+              >
+                Measure unit
+              </Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+          </Thead>
+          <Tbody>
+            {sortedProducts.map((product) => (
+              <Tr key={product.id}>
+                <Td textAlign={"center"}>{product.name}</Td>
+                <Td textAlign={"center"}>{product.price.toFixed(2)} KM</Td>
+                <Td textAlign={"center"}>{product.measureUnit}</Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+      <NumberButtons />
+    </>
   );
 };
