@@ -5,6 +5,7 @@ import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
 import { MenuItems } from "../util/enums";
 import useAuth from "../hooks/useAuth";
 import { AuthUser } from "../context/AuthContext";
+import EmailConfirmation from "../components/Auth/EmailConfirmation";
 
 const Dashboard = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
@@ -18,7 +19,12 @@ const Dashboard = () => {
       flexDirection={isSmallerScreen ? "column" : "row"}
       p={3}
     >
-      <Sidebar activeItem={activeItem} setActiveItem={setActiveItem} user={user} setAuth={setAuth}/>
+      <Sidebar
+        activeItem={activeItem}
+        setActiveItem={setActiveItem}
+        user={user}
+        setAuth={setAuth}
+      />
       <Box
         h={isSmallerScreen ? undefined : "95vh"}
         minH={isSmallerScreen ? "95vh" : undefined}
@@ -28,7 +34,16 @@ const Dashboard = () => {
         flexDirection={"column"}
         overflowY={isSmallerScreen ? "hidden" : "auto"}
       >
-        {activeItem === MenuItems.ManageEmployees && <EmployeeTable />}
+        {(() => {
+          switch (activeItem) {
+            case MenuItems.ManageEmployees:
+              return <EmployeeTable />;
+            case MenuItems.EmailConfirmation:
+              return <EmailConfirmation user={user} />;
+            default:
+              return null;
+          }
+        })()}
       </Box>
     </Flex>
   );
