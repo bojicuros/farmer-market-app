@@ -28,8 +28,9 @@ const StatisticCardSmall = ({
   return (
     <Box
       minH="83px"
-      bg={colorMode === "light" ? "gray.100" : "gray.700"}
-      borderRadius={"5%"}
+      borderColor={colorMode === "light" ? "gray.500" : "gray.400"} 
+      borderWidth={1} 
+      borderRadius={20}
       mr={1}
     >
       <Flex

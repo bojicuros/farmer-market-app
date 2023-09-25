@@ -7,6 +7,7 @@ import useAuth from "../hooks/useAuth";
 import { AuthUser } from "../context/AuthContext";
 import EmailConfirmation from "../components/Auth/EmailConfirmation";
 import DashboardView from "../components/User/DashboardView";
+import MarketTable from "../components/User/MarketTable";
 
 const Dashboard = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
@@ -43,6 +44,8 @@ const Dashboard = () => {
               return <EmailConfirmation user={user} />;
             case MenuItems.Dashboard:
               return <DashboardView />;
+            case MenuItems.ManageMarkets:
+              return <MarketTable />;
             default:
               return null;
           }

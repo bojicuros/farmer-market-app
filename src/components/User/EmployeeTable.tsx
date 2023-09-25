@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import EmployeeTableRow from "./EmployeeTableRow";
 
-type EmployeeInfo = {
+export type EmployeeInfo = {
   email: string;
   name: string;
   role: string;
