@@ -48,9 +48,10 @@ const SidebarMenu = ({
     if (user.roles.includes(UserRoles.Admin)) {
       setActiveItem(MenuItems.Dashboard);
     } else {
-      setActiveItem(MenuItems.Prices);
+      if (!user.is_confirmed) setActiveItem(MenuItems.EmailConfirmation);
+      else setActiveItem(MenuItems.Prices);
     }
-  }, [user.roles, setActiveItem]);
+  }, [user.roles, user.is_confirmed, setActiveItem]);
 
   const handleNavItemClick = (itemTitle: string) => {
     setActiveItem(itemTitle);
@@ -148,25 +149,28 @@ const SidebarMenu = ({
       )}
       {user.is_approved && user.is_confirmed && (
         <>
-          {user.roles.includes(UserRoles.Admin) && user.roles.includes(UserRoles.Vendor) && (
-            <>
-              {adminMenuOptions}
-              {vendorMenuOptions}
-              {commonMenuOptions}
-            </>
-          )}
-          {user.roles.includes(UserRoles.Admin) && !user.roles.includes(UserRoles.Vendor) && (
-            <>
-              {adminMenuOptions}
-              {commonMenuOptions}
-            </>
-          )}
-          {user.roles.includes(UserRoles.Vendor) && !user.roles.includes(UserRoles.Admin) && (
-            <>
-              {vendorMenuOptions}
-              {commonMenuOptions}
-            </>
-          )}
+          {user.roles.includes(UserRoles.Admin) &&
+            user.roles.includes(UserRoles.Vendor) && (
+              <>
+                {adminMenuOptions}
+                {vendorMenuOptions}
+                {commonMenuOptions}
+              </>
+            )}
+          {user.roles.includes(UserRoles.Admin) &&
+            !user.roles.includes(UserRoles.Vendor) && (
+              <>
+                {adminMenuOptions}
+                {commonMenuOptions}
+              </>
+            )}
+          {user.roles.includes(UserRoles.Vendor) &&
+            !user.roles.includes(UserRoles.Admin) && (
+              <>
+                {vendorMenuOptions}
+                {commonMenuOptions}
+              </>
+            )}
         </>
       )}
     </>
