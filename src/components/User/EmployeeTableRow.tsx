@@ -20,8 +20,13 @@ type EmployeeInfo = {
   date: string;
 };
 
-const EmployeeTableRow = (props: EmployeeInfo) => {
-  const { name, email, role, active, date } = props;
+const EmployeeTableRow = ({
+  name,
+  email,
+  role,
+  active,
+  date,
+}: EmployeeInfo) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "#1a202c");

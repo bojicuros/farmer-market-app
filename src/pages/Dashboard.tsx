@@ -6,6 +6,7 @@ import { MenuItems } from "../util/enums";
 import useAuth from "../hooks/useAuth";
 import { AuthUser } from "../context/AuthContext";
 import EmailConfirmation from "../components/Auth/EmailConfirmation";
+import DashboardView from "../components/User/DashboardView";
 
 const Dashboard = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
@@ -40,6 +41,8 @@ const Dashboard = () => {
               return <EmployeeTable />;
             case MenuItems.EmailConfirmation:
               return <EmailConfirmation user={user} />;
+            case MenuItems.Dashboard:
+              return <DashboardView />;
             default:
               return null;
           }

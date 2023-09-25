@@ -83,7 +83,7 @@ const EmployeeTable = () => {
   ];
 
   return (
-    <Flex direction="column" pt={{ base: "30px", md: "0px" }}>
+    <Flex direction="column" pt={{ base: "40px", md: "20px" }}>
       <Box overflowX={{ sm: "scroll", xl: "hidden" }}>
         <Box p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">
