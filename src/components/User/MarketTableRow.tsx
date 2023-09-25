@@ -9,48 +9,14 @@ import {
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FaUserCircle } from "react-icons/fa";
-import { UserRoles } from "../../util/enums";
-import { EmployeeInfo } from "./EmployeeTable";
+import { BiStore } from "react-icons/bi";
+import { MarketInfo } from "./MarketTable";
 
-const EmployeeTableRow = ({
-  name,
-  email,
-  role,
-  active,
-  date,
-}: EmployeeInfo) => {
+const MarketTableRow = ({ name, address, is_open, date }: MarketInfo) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "#1a202c");
   const colorStatus = useColorModeValue("white", "gray.400");
-
-  function RoleComponent() {
-    const rolesArray = role.split(", ");
-
-    return (
-      <Flex direction="column" pl={2}>
-        {rolesArray.length === 2 ? (
-          <>
-            <Text fontSize="md" fontWeight="bold">
-              Admin
-            </Text>
-            <Text fontSize="sm" fontWeight="normal">
-              Vendor
-            </Text>
-          </>
-        ) : rolesArray[0] === UserRoles.Admin ? (
-          <Text fontSize="md" fontWeight="bold">
-            Admin
-          </Text>
-        ) : rolesArray[0] === UserRoles.Vendor ? (
-          <Text fontSize="md" fontWeight="bold">
-            Vendor
-          </Text>
-        ) : null}
-      </Flex>
-    );
-  }
 
   return (
     <Tr>
@@ -60,7 +26,7 @@ const EmployeeTableRow = ({
             w={50}
             h={50}
             color={colorMode === "light" ? "green.500" : "green.400"}
-            as={FaUserCircle}
+            as={BiStore}
           />
           <Flex direction="column" ml={5}>
             <Text
@@ -72,24 +38,21 @@ const EmployeeTableRow = ({
               {name}
             </Text>
             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-              {email}
+              {address}
             </Text>
           </Flex>
         </Flex>
       </Td>
 
-      <Td>
-        <RoleComponent />
-      </Td>
       <Td pl={3}>
         <Badge
-          bg={active ? "green.400" : bgStatus}
-          color={active ? "white" : colorStatus}
+          bg={is_open ? "green.400" : bgStatus}
+          color={is_open ? "white" : colorStatus}
           fontSize="16px"
-          p={active ? "3px 10px" : undefined}
+          p={is_open ? "3px 16px" : undefined}
           borderRadius="8px"
         >
-          {active ? "Active" : "Inactive"}
+          {is_open ? "Open" : "Closed"}
         </Badge>
       </Td>
       <Td>
@@ -113,4 +76,4 @@ const EmployeeTableRow = ({
   );
 };
 
-export default EmployeeTableRow;
+export default MarketTableRow;
