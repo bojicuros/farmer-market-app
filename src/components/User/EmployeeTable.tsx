@@ -10,6 +10,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import EmployeeTableRow from "./EmployeeTableRow";
+import UnconfirmedEmployeeRow from "./UnconfirmedEmployeeRow";
 
 export type EmployeeInfo = {
   email: string;
@@ -19,9 +20,21 @@ export type EmployeeInfo = {
   date: string;
 };
 
-const EmployeeTable = () => {
+export type UnconfirmedEmployeeInfo = {
+  email: string;
+  name: string;
+  date: string;
+};
+
+type EmployeeTableProps = {
+  areConfirmed: boolean;
+};
+
+const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
   const textColor = useColorModeValue("gray.700", "white");
-  const captions = ["Employee", "Function", "Status", "Employed", ""];
+  const captionsConfirmed = ["Employee", "Function", "Status", "Employed", ""];
+  const captionsUnconfirmed = ["Vendor info", "Singed in", "", ""];
+  const captions = areConfirmed ? captionsConfirmed : captionsUnconfirmed;
 
   const employeesData = [
     {
@@ -87,7 +100,7 @@ const EmployeeTable = () => {
       <Box overflowX={{ sm: "scroll", xl: "hidden" }}>
         <Box p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">
-            {"Employees Table"}
+            {areConfirmed ? "Employees Table" : "Unconfirmed requests"}
           </Text>
         </Box>
         <Box>
@@ -109,16 +122,27 @@ const EmployeeTable = () => {
             </Thead>
             <Tbody>
               {employeesData.map((row: EmployeeInfo) => {
-                return (
-                  <EmployeeTableRow
-                    key={`${row.email}-${row.name}`}
-                    name={row.name}
-                    email={row.email}
-                    role={row.role}
-                    active={row.active}
-                    date={row.date}
-                  />
-                );
+                if (areConfirmed) {
+                  return (
+                    <EmployeeTableRow
+                      key={`${row.email}-${row.name}`}
+                      name={row.name}
+                      email={row.email}
+                      role={row.role}
+                      active={row.active}
+                      date={row.date}
+                    />
+                  );
+                } else {
+                  return (
+                    <UnconfirmedEmployeeRow
+                      key={`${row.email}-${row.name}`}
+                      name={row.name}
+                      email={row.email}
+                      date={row.date}
+                    />
+                  );
+                }
               })}
             </Tbody>
           </Table>

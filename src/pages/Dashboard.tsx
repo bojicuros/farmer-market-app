@@ -39,7 +39,9 @@ const Dashboard = () => {
         {(() => {
           switch (activeItem) {
             case MenuItems.ManageEmployees:
-              return <EmployeeTable />;
+              return <EmployeeTable areConfirmed={true} />;
+            case MenuItems.Confirmations:
+              return <EmployeeTable areConfirmed={false} />;
             case MenuItems.EmailConfirmation:
               return <EmailConfirmation user={user} />;
             case MenuItems.Dashboard:
