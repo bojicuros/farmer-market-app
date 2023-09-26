@@ -22,8 +22,6 @@ const EmployeeTableRow = ({
 }: EmployeeInfo) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
-  const bgStatus = useColorModeValue("gray.400", "#1a202c");
-  const colorStatus = useColorModeValue("white", "gray.400");
 
   function RoleComponent() {
     const rolesArray = role.split(", ");
@@ -83,8 +81,8 @@ const EmployeeTableRow = ({
       </Td>
       <Td pl={3}>
         <Badge
-          bg={active ? "green.400" : bgStatus}
-          color={active ? "white" : colorStatus}
+          bg={active ? "green.400" : "transparent"}
+          color={active ? "white" : "gray.400"}
           fontSize="16px"
           p={active ? "3px 10px" : undefined}
           borderRadius="8px"

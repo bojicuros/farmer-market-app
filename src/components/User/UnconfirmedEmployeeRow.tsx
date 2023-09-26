@@ -1,5 +1,4 @@
 import {
-  Badge,
   Button,
   Flex,
   Icon,
@@ -9,10 +8,14 @@ import {
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { BiStore } from "react-icons/bi";
-import { MarketInfo } from "./MarketTable";
+import { FaUserCircle } from "react-icons/fa";
+import { UnconfirmedEmployeeInfo } from "./EmployeeTable";
 
-const MarketTableRow = ({ name, address, is_open, date }: MarketInfo) => {
+const UnconfirmedEmployeeRow = ({
+  name,
+  email,
+  date,
+}: UnconfirmedEmployeeInfo) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
 
@@ -24,7 +27,7 @@ const MarketTableRow = ({ name, address, is_open, date }: MarketInfo) => {
             w={50}
             h={50}
             color={colorMode === "light" ? "green.500" : "green.400"}
-            as={BiStore}
+            as={FaUserCircle}
           />
           <Flex direction="column" ml={5}>
             <Text
@@ -36,37 +39,38 @@ const MarketTableRow = ({ name, address, is_open, date }: MarketInfo) => {
               {name}
             </Text>
             <Text fontSize="sm" color="gray.400" fontWeight="normal">
-              {address}
+              {email}
             </Text>
           </Flex>
         </Flex>
       </Td>
 
-      <Td pl={3}>
-        <Badge
-          bg={is_open ? "green.400" : "transparent"}
-          color={is_open ? "white" : "gray.400"}
-          fontSize="16px"
-          p={is_open ? "3px 16px" : undefined}
-          borderRadius="8px"
-        >
-          {is_open ? "Open" : "Closed"}
-        </Badge>
-      </Td>
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
           {date}
         </Text>
       </Td>
       <Td>
-        <Button p="0px" bg="transparent" variant="no-hover" cursor={"pointer"}>
+        <Button ml={10} p="0px" bg="transparent" variant="no-hover" cursor={"pointer"}>
           <Text
             fontSize="md"
             color="green.400"
             fontWeight="bold"
             cursor="pointer"
           >
-            Edit
+            Confirm
+          </Text>
+        </Button>
+      </Td>
+      <Td>
+        <Button p="0px" bg="transparent" variant="no-hover" cursor={"pointer"}>
+          <Text
+            fontSize="md"
+            color="red.400"
+            fontWeight="bold"
+            cursor="pointer"
+          >
+            Reject
           </Text>
         </Button>
       </Td>
@@ -74,4 +78,4 @@ const MarketTableRow = ({ name, address, is_open, date }: MarketInfo) => {
   );
 };
 
-export default MarketTableRow;
+export default UnconfirmedEmployeeRow;
