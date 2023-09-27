@@ -10,6 +10,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import ProductTableRow from "./ProductTableRow";
+import ProductPriceRow from "./ProducePriceRow";
 
 export type ProductInfo = {
   name: string;
@@ -18,9 +19,21 @@ export type ProductInfo = {
   date: string;
 };
 
-const EmployeeTable = () => {
+export type ProductPriceInfo = {
+  name: string;
+  current_price: number;
+  date: string;
+};
+
+type ProductInfoTableProps = {
+  editingPrices: boolean;
+};
+
+const ProductInfoTable = ({ editingPrices }: ProductInfoTableProps) => {
   const textColor = useColorModeValue("gray.700", "white");
-  const captions = ["Product", "Description", "Unit", "Added at", ""];
+  const captionsProducts = ["Product", "Description", "Unit", "Added at", ""];
+  const captionsPrices = ["Product", "Current price", "Last updated", "", ""];
+  const captions = editingPrices ? captionsPrices : captionsProducts;
 
   const productData: ProductInfo[] = [
     {
@@ -79,12 +92,60 @@ const EmployeeTable = () => {
     },
   ];
 
+  const productPriceData: ProductPriceInfo[] = [
+    {
+      name: "Apples",
+      current_price: 2.34,
+      date: "14/06/21",
+    },
+    {
+      name: "Bananas",
+      current_price: 3.64,
+      date: "15/06/21",
+    },
+    {
+      name: "Oranges",
+      current_price: 3.69,
+      date: "16/06/21",
+    },
+    {
+      name: "Grapes",
+      current_price: 5.26,
+      date: "17/06/21",
+    },
+    {
+      name: "Strawberries",
+      current_price: 3.64,
+      date: "18/06/21",
+    },
+    {
+      name: "Pineapples",
+      current_price: 3.64,
+      date: "19/06/21",
+    },
+    {
+      name: "Mangos",
+      current_price: 3.64,
+      date: "20/06/21",
+    },
+    {
+      name: "Watermelons",
+      current_price: 3.64,
+      date: "21/06/21",
+    },
+    {
+      name: "Blueberries",
+      current_price: 3.64,
+      date: "22/06/21",
+    },
+  ];
+
   return (
     <Flex direction="column" pt={{ base: "40px", md: "20px" }}>
       <Box overflowX={{ sm: "scroll", xl: "hidden" }}>
         <Box p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">
-            {"Product Table"}
+            {editingPrices ? "Add prices" : "Product Table"}
           </Text>
         </Box>
         <Box>
@@ -105,17 +166,29 @@ const EmployeeTable = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {productData.map((row: ProductInfo) => {
-                return (
-                  <ProductTableRow
-                    key={`${row.name}-${row.date}`}
-                    name={row.name}
-                    description={row.description}
-                    unit_of_measurement={row.unit_of_measurement}
-                    date={row.date}
-                  />
-                );
-              })}
+              {!editingPrices &&
+                productData.map((row: ProductInfo) => {
+                  return (
+                    <ProductTableRow
+                      key={`${row.name}-${row.date}`}
+                      name={row.name}
+                      description={row.description}
+                      unit_of_measurement={row.unit_of_measurement}
+                      date={row.date}
+                    />
+                  );
+                })}
+              {editingPrices &&
+                productPriceData.map((row: ProductPriceInfo) => {
+                  return (
+                    <ProductPriceRow
+                      key={`${row.name}-${row.date}`}
+                      name={row.name}
+                      current_price={row.current_price}
+                      date={row.date}
+                    />
+                  );
+                })}
             </Tbody>
           </Table>
         </Box>
@@ -124,4 +197,4 @@ const EmployeeTable = () => {
   );
 };
 
-export default EmployeeTable;
+export default ProductInfoTable;
