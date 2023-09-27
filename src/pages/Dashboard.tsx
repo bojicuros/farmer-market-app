@@ -10,6 +10,7 @@ import DashboardView from "../components/User/DashboardView";
 import MarketTable from "../components/User/MarketTable";
 import UserProfile from "../components/User/UserProfile";
 import PriceAnalytic from "../components/User/PriceAnalytic";
+import ProductInfoTable from "../components/User/ProductInfoTable";
 
 const Dashboard = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
@@ -54,6 +55,8 @@ const Dashboard = () => {
               return <UserProfile />;
             case MenuItems.PriceAnalytic:
               return <PriceAnalytic />;
+            case MenuItems.Products:
+              return <ProductInfoTable />;
             default:
               return null;
           }
