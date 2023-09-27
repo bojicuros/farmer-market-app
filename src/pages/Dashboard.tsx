@@ -9,6 +9,7 @@ import EmailConfirmation from "../components/Auth/EmailConfirmation";
 import DashboardView from "../components/User/DashboardView";
 import MarketTable from "../components/User/MarketTable";
 import UserProfile from "../components/User/UserProfile";
+import PriceAnalytic from "../components/User/PriceAnalytic";
 
 const Dashboard = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
@@ -51,6 +52,8 @@ const Dashboard = () => {
               return <MarketTable />;
             case MenuItems.Settings:
               return <UserProfile />;
+            case MenuItems.PriceAnalytic:
+              return <PriceAnalytic />;
             default:
               return null;
           }
