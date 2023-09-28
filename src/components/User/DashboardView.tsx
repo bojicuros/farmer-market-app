@@ -1,6 +1,10 @@
 import { Box, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import DashboardInfoCard from "./DashboardInfoCard";
+import { BsCoin } from "react-icons/bs";
+import { BiStore } from "react-icons/bi";
 import { FaUsers } from "react-icons/fa";
+import { BsFillBagCheckFill } from "react-icons/bs";
+import PriceAddingPercentageCard from "./PriceAddingPercentageCard";
 
 const DashboardView = () => {
   return (
@@ -10,31 +14,39 @@ const DashboardView = () => {
           {"Dashboard"}
         </Text>
       </Box>
-      <SimpleGrid columns={{ sm: 1, md: 2, xl: 4 }} spacing="24px">
+      <SimpleGrid
+        columns={{ sm: 1, md: 2, xl: 4 }}
+        spacing="24px"
+        alignContent={"center"}
+        justifyContent={"center"}
+      >
+        <DashboardInfoCard title="Markets" amount={3} icon={BiStore} />
         <DashboardInfoCard
-          title="proba"
-          amount={3}
-          percentage={55}
-          icon={FaUsers}
+          title="Product"
+          amount={23}
+          icon={BsFillBagCheckFill}
         />
         <DashboardInfoCard
-          title="proba"
-          amount={3}
-          percentage={55}
-          icon={FaUsers}
+          title="Prices added today"
+          amount={25}
+          icon={BsCoin}
         />
-        <DashboardInfoCard
-          title="proba"
-          amount={3}
-          percentage={55}
-          icon={FaUsers}
-        />
-        <DashboardInfoCard
-          title="proba"
-          amount={3}
-          percentage={55}
-          icon={FaUsers}
-        />
+        <DashboardInfoCard title="Employees" amount={10} icon={FaUsers} />
+      </SimpleGrid>
+      <Text fontSize="large" mt={16} mb={10}>
+        Todays percentage of added prices:
+      </Text>{" "}
+      <SimpleGrid
+        columns={{ sm: 1, md: 2, xl: 3 }}
+        spacing={5}
+        borderWidth="1px"
+        borderRadius={"xl"}
+        alignContent={"center"}
+        justifyContent={"center"}
+      >
+        <PriceAddingPercentageCard />
+        <PriceAddingPercentageCard />
+        <PriceAddingPercentageCard />
       </SimpleGrid>
     </Flex>
   );

@@ -3,39 +3,25 @@ import {
   Flex,
   Icon,
   Stat,
-  StatHelpText,
   StatLabel,
   StatNumber,
   useColorMode,
 } from "@chakra-ui/react";
 import { IconType } from "react-icons";
 
-type StatisticCardSmallProps = {
+type DashboardInfoCardProps = {
   title: string;
   amount: number;
-  percentage: number;
   icon: IconType;
 };
 
-const StatisticCardSmall = ({
-  title,
-  amount,
-  percentage,
-  icon,
-}: StatisticCardSmallProps) => {
+const DashboardInfoCard = ({ title, amount, icon }: DashboardInfoCardProps) => {
   const { colorMode } = useColorMode();
 
   return (
-    <Box
-      minH="83px"
-      borderWidth="1px"
-      borderRadius={"xl"}
-      mr={1}
-    >
+    <Box minH="83px" borderWidth="1px" borderRadius={"xl"} mr={1}>
       <Flex
         flexDirection="row"
-        alignContent="center"
-        justifyContent="center"
         w="100%"
         p={5}
       >
@@ -55,18 +41,6 @@ const StatisticCardSmall = ({
             >
               {amount}
             </StatNumber>
-            <StatHelpText
-              alignSelf="flex-end"
-              justifySelf="flex-end"
-              m="0px"
-              color={percentage > 0 ? "green.400" : "red.400"}
-              fontWeight="bold"
-              ps="3px"
-              fontSize="md"
-              pl={3}
-            >
-              {percentage > 0 ? `+${percentage}%` : `${percentage}%`}
-            </StatHelpText>
           </Flex>
         </Stat>
         <Icon
@@ -80,4 +54,4 @@ const StatisticCardSmall = ({
   );
 };
 
-export default StatisticCardSmall;
+export default DashboardInfoCard;
