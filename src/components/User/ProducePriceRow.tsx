@@ -12,7 +12,7 @@ import {
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FaShoppingBasket } from "react-icons/fa";
+import { BsCashCoin } from "react-icons/bs";
 
 type ProductPriceInfo = {
   name: string;
@@ -32,7 +32,7 @@ const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
             w={50}
             h={50}
             color={colorMode === "light" ? "green.500" : "green.400"}
-            as={FaShoppingBasket}
+            as={BsCashCoin}
           />
           <Flex direction="column" ml={5}>
             <Text
@@ -63,8 +63,8 @@ const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
             fontSize="md"
             fontWeight="bold"
             textAlign={"center"}
-            pb=".5rem"
-            maxW={20}
+            minW={'60px'}
+            maxW={'90px'}
           />
           <InputRightAddon
             cursor={"pointer"}
