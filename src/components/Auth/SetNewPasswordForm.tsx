@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios, { API_URL } from "../../config/general";
+import { useTranslation } from "react-i18next";
 
 type SetNewPasswordFormProps = {
   userEmail: string;
@@ -24,6 +25,7 @@ const SetNewPasswordForm = ({
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
     password: "",
@@ -71,7 +73,7 @@ const SetNewPasswordForm = ({
       <form onSubmit={handleSubmit}>
         <Flex direction="column" p={5}>
           <Input
-            placeholder="New password"
+            placeholder={t("newPassword")}
             size="md"
             mb="4"
             name="password"
@@ -81,7 +83,7 @@ const SetNewPasswordForm = ({
             required
           />
           <Input
-            placeholder="Confirm new password"
+            placeholder={t("confirmNewPassword")}
             size="md"
             mb="4"
             type="password"
@@ -96,24 +98,24 @@ const SetNewPasswordForm = ({
             _hover={{ opacity: 0.8 }}
             type="submit"
           >
-            Continue
+            {t("continue")}
           </Button>
           {passwordsDoNotMatch && (
             <Text mt="2" color="red">
-              Passwords do not match.
+              {t("wrongConfPassword")}
             </Text>
           )}
           {isChangingPasswordFailed && (
             <Flex mt="4" justify="center" align="center">
               <Text mt="2" color="red">
-                Password reset failed.
+                {t("resetFailed")}
               </Text>
               <Link
                 color={colorMode === "light" ? "green.500" : "green.300"}
                 fontSize="sm"
                 href="/forgot-password"
               >
-                Try again here.
+                {t("tryAgain")}
               </Link>
             </Flex>
           )}

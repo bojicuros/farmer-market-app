@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import ProductTableRow from "./ProductTableRow";
 import ProductPriceRow from "./ProducePriceRow";
+import { useTranslation } from "react-i18next";
 
 export type ProductInfo = {
   name: string;
@@ -31,8 +32,9 @@ type ProductInfoTableProps = {
 
 const ProductInfoTable = ({ editingPrices }: ProductInfoTableProps) => {
   const textColor = useColorModeValue("gray.700", "white");
-  const captionsProducts = ["Product", "Description", "Unit", "Added at", ""];
-  const captionsPrices = ["Product", "Current price", "Last updated", "", ""];
+  const { t } = useTranslation();
+  const captionsProducts = [t("product"), t("description"), t("unit"), t("addedAt"), ""];
+  const captionsPrices = [t("product"), t("currentPrice"), t("lastUpdated"), "", ""];
   const captions = editingPrices ? captionsPrices : captionsProducts;
 
   const productData: ProductInfo[] = [

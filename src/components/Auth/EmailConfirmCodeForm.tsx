@@ -7,9 +7,10 @@ import {
   useBreakpointValue,
   useColorMode,
   Text,
-  Link
+  Link,
 } from "@chakra-ui/react";
 import axios, { API_URL } from "../../config/general";
+import { useTranslation } from "react-i18next";
 
 type EmailConfirmCodeFormProps = {
   setIsCodeConfirmed: (arg0: boolean) => void;
@@ -22,6 +23,7 @@ const EmailConfirmCodeForm = ({
 }: EmailConfirmCodeFormProps) => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
     code: "",
@@ -62,7 +64,7 @@ const EmailConfirmCodeForm = ({
       <form onSubmit={handleSubmit}>
         <Flex direction="column" p={5}>
           <Input
-            placeholder="Code"
+            placeholder={t("code")}
             size="md"
             mb="4"
             name="code"
@@ -78,13 +80,13 @@ const EmailConfirmCodeForm = ({
             type="submit"
             disabled={attemptsLeft === 0}
           >
-            Confirm
+            {t("confirm")}
           </Button>
           {isIncorrectCode && (
             <Text mt="2" color="red">
               Incorrect code.{" "}
               {attemptsLeft > 0
-                ? `${attemptsLeft} attempts left.`
+                ? `${attemptsLeft} ${t("errorInCode")}.`
                 : "Profile is deleted."}
             </Text>
           )}
@@ -95,7 +97,7 @@ const EmailConfirmCodeForm = ({
                 fontSize="sm"
                 href="/register"
               >
-                Try again and enter mail you can confirm.
+                {t("again")}.
               </Link>
             </Flex>
           )}

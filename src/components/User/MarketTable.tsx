@@ -10,6 +10,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import MarketTableRow from "./MarketTableRow";
+import { useTranslation } from "react-i18next";
 
 export type MarketInfo = {
   name: string;
@@ -20,7 +21,8 @@ export type MarketInfo = {
 
 const MarketTable = () => {
   const textColor = useColorModeValue("gray.700", "white");
-  const captions = ["Market", "Status", "Opened at", ""];
+  const { t } = useTranslation();
+  const captions = [t("market"), t("status"), t("openedAt"), ""];
 
   const employeesData = [
     {

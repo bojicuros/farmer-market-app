@@ -11,6 +11,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
+import { useTranslation } from "react-i18next";
 
 interface PopupNotificationProps {
   isOpen: boolean;
@@ -35,6 +36,7 @@ const PopupNotification: React.FC<PopupNotificationProps> = ({
   const hoverColor = colorMode === "light" ? "blue.400" : "blue.600";
   const icon = isSuccess ? <CheckCircleIcon /> : <WarningIcon />;
   const title = isSuccess ? "Success" : "Error";
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isOpen) {
@@ -76,7 +78,7 @@ const PopupNotification: React.FC<PopupNotificationProps> = ({
             _hover={{ background: hoverColor }}
             ml={3}
           >
-            Close
+            {t("close")}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

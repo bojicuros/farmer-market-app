@@ -2,6 +2,7 @@ import { Box, Flex, SimpleGrid, Text, useBreakpointValue } from "@chakra-ui/reac
 import { useCallback, useEffect, useState } from "react";
 import { MarketCard } from "./MarketCard";
 import axios, { API_URL } from "../../config/general";
+import { useTranslation } from "react-i18next";
 
 export interface Market {
   id: string;
@@ -15,6 +16,7 @@ interface MarketsProps {
 
 export const Markets = ({ setActiveMarket }: MarketsProps) => {
   const [markets, setMarkets] = useState<Market[]>([]);
+  const { t } = useTranslation();
 
   const fetchMarkets = useCallback(async () => {
     try {
@@ -54,7 +56,7 @@ export const Markets = ({ setActiveMarket }: MarketsProps) => {
   const paddingText = useBreakpointValue({ base: 0, md: 12, lg: 0 });
 
   if(markets.length === 0){
-    return <Box mt={10}>Sorry. We currently do not have open markets</Box>
+    return <Box mt={10}>{t("allMarketsClosed")}</Box>
   }
 
   return (
@@ -70,7 +72,7 @@ export const Markets = ({ setActiveMarket }: MarketsProps) => {
         pl={paddingText}
         mt={paddingValue === 0 ? 10 : 0}
       >
-        Check out our markets:
+        {t("checkMarkets")}
       </Text>
       <SimpleGrid
         spacing={10}

@@ -11,10 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { BiStore } from "react-icons/bi";
 import { MarketInfo } from "./MarketTable";
+import { useTranslation } from "react-i18next";
 
 const MarketTableRow = ({ name, address, is_open, date }: MarketInfo) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
+  const { t } = useTranslation();
 
   return (
     <Tr>
@@ -66,7 +68,7 @@ const MarketTableRow = ({ name, address, is_open, date }: MarketInfo) => {
             fontWeight="bold"
             cursor="pointer"
           >
-            Edit
+            {t("edit")}
           </Text>
         </Button>
       </Td>

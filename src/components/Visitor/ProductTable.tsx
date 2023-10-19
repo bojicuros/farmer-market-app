@@ -16,6 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import axios, { API_URL } from "../../config/general";
 import { format, parseISO } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 type Product = {
   id: string;
@@ -31,9 +32,13 @@ interface ProductTableProps {
 export const ProductTable = ({ activeMarket }: ProductTableProps) => {
   const { colorMode } = useColorMode();
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
-  const [sortConfig, setSortConfig] = useState({ key: "name", direction: "" });
+  const [sortConfig, setSortConfig] = useState({
+    key: "name",
+    direction: "",
+  });
   const [products, setProducts] = useState<Product[]>([]);
   const [date, setDate] = useState("");
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function fetchProductsAndPrices() {
@@ -79,7 +84,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
           borderRadius={"50%"}
           _hover={{
             transform: "scale(1.1)",
-            transition: "transform 0.2s ease", 
+            transition: "transform 0.2s ease",
           }}
         >
           {i}
@@ -129,7 +134,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
   }
 
   if (products.length === 0) {
-    return <Box mt={10}>Currently there are no products in this market.</Box>;
+    return <Box mt={10}>{t("emptyMarket")}</Box>;
   }
 
   return (
@@ -139,7 +144,8 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
         fontWeight="bold"
         w={isSmallerScreen ? "80%" : "60%"}
       >
-        Prices on: {date}
+        {t("pricesOn")}
+        {date}
       </Text>
       <TableContainer mt={10} w={isSmallerScreen ? undefined : "60%"}>
         <Table>
@@ -152,7 +158,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
                 }}
                 onClick={() => requestSort("name")}
               >
-                Name
+                {t("name")}
               </Th>
               <Th
                 textAlign={"center"}
@@ -161,7 +167,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
                 }}
                 onClick={() => requestSort("price")}
               >
-                Price
+                {t("price")}
               </Th>
               <Th
                 textAlign={"center"}
@@ -170,7 +176,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
                 }}
                 onClick={() => requestSort("measureUnit")}
               >
-                Measure unit
+                {t("measureUnit")}
               </Th>
             </Tr>
           </Thead>

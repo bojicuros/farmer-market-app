@@ -5,6 +5,7 @@ import ResetCodeForm from "../components/Auth/ResetCodeForm";
 import SetNewPasswordForm from "../components/Auth/SetNewPasswordForm";
 import { useState } from "react";
 import EmailOfForgottenAccountForm from "../components/Auth/EmailOfForgottenAccountForm";
+import { useTranslation } from "react-i18next";
 
 const ForgotPassword = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
@@ -13,6 +14,7 @@ const ForgotPassword = () => {
   const [isCodeConfirmed, setIsCodeConfirmed] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [userCode, setUserCode] = useState("");
+  const { t } = useTranslation();
 
   return (
     <Flex minHeight="100vh" flexDirection="column">
@@ -27,7 +29,7 @@ const ForgotPassword = () => {
         >
           <Box mt={isSmallerScreen ? "16" : "0"}>
             <Text fontSize="3xl" fontWeight="semibold">
-              Forgot Password?
+              {t("forgotPassword")}
             </Text>
             <Text
               fontSize="4xl"
@@ -35,21 +37,26 @@ const ForgotPassword = () => {
               bgGradient="linear(to-r, green.500, yellow.300, green.300)"
               bgClip="text"
             >
-              Enter the code to reset password
+              {t("enterCode")}
             </Text>
-            <Text>
-              Please enter the code you've received to reset your password.
-            </Text>
+            <Text>{t("enterCodePlease")}</Text>
           </Box>
           {!isEmailConfirmed && (
             <EmailOfForgottenAccountForm
-              setIsEmailConfirmed={setIsEmailConfirmed} setUserEmail={setUserEmail}
+              setIsEmailConfirmed={setIsEmailConfirmed}
+              setUserEmail={setUserEmail}
             />
           )}
           {isEmailConfirmed && !isCodeConfirmed && (
-            <ResetCodeForm userEmail={userEmail} setIsCodeConfirmed={setIsCodeConfirmed} setUserCode={setUserCode}/>
+            <ResetCodeForm
+              userEmail={userEmail}
+              setIsCodeConfirmed={setIsCodeConfirmed}
+              setUserCode={setUserCode}
+            />
           )}
-          {isEmailConfirmed && isCodeConfirmed && <SetNewPasswordForm userCode={userCode} userEmail={userEmail} />}
+          {isEmailConfirmed && isCodeConfirmed && (
+            <SetNewPasswordForm userCode={userCode} userEmail={userEmail} />
+          )}
         </Flex>
       </VStack>
       <Footer />

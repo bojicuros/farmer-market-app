@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import axios, { API_URL } from "../../config/general";
 import PopupNotification from "../Common/PopupNotification";
+import { useTranslation } from "react-i18next";
 
 interface FormData {
   first_name: string;
@@ -40,6 +41,7 @@ const RegistrationForm = ({
 }: RegistrationFormProps) => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
 
   const [formData, setFormData] = useState(initialFormData);
   const [doPasswordsMatch, setDoPasswordsMatch] = useState(true);
@@ -113,7 +115,7 @@ const RegistrationForm = ({
       <form onSubmit={handleSubmit}>
         <Flex direction="column" p={5}>
           <Input
-            placeholder="First Name"
+            placeholder={t("firstName")}
             size="md"
             mb="4"
             name="first_name"
@@ -122,7 +124,7 @@ const RegistrationForm = ({
             required
           />
           <Input
-            placeholder="Last Name"
+            placeholder={t("lastName")}
             size="md"
             mb="4"
             name="last_name"
@@ -141,7 +143,7 @@ const RegistrationForm = ({
             required
           />
           <Input
-            placeholder="Password"
+            placeholder={t("password")}
             size="md"
             mb="4"
             type="password"
@@ -151,7 +153,7 @@ const RegistrationForm = ({
             required
           />
           <Input
-            placeholder="Confirm Password"
+            placeholder={t("confirmPassword")}
             size="md"
             mb="4"
             type="password"
@@ -161,7 +163,7 @@ const RegistrationForm = ({
             required
           />
           <Input
-            placeholder="Phone Number (Optional)"
+            placeholder={t("phoneNumber")}
             size="md"
             mb="4"
             name="phone_number"
@@ -175,16 +177,16 @@ const RegistrationForm = ({
             _hover={{ opacity: 0.8 }}
             type="submit"
           >
-            Register
+            {t("register")}
           </Button>
           {!doPasswordsMatch && (
             <Text mt="2" color="red">
-              Passwords do not match
+              {t("wrongConfPassword")}
             </Text>
           )}
           {!emailAvailable && (
             <Text mt="2" color="red">
-              Email already taken
+              {t("takenEmail")}
             </Text>
           )}
           <Flex mt="4" justify="center" align="center">
@@ -193,7 +195,7 @@ const RegistrationForm = ({
               fontSize="sm"
               href="/login"
             >
-              Already registered? Go to login.
+              {t("userHasProfile")}
             </Link>
           </Flex>
         </Flex>

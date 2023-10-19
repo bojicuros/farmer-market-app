@@ -1,13 +1,22 @@
-import { VStack, Flex, Text, Box, useBreakpointValue, Link } from "@chakra-ui/react";
+import {
+  VStack,
+  Flex,
+  Text,
+  Box,
+  useBreakpointValue,
+  Link,
+} from "@chakra-ui/react";
 import Navbar from "../components/Common/Navbar";
 import Footer from "../components/Common/Footer";
 import RegistrationForm from "../components/Auth/RegistrationForm";
 import { useState } from "react";
 import EmailConfirmCodeForm from "../components/Auth/EmailConfirmCodeForm";
+import { useTranslation } from "react-i18next";
 
 const Register = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const flexDirection = isSmallerScreen ? "column" : "row";
+  const { t } = useTranslation();
 
   const [isRegistrationCompleted, setIsRegistrationCompleted] = useState(false);
   const [createdUserId, setCreatedUserId] = useState(null);
@@ -26,7 +35,7 @@ const Register = () => {
         >
           <Box mt={isSmallerScreen ? "16" : "0"} position="relative">
             <Text fontSize="3xl" fontWeight="semibold">
-              Welcome!
+              {t("welcomeAlt")}
             </Text>
             <Text
               fontSize="4xl"
@@ -34,11 +43,9 @@ const Register = () => {
               bgGradient="linear(to-r, green.500, yellow.300, green.300)"
               bgClip="text"
             >
-              Create an Account
+              {t("createAccount")}
             </Text>
-            <Text>
-              To manage your products and prices, please create an account.
-            </Text>
+            <Text>{t("registerAdditionalText")}</Text>
           </Box>
           {!isRegistrationCompleted && (
             <RegistrationForm
@@ -54,14 +61,10 @@ const Register = () => {
           )}
           {isRegistrationCompleted && isCodeConfirmed && (
             <Flex mt={20} justify="center" align="center">
-            <Link
-              color="green.400"
-              fontSize="sm"
-              href="/login"
-            >
-              Successfully registered. Click here to go to login.
-            </Link>
-          </Flex>
+              <Link color="green.400" fontSize="sm" href="/login">
+                {t("successfulRegister")}
+              </Link>
+            </Flex>
           )}
         </Flex>
       </VStack>

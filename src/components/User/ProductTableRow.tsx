@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { FaShoppingBasket } from "react-icons/fa";
 import { ProductInfo } from "./ProductInfoTable";
+import { useTranslation } from "react-i18next";
 
 const ProductTableRow = ({
   name,
@@ -19,6 +20,7 @@ const ProductTableRow = ({
 }: ProductInfo) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
+  const { t } = useTranslation();
 
   return (
     <Tr>
@@ -67,7 +69,7 @@ const ProductTableRow = ({
             fontWeight="bold"
             cursor="pointer"
           >
-            Edit
+            {t("edit")}
           </Text>
         </Button>
       </Td>

@@ -12,6 +12,7 @@ import {
 import { FaUserCircle } from "react-icons/fa";
 import { UserRoles } from "../../util/enums";
 import { EmployeeInfo } from "./EmployeeTable";
+import { useTranslation } from "react-i18next";
 
 const EmployeeTableRow = ({
   name,
@@ -22,6 +23,7 @@ const EmployeeTableRow = ({
 }: EmployeeInfo) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
+  const { t } = useTranslation();
 
   function RoleComponent() {
     const rolesArray = role.split(", ");
@@ -31,19 +33,19 @@ const EmployeeTableRow = ({
         {rolesArray.length === 2 ? (
           <>
             <Text fontSize="md" fontWeight="bold">
-              Admin
+              {t("admin")}
             </Text>
             <Text fontSize="sm" fontWeight="normal">
-              Vendor
+              {t("vendor")}
             </Text>
           </>
         ) : rolesArray[0] === UserRoles.Admin ? (
           <Text fontSize="md" fontWeight="bold">
-            Admin
+            {t("admin")}
           </Text>
         ) : rolesArray[0] === UserRoles.Vendor ? (
           <Text fontSize="md" fontWeight="bold">
-            Vendor
+            {t("vendor")}
           </Text>
         ) : null}
       </Flex>
@@ -103,7 +105,7 @@ const EmployeeTableRow = ({
             fontWeight="bold"
             cursor="pointer"
           >
-            Edit
+            {t("edit")}
           </Text>
         </Button>
       </Td>

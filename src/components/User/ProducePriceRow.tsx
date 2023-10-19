@@ -12,6 +12,7 @@ import {
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { BsCashCoin } from "react-icons/bs";
 
 type ProductPriceInfo = {
@@ -23,6 +24,7 @@ type ProductPriceInfo = {
 const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
+  const { t } = useTranslation();
 
   return (
     <Tr>
@@ -63,8 +65,8 @@ const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
             fontSize="md"
             fontWeight="bold"
             textAlign={"center"}
-            minW={'60px'}
-            maxW={'90px'}
+            minW={"60px"}
+            maxW={"90px"}
           />
           <InputRightAddon
             cursor={"pointer"}
@@ -90,7 +92,7 @@ const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
             fontWeight="bold"
             cursor="pointer"
           >
-            Edit
+            {t("edit")}
           </Text>
         </Button>
       </Td>
@@ -102,7 +104,7 @@ const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
             fontWeight="bold"
             cursor="pointer"
           >
-            Keep
+            {t("keep")}
           </Text>
         </Button>
       </Td>

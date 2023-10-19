@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { FaUserCircle } from "react-icons/fa";
 import { UnconfirmedEmployeeInfo } from "./EmployeeTable";
+import { useTranslation } from "react-i18next";
 
 const UnconfirmedEmployeeRow = ({
   name,
@@ -18,6 +19,7 @@ const UnconfirmedEmployeeRow = ({
 }: UnconfirmedEmployeeInfo) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
+  const { t } = useTranslation();
 
   return (
     <Tr>
@@ -58,7 +60,7 @@ const UnconfirmedEmployeeRow = ({
             fontWeight="bold"
             cursor="pointer"
           >
-            Confirm
+            {t("confirm")}
           </Text>
         </Button>
       </Td>
@@ -70,7 +72,7 @@ const UnconfirmedEmployeeRow = ({
             fontWeight="bold"
             cursor="pointer"
           >
-            Reject
+            {t("reject")}
           </Text>
         </Button>
       </Td>

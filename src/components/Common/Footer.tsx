@@ -1,7 +1,9 @@
 import { Box, Flex, Text, useColorMode } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 const Footer = () => {
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
 
   return (
     <Box
@@ -16,17 +18,16 @@ const Footer = () => {
     >
       <Flex direction="column" alignItems="center" textAlign="center">
         <Text fontSize="lg" fontWeight="bold">
-          Contact Us
+          {t("contact")}
         </Text>
         <Text fontSize="sm" mt="4">
-          For inquiries and support, please email us at{" "}
+          {t("contactInfo")}
           <a href="mailto:pijacnibarometar@gmail.com">
             pijacnibarometar@gmail.com
           </a>
         </Text>
         <Text fontSize="sm" mt="4">
-          Market Price Check &copy; {new Date().getFullYear()} All rights
-          reserved.
+          {t("appName")} &copy; {new Date().getFullYear()} {t("rights")}.
         </Text>
       </Flex>
     </Box>

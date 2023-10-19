@@ -14,12 +14,14 @@ import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import axios, { API_URL } from "../../config/general";
 import { AuthUser } from "../../context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 const LoginForm = () => {
   const { colorMode } = useColorMode();
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { setAuth } = useAuth();
   const [areCredentialsIncorrect, setAreCredentialsIncorrect] = useState(false);
 
@@ -69,7 +71,7 @@ const LoginForm = () => {
             required
           />
           <Input
-            placeholder="Password"
+            placeholder={t("password")}
             size="md"
             mb="4"
             type="password"
@@ -84,27 +86,23 @@ const LoginForm = () => {
             _hover={{ opacity: 0.8 }}
             type="submit"
           >
-            Login
+            {t("login")}
           </Button>
-          {areCredentialsIncorrect && (
-            <Text mt="2" color="red">
-              Incorrect credentials. Try again
-            </Text>
-          )}
+          {areCredentialsIncorrect && <Text mt="2" color="red"></Text>}
           <Flex direction="column" mt="4" align="center">
             <Link
               color={colorMode === "light" ? "green.500" : "green.300"}
               fontSize="sm"
               href="/forgot-password"
             >
-              Forgot Password?
+              {t("forgotPassword")}
             </Link>
             <Link
               color={colorMode === "light" ? "green.500" : "green.300"}
               fontSize="sm"
               href="/register"
             >
-              Not registered? Register here.
+              {t("notRegistered")}
             </Link>
           </Flex>
         </Flex>
