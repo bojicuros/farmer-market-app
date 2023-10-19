@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import axios, { API_URL } from "../../config/general";
+import { useTranslation } from "react-i18next";
 
 const CODE_LENGTH = 6;
 
@@ -21,10 +22,11 @@ type ResetCodeFormProps = {
 const ResetCodeForm = ({
   setIsCodeConfirmed,
   userEmail,
-  setUserCode
+  setUserCode,
 }: ResetCodeFormProps) => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
 
   const [isIncorrectCode, setIsIncorrectCode] = useState(false);
   const [isLengthInvalid, setIsLengthInvalid] = useState(false);
@@ -66,7 +68,7 @@ const ResetCodeForm = ({
       <form onSubmit={handleSubmit}>
         <Flex direction="column" p={5}>
           <Input
-            placeholder="Code"
+            placeholder={t("code")}
             size="md"
             mb="4"
             name="code"
@@ -82,16 +84,18 @@ const ResetCodeForm = ({
             type="submit"
             disabled={!isLengthInvalid}
           >
-            Confirm
+            {t("confirm")}
           </Button>
           {isIncorrectCode && (
             <Text mt="2" color="red">
-              Incorrect code. Please try again.
+              {t("wrongCode")}
             </Text>
           )}
           {isLengthInvalid && (
             <Text mt="2" color="red">
-              Code must have {CODE_LENGTH} digits.
+              {t("codeLength")}
+              {CODE_LENGTH}
+              {t("digits")}
             </Text>
           )}
         </Flex>

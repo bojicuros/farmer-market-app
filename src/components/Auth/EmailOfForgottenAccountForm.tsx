@@ -9,6 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import axios, { API_URL } from "../../config/general";
+import { useTranslation } from "react-i18next";
 
 type EmailOfForgottenAccountFormProps = {
   setIsEmailConfirmed: (arg0: boolean) => void;
@@ -21,6 +22,7 @@ const EmailOfForgottenAccountForm = ({
 }: EmailOfForgottenAccountFormProps) => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
 
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [formData, setFormData] = useState({
@@ -78,11 +80,11 @@ const EmailOfForgottenAccountForm = ({
             _hover={{ opacity: 0.8 }}
             type="submit"
           >
-            Confirm
+            {t("confirm")}
           </Button>
           {!isValidEmail && (
             <Text mt="2" color="red">
-              Invalid email. Please try again.
+              {t("wrongEmail")}
             </Text>
           )}
         </Flex>

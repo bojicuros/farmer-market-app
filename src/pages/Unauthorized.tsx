@@ -1,11 +1,13 @@
 import { VStack, Flex, useBreakpointValue, Box, Text } from "@chakra-ui/react";
 import Navbar from "../components/Common/Navbar";
 import Footer from "../components/Common/Footer";
+import { useTranslation } from "react-i18next";
 
 const Unauthorized = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const fontSizeHeading = isSmallerScreen ? "2xl" : "4xl";
   const fontSizeSubheading = isSmallerScreen ? "xl" : "3xl";
+  const { t } = useTranslation();
 
   return (
     <Flex minHeight="100vh" flexDirection="column">
@@ -13,7 +15,7 @@ const Unauthorized = () => {
         <Navbar />
         <Box textAlign="center" mt="20vh">
           <Text fontSize={fontSizeSubheading} fontWeight="semibold">
-            Unauthorized Access
+            {t("unauthorizedAccess")}
           </Text>
           <Text
             fontSize={fontSizeHeading}
@@ -22,11 +24,9 @@ const Unauthorized = () => {
             bgClip="text"
             textAlign="center"
           >
-            You do not have permission to access this page.
+            {t("withoutPermission")}
           </Text>
-          <Text mt={4}>
-            If you believe this is an error, please contact the administrator.
-          </Text>
+          <Text mt={4}>{t("possibleError")}</Text>
         </Box>
       </VStack>
       <Footer />

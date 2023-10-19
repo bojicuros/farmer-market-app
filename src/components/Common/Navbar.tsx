@@ -11,6 +11,8 @@ import {
 import { SearchIcon } from "@chakra-ui/icons";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { Link, useNavigate } from "react-router-dom";
+import { LanguageSelector } from "../Localization/LanguageSelector";
+import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -18,6 +20,7 @@ const Navbar = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSearchToggle = () => {
     if (isSmallerScreen) {
@@ -55,7 +58,7 @@ const Navbar = () => {
           bgClip="text"
           cursor="pointer"
         >
-          Market Price Check
+          {t("appName")}
         </Heading>
       </Link>
 
@@ -67,7 +70,7 @@ const Navbar = () => {
       >
         <Input
           type="text"
-          placeholder="Search markets"
+          placeholder={t("search")}
           onKeyDown={handleKeyDown}
           value={searchQuery}
           onChange={handleInputChange}
@@ -91,6 +94,7 @@ const Navbar = () => {
       )}
 
       <ColorModeSwitcher />
+      <LanguageSelector />
     </Flex>
   );
 };

@@ -10,11 +10,13 @@ import {
 } from "@chakra-ui/react";
 import LineChart from "./LineChart";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const PriceAnalytic = () => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
+  const { t } = useTranslation();
 
   const [selectedMarket, setSelectedMarket] = useState("");
   const [selectedProduct, setSelectedProduct] = useState("");
@@ -133,7 +135,7 @@ const PriceAnalytic = () => {
           pb={20}
         >
           <Select
-            placeholder="Select Market"
+            placeholder={t("selectMarket")}
             value={selectedMarket}
             onChange={handleMarketChange}
           >
@@ -141,7 +143,7 @@ const PriceAnalytic = () => {
             <option value="market2">Market 2</option>
           </Select>
           <Select
-            placeholder="Select Product"
+            placeholder={t("selectProduct")}
             value={selectedProduct}
             onChange={handleProductChange}
           >
@@ -158,7 +160,7 @@ const PriceAnalytic = () => {
             }}
             color={colorMode === "light" ? "white" : "gray.900"}
           >
-            Confirm
+            {t("confirm")}
           </Button>
         </Flex>
         <LineChart data={lineChartData} options={lineChartOptions} />

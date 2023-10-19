@@ -1,11 +1,13 @@
 import { VStack, Flex, useBreakpointValue, Box, Text } from "@chakra-ui/react";
 import Navbar from "../components/Common/Navbar";
 import Footer from "../components/Common/Footer";
+import { useTranslation } from "react-i18next";
 
 const NotFound = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const fontSizeHeading = isSmallerScreen ? "2xl" : "4xl";
   const fontSizeSubheading = isSmallerScreen ? "xl" : "3xl";
+  const { t } = useTranslation();
 
   return (
     <Flex minHeight="100vh" flexDirection="column">
@@ -13,7 +15,7 @@ const NotFound = () => {
         <Navbar />
         <Box textAlign="center" mt="20vh">
           <Text fontSize={fontSizeSubheading} fontWeight="semibold">
-            Oops! Page Not Found
+            {t("pageNotFound")}
           </Text>
           <Text
             fontSize={fontSizeHeading}
@@ -22,11 +24,9 @@ const NotFound = () => {
             bgClip="text"
             textAlign="center"
           >
-            The page you are looking for does not exist.
+            {t("notExist")}
           </Text>
-          <Text mt={4}>
-            Please double-check the link or navigate back to the homepage.
-          </Text>
+          <Text mt={4}>{t("checkLink")}</Text>
         </Box>
       </VStack>
       <Footer />

@@ -10,12 +10,14 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const UserProfile = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const [isEditing, setIsEditing] = useState(false);
   const [doPasswordsMatch, setDoPasswordsMatch] = useState(true);
   const { colorMode, toggleColorMode } = useColorMode();
+  const { t } = useTranslation();
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
@@ -52,10 +54,10 @@ const UserProfile = () => {
             borderRadius={"xl"}
           >
             <Text fontSize={"md"} fontWeight={"semibold"}>
-              Basic information
+              {t("basicInfo")}
             </Text>
             <FormControl>
-              <FormLabel>First name:</FormLabel>
+              <FormLabel>{t("firstName")}:</FormLabel>
               {isEditing ? (
                 <Input type="text" defaultValue={"Marko"} />
               ) : (
@@ -63,7 +65,7 @@ const UserProfile = () => {
               )}{" "}
             </FormControl>
             <FormControl>
-              <FormLabel>Last name:</FormLabel>
+              <FormLabel>{t("lastName")}:</FormLabel>
               <FormLabel>Email</FormLabel>
               {isEditing ? (
                 <Input type="text" defaultValue={"Markovic"} />
@@ -80,7 +82,7 @@ const UserProfile = () => {
               )}
             </FormControl>
             <FormControl>
-              <FormLabel>Phone Number</FormLabel>
+              <FormLabel>{t("phoneNum")}</FormLabel>
               {isEditing ? (
                 <Input type="number" defaultValue={"066225883"} />
               ) : (
@@ -96,7 +98,7 @@ const UserProfile = () => {
                 color={colorMode === "light" ? "white" : "gray.900"}
                 onClick={handleEditClick}
               >
-                Edit
+                {t("edit")}
               </Button>
             ) : (
               <Button
@@ -107,7 +109,7 @@ const UserProfile = () => {
                 color={colorMode === "light" ? "white" : "gray.900"}
                 onClick={handleSaveClick}
               >
-                Save
+                {t("save")}
               </Button>
             )}
           </Flex>
@@ -121,15 +123,15 @@ const UserProfile = () => {
             alignSelf={isSmallerScreen ? "auto" : "flex-start"}
           >
             <Text fontSize={"md"} fontWeight={"semibold"}>
-              Change password
+              {t("changePassword")}
             </Text>
 
             <FormControl>
-              <FormLabel>New password</FormLabel>
+              <FormLabel>{t("newPassword")}</FormLabel>
               <Input type="password" />
             </FormControl>
             <FormControl>
-              <FormLabel>Confirm new password</FormLabel>
+              <FormLabel>{t("confirmNewPassword")}</FormLabel>
               <Input type="password" />
             </FormControl>
             <Button
@@ -140,17 +142,17 @@ const UserProfile = () => {
               color={colorMode === "light" ? "white" : "gray.900"}
               onClick={handleSaveClick}
             >
-              Confirm
+              {t("confirm")}
             </Button>
             {!doPasswordsMatch && (
               <Text mt="2" color="red">
-                Passwords do not match
+                {t("wrongConfPassword")}
               </Text>
             )}
           </Flex>
           {isSmallerScreen && (
             <Button onClick={toggleColorMode} m={6} mb={10}>
-              Turn on {colorMode === "light" ? "Dark" : "Light"} mode
+              {t("turnOn")}{colorMode === "light" ? "Dark" : "Light"}{t("mode")}
             </Button>
           )}
         </Flex>

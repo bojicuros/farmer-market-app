@@ -4,6 +4,7 @@ import { Box, Button, Flex, Text, useColorMode } from "@chakra-ui/react";
 import axios, { API_URL } from "../../config/general";
 import { AuthUser } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type EmailConfirmationProps = {
   user: AuthUser;
@@ -14,6 +15,7 @@ const EmailConfirmation = ({ user }: EmailConfirmationProps) => {
   const [isCodeConfirmed, setIsCodeConfirmed] = useState(false);
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isCodeConfirmed) {
@@ -43,7 +45,7 @@ const EmailConfirmation = ({ user }: EmailConfirmationProps) => {
           <form onSubmit={handleSubmit}>
             <Flex direction="column" p={5} alignItems="center">
               <Text size="md" mb={2}>
-                You didn't receive code yet?
+                {t("missingCode")}
               </Text>
               <Button
                 bgGradient="linear(to-tr, green.400, yellow.300)"
@@ -51,7 +53,7 @@ const EmailConfirmation = ({ user }: EmailConfirmationProps) => {
                 _hover={{ opacity: 0.8 }}
                 type="submit"
               >
-                Send
+                {t("send")}
               </Button>
             </Flex>
           </form>

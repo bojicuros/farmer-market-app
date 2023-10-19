@@ -5,8 +5,11 @@ import { BiStore } from "react-icons/bi";
 import { FaUsers } from "react-icons/fa";
 import { BsFillBagCheckFill } from "react-icons/bs";
 import PriceAddingPercentageCard from "./PriceAddingPercentageCard";
+import { useTranslation } from "react-i18next";
 
 const DashboardView = () => {
+  const { t } = useTranslation();
+
   return (
     <Flex flexDirection="column" pt={{ base: "40px", md: "20px" }}>
       <Box p="6px 0px 22px 0px">
@@ -34,7 +37,7 @@ const DashboardView = () => {
         <DashboardInfoCard title="Employees" amount={10} icon={FaUsers} />
       </SimpleGrid>
       <Text fontSize="large" mt={16} mb={10}>
-        Todays percentage of added prices:
+        {t("percentageOfPrices")}
       </Text>{" "}
       <SimpleGrid
         columns={{ sm: 1, md: 2, xl: 3 }}

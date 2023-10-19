@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import EmployeeTableRow from "./EmployeeTableRow";
 import UnconfirmedEmployeeRow from "./UnconfirmedEmployeeRow";
+import { useTranslation } from "react-i18next";
 
 export type EmployeeInfo = {
   email: string;
@@ -32,8 +33,15 @@ type EmployeeTableProps = {
 
 const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
   const textColor = useColorModeValue("gray.700", "white");
-  const captionsConfirmed = ["Employee", "Function", "Status", "Employed", ""];
-  const captionsUnconfirmed = ["Vendor info", "Singed in", "", ""];
+  const { t } = useTranslation();
+  const captionsConfirmed = [
+    t("employee"),
+    t("function"),
+    t("status"),
+    t("employedAt"),
+    "",
+  ];
+  const captionsUnconfirmed = [t("vendorInfo"), t("singedIn"), "", ""];
   const captions = areConfirmed ? captionsConfirmed : captionsUnconfirmed;
 
   const employeesData = [

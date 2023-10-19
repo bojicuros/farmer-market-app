@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import axios, { API_URL } from "../../config/general";
+import { useTranslation } from "react-i18next";
 
 type SearchRecord = {
   type: string;
@@ -21,6 +22,7 @@ const Search = () => {
   const { query } = useParams();
   const [searchResults, setSearchResults] = useState<SearchRecord[]>([]);
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (query) {
@@ -68,15 +70,15 @@ const Search = () => {
               mr={6}
             >
               <Heading size="xl" mb={3}>
-                Products
+                {t("products")}
               </Heading>
               <HStack mb={2}>
                 <Text fontSize={"lg"} fontWeight="bold">
-                  Name
+                  {t("name")}
                 </Text>
                 <Spacer />
                 <Text fontSize={"lg"} fontWeight="bold">
-                  Available at
+                  {t("availableAt")}
                 </Text>
               </HStack>
               {products.map((product, index) => (
@@ -92,7 +94,7 @@ const Search = () => {
           {markets.length > 0 && (
             <Box>
               <Heading size="xl" mb={3}>
-                Available Markets
+                {t("availableMarkets")}
               </Heading>
               {markets.map((market, index) => (
                 <Text key={`market-${index}`} mb={1}>
@@ -104,7 +106,9 @@ const Search = () => {
         </Flex>
       ) : (
         <Flex w="100%" justifyContent={"center"}>
-          <Text fontSize={"xl"} mt={10}>No results found.</Text>
+          <Text fontSize={"xl"} mt={10}>
+            {t("noResults")}
+          </Text>
         </Flex>
       )}
     </Flex>
