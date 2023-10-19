@@ -19,7 +19,7 @@ const DashboardInfoCard = ({ title, amount, icon }: DashboardInfoCardProps) => {
   const { colorMode } = useColorMode();
 
   return (
-    <Box minH="83px" borderWidth="1px" borderRadius={"xl"} mr={1}>
+    <Box minH="83px" minW={"240px"} borderWidth="1px" borderRadius={"xl"} mr={1}>
       <Flex
         flexDirection="row"
         w="100%"
