@@ -30,7 +30,7 @@ const Login = () => {
               bgGradient="linear(to-r, green.500, yellow.300, green.300)"
               bgClip="text"
             >
-              {t("singIn")}
+              {t("signIn")}
             </Text>
             <Text>{t("loginAdditionText")}</Text>
           </Box>
