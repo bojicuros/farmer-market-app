@@ -108,7 +108,7 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
       <Box overflowX={{ sm: "scroll", xl: "hidden" }}>
         <Box p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">
-            {areConfirmed ? "Employees Table" : "Unconfirmed requests"}
+            {areConfirmed ? t("employeesTable"): t("unconfirmedRequests")}
           </Text>
         </Box>
         <Box>

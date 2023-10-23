@@ -32,11 +32,11 @@ const UserProfile = () => {
       <Box overflowX={{ sm: "scroll", xl: "hidden" }}>
         <Flex p="6px 0px 42px 0px" justifyContent={"space-between"}>
           <Text fontSize="xl" fontWeight="bold">
-            {"Profile information"}
+            {t("profileInfo")}
           </Text>
           {!isSmallerScreen && (
             <Button onClick={toggleColorMode} mr={6}>
-              Turn on {colorMode === "light" ? "Dark" : "Light"} mode
+              {t("turnOn")}{colorMode === "light" ? t("dark") : t("light")}{t("mode")}
             </Button>
           )}
         </Flex>

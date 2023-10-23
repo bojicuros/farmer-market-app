@@ -14,7 +14,7 @@ const DashboardView = () => {
     <Flex flexDirection="column" pt={{ base: "40px", md: "20px" }}>
       <Box p="6px 0px 22px 0px">
         <Text fontSize="xl" fontWeight="bold">
-          {"Dashboard"}
+          {t("dashboard")}
         </Text>
       </Box>
       <SimpleGrid
