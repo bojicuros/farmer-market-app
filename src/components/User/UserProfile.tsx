@@ -17,7 +17,8 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [doPasswordsMatch, setDoPasswordsMatch] = useState(true);
   const { colorMode, toggleColorMode } = useColorMode();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isEnglish = i18n.language === "en";
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
@@ -25,6 +26,11 @@ const UserProfile = () => {
 
   const handleSaveClick = () => {
     setIsEditing(false);
+  };
+
+  const toggleLanguage = () => {
+    const newLanguage = i18n.language === "en" ? "sr" : "en";
+    i18n.changeLanguage(newLanguage);
   };
 
   return (
@@ -35,8 +41,18 @@ const UserProfile = () => {
             {t("profileInfo")}
           </Text>
           {!isSmallerScreen && (
-            <Button onClick={toggleColorMode} mr={6}>
-              {t("turnOn")}{colorMode === "light" ? t("dark") : t("light")}{t("mode")}
+            <Button
+              bg={colorMode === "light" ? "green.400" : "green.500"}
+              _hover={{
+                bg: colorMode === "light" ? "green.500" : "green.600",
+              }}
+              color={colorMode === "light" ? "white" : "gray.900"}
+              onClick={toggleColorMode}
+              mr={6}
+            >
+              {t("turnOn")}
+              {colorMode === "light" ? t("dark") : t("light")}
+              {t("mode")}
             </Button>
           )}
         </Flex>
@@ -113,46 +129,101 @@ const UserProfile = () => {
               </Button>
             )}
           </Flex>
-          <Flex
-            direction={"column"}
-            minW={"40%"}
-            p={6}
-            gap={6}
-            borderWidth="1px"
-            borderRadius={"xl"}
-            alignSelf={isSmallerScreen ? "auto" : "flex-start"}
-          >
-            <Text fontSize={"md"} fontWeight={"semibold"}>
-              {t("changePassword")}
-            </Text>
+          <Flex direction={"column"} minW={"35%"} gap={10}>
+            <Flex
+              direction={"column"}
+              minW={"100%"}
+              p={6}
+              gap={6}
+              borderWidth="1px"
+              borderRadius={"xl"}
+              alignSelf={isSmallerScreen ? "auto" : "flex-start"}
+            >
+              <Text fontSize={"md"} fontWeight={"semibold"}>
+                {t("changePassword")}
+              </Text>
 
-            <FormControl>
-              <FormLabel>{t("newPassword")}</FormLabel>
-              <Input type="password" />
-            </FormControl>
-            <FormControl>
-              <FormLabel>{t("confirmNewPassword")}</FormLabel>
-              <Input type="password" />
-            </FormControl>
+              <FormControl>
+                <FormLabel>{t("newPassword")}</FormLabel>
+                <Input type="password" />
+              </FormControl>
+              <FormControl>
+                <FormLabel>{t("confirmNewPassword")}</FormLabel>
+                <Input type="password" />
+              </FormControl>
+              <Button
+                bg={colorMode === "light" ? "green.400" : "green.500"}
+                _hover={{
+                  bg: colorMode === "light" ? "green.500" : "green.600",
+                }}
+                color={colorMode === "light" ? "white" : "gray.900"}
+                onClick={handleSaveClick}
+              >
+                {t("confirm")}
+              </Button>
+              {!doPasswordsMatch && (
+                <Text mt="2" color="red">
+                  {t("wrongConfPassword")}
+                </Text>
+              )}
+            </Flex>
+            <Flex
+              direction={"column"}
+              minW={"100%"}
+              p={6}
+              gap={6}
+              borderWidth="1px"
+              borderRadius={"xl"}
+              alignSelf={isSmallerScreen ? "auto" : "flex-start"}
+            >
+              <Text fontSize={"md"} fontWeight={"semibold"}>
+                {t("language")}
+              </Text>
+
+              <FormControl>
+                <Box display="flex" justifyContent="space-between">
+                  <Button
+                    w={"48%"}
+                    bg={colorMode === "light" ? "green.400" : "green.500"}
+                    _hover={{
+                      bg: colorMode === "light" ? "green.500" : "green.600",
+                    }}
+                    color={colorMode === "light" ? "white" : "gray.900"}
+                    isDisabled={i18n.language === "en"}
+                    onClick={toggleLanguage}
+                  >
+                    {t("english")}
+                  </Button>
+                  <Button
+                    w={"48%"}
+                    bg={colorMode === "light" ? "green.400" : "green.500"}
+                    _hover={{
+                      bg: colorMode === "light" ? "green.500" : "green.600",
+                    }}
+                    color={colorMode === "light" ? "white" : "gray.900"}
+                    isDisabled={i18n.language === "sr"}
+                    onClick={toggleLanguage}
+                  >
+                    {t("serbian")}
+                  </Button>
+                </Box>
+              </FormControl>
+            </Flex>
+          </Flex>
+          {isSmallerScreen && (
             <Button
               bg={colorMode === "light" ? "green.400" : "green.500"}
               _hover={{
                 bg: colorMode === "light" ? "green.500" : "green.600",
               }}
               color={colorMode === "light" ? "white" : "gray.900"}
-              onClick={handleSaveClick}
+              onClick={toggleColorMode}
+              m={6}
+              mb={10}
             >
-              {t("confirm")}
-            </Button>
-            {!doPasswordsMatch && (
-              <Text mt="2" color="red">
-                {t("wrongConfPassword")}
-              </Text>
-            )}
-          </Flex>
-          {isSmallerScreen && (
-            <Button onClick={toggleColorMode} m={6} mb={10}>
-              {t("turnOn")}{colorMode === "light" ? "Dark" : "Light"}{t("mode")}
+              {t("turnOn")}
+              {colorMode === "light" ? "Dark" : "Light"}
+              {t("mode")}
             </Button>
           )}
         </Flex>
