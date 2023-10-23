@@ -37,8 +37,12 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
     direction: "",
   });
   const [products, setProducts] = useState<Product[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 10;
   const [date, setDate] = useState("");
   const { t } = useTranslation();
+  const [startIndex, setStartIndex] = useState(0);
+  const [endIndex, setEndIndex] = useState(0);
 
   useEffect(() => {
     async function fetchProductsAndPrices() {
@@ -49,6 +53,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
           `${API_URL}/prices/get-latest-prices?market_id=${activeMarket}`
         );
 
+
         const fetchedProducts = response.data.map((priceData: any) => ({
           name: priceData.product.name,
           price: priceData.price_value,
@@ -56,8 +61,14 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
           id: priceData.product.id,
         }));
         setProducts(fetchedProducts);
+        const totalPages = Math.ceil(fetchedProducts.length / productsPerPage);
+        setCurrentPage((prevPage) =>
+          Math.max(Math.min(prevPage, totalPages), 1)
+        );
+        setStartIndex((currentPage - 1) * productsPerPage);
+        setEndIndex(startIndex + productsPerPage);
 
-        if (response.data) {
+        if (response.data.length) {
           const date = response.data[0].price_date;
           const iso = parseISO(date);
           const dayOfWeek = format(iso, "eeee");
@@ -71,36 +82,11 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
     }
 
     fetchProductsAndPrices();
-  }, [activeMarket, t]);
+  }, [activeMarket, t, currentPage, startIndex]);
 
-  function NumberButtons() {
-    const buttons: JSX.Element[] = [];
-
-    for (let i = 1; i <= 5; i++) {
-      buttons.push(
-        <Button
-          key={i}
-          bgGradient={"linear(to-tr, green.400, yellow.300)"}
-          color={colorMode === "light" ? "white" : "gray.700"}
-          size={"sm"}
-          fontSize={"md"}
-          borderRadius={"50%"}
-          _hover={{
-            transform: "scale(1.1)",
-            transition: "transform 0.2s ease",
-          }}
-        >
-          {i}
-        </Button>
-      );
-    }
-
-    return (
-      <ButtonGroup spacing={2} size="md" pt={8} mb={-6}>
-        {buttons}
-      </ButtonGroup>
-    );
-  }
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+  };
 
   const sortedProducts = [...products].sort((a, b) => {
     const aValue = a[sortConfig.key as keyof Product];
@@ -184,7 +170,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
             </Tr>
           </Thead>
           <Tbody>
-            {sortedProducts.map((product) => (
+            {sortedProducts.slice(startIndex, endIndex).map((product) => (
               <Tr key={product.id}>
                 <Td textAlign={"center"}>{product.name}</Td>
                 <Td textAlign={"center"}>{product.price.toFixed(2)} KM</Td>
@@ -194,7 +180,31 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
           </Tbody>
         </Table>
       </TableContainer>
-      <NumberButtons />
+      {Math.ceil(products.length / productsPerPage) > 1 && (
+        <ButtonGroup spacing={2} size="md" pt={8} mb={-6}>
+          {Array.from(
+            { length: Math.ceil(products.length / productsPerPage) },
+            (_, index) => (
+              <Button
+                key={index + 1}
+                bgGradient={"linear(to-tr, green.400, yellow.300)"}
+                color={colorMode === "light" ? "white" : "gray.700"}
+                size={"sm"}
+                fontSize={"md"}
+                borderRadius={"50%"}
+                _hover={{
+                  transform: "scale(1.1)",
+                  transition: "transform 0.2s ease",
+                }}
+                onClick={() => goToPage(index + 1)}
+                isActive={index + 1 === currentPage}
+              >
+                {index + 1}
+              </Button>
+            )
+          )}
+        </ButtonGroup>
+      )}
     </>
   );
 };
