@@ -60,7 +60,10 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
         if (response.data) {
           const date = response.data[0].price_date;
           const iso = parseISO(date);
-          setDate(format(iso, "eeee dd. MMM yy"));
+          const dayOfWeek = format(iso, "eeee");
+          const translatedDayOfWeek = t(dayOfWeek);
+          const formattedDate = format(iso, "dd. MMM yyyy");
+          setDate(`${translatedDayOfWeek} ${formattedDate}`);
         }
       } catch (error) {
         console.error("Error fetching prices:", error);
@@ -68,7 +71,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
     }
 
     fetchProductsAndPrices();
-  }, [activeMarket]);
+  }, [activeMarket, t]);
 
   function NumberButtons() {
     const buttons: JSX.Element[] = [];

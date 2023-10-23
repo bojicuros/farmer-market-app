@@ -89,5 +89,21 @@
   "basicInfo": "Basic information",
   "changePassword": "Change password",
   "turnOn": "Turn on ",
-  "mode": " mode"
+  "mode": " mode",
+  "priceAnalytic": "Price Analytic",
+  "dashboard": "Dashboard",
+  "employeesTable": "Employees Table",
+  "unconfirmedRequests": "Unconfirmed requests",
+  "marketsTable": "Markets Table",
+  "profileInfo": "Profile information",
+  "addPrices": "Add prices",
+  "productTable": "Product Table",
+  "settings": "Settings",
+  "confirmations": "Confirmations",
+  "manageMarkets": "Manage Markets",
+  "manageEmployees": "Manage Employees",
+  "prices": "Prices",
+  "emailConfirmation": "Email confirmation",
+  "dark": "Dark",
+  "light": "Light"
 }

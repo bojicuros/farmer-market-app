@@ -147,7 +147,7 @@ const ProductInfoTable = ({ editingPrices }: ProductInfoTableProps) => {
       <Box overflowX={{ sm: "scroll", xl: "hidden" }}>
         <Box p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">
-            {editingPrices ? "Add prices" : "Product Table"}
+            {editingPrices ? t("addPrices") : t("productTable")}
           </Text>
         </Box>
         <Box>

@@ -19,6 +19,7 @@ import { FiHome, FiSettings, FiMenu } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiFillDollarCircle } from "react-icons/ai";
 import { MenuItems, UserRoles } from "../../util/enums";
 import { Auth, AuthUser } from "../../context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 type SidebarMenuProps = {
   activeItem: string;
@@ -43,6 +44,8 @@ const SidebarMenu = ({
   const [isSmallerScreen] = useMediaQuery("(max-width: 768px)");
   const [collapsedForEffect, setCollapsedForEffect] =
     useState(isSidebarCollapsed);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (user.roles.includes(UserRoles.Admin)) {
@@ -78,7 +81,7 @@ const SidebarMenu = ({
     <>
       <NavItem
         icon={FiSettings}
-        title={MenuItems.Settings}
+        title={t("settings")}
         active={activeItem === MenuItems.Settings}
         onClick={() => handleNavItemClick(MenuItems.Settings)}
       />
@@ -89,31 +92,31 @@ const SidebarMenu = ({
     <>
       <NavItem
         icon={FiHome}
-        title={MenuItems.Dashboard}
+        title={t("dashboard")}
         active={activeItem === MenuItems.Dashboard}
         onClick={() => handleNavItemClick(MenuItems.Dashboard)}
       />
       <NavItem
         icon={IoAnalyticsOutline}
-        title={MenuItems.PriceAnalytic}
+        title={t("priceAnalytic")}
         active={activeItem === MenuItems.PriceAnalytic}
         onClick={() => handleNavItemClick(MenuItems.PriceAnalytic)}
       />
       <NavItem
         icon={AiOutlineCheckCircle}
-        title={MenuItems.Confirmations}
+        title={t("confirmations")}
         active={activeItem === MenuItems.Confirmations}
         onClick={() => handleNavItemClick(MenuItems.Confirmations)}
       />
       <NavItem
         icon={FaStore}
-        title={MenuItems.ManageMarkets}
+        title={t("manageMarkets")}
         active={activeItem === MenuItems.ManageMarkets}
         onClick={() => handleNavItemClick(MenuItems.ManageMarkets)}
       />
       <NavItem
         icon={BsPeopleFill}
-        title={MenuItems.ManageEmployees}
+        title={t("manageEmployees")}
         active={activeItem === MenuItems.ManageEmployees}
         onClick={() => handleNavItemClick(MenuItems.ManageEmployees)}
       />
@@ -124,13 +127,13 @@ const SidebarMenu = ({
     <>
       <NavItem
         icon={AiFillDollarCircle}
-        title="Prices"
+        title={t("prices")}
         active={activeItem === "Prices"}
         onClick={() => handleNavItemClick("Prices")}
       />
       <NavItem
         icon={FaShoppingBasket}
-        title="Products"
+        title={t("products")}
         active={activeItem === "Products"}
         onClick={() => handleNavItemClick("Products")}
       />
@@ -142,7 +145,7 @@ const SidebarMenu = ({
       {!user.is_confirmed && (
         <NavItem
           icon={AiOutlineCheckCircle}
-          title="Email confirmation"
+          title={t("emailConfirmation")}
           active={activeItem === "Email confirmation"}
           onClick={() => handleNavItemClick("Email confirmation")}
         />
@@ -203,8 +206,10 @@ const SidebarMenu = ({
             </Heading>
             <Text color={colorMode === "light" ? "gray.200" : "black"}>
               {user.roles.length === 2
-                ? user.roles[0] + ", " + user.roles[1]
-                : user.roles[0]}
+                ? t("admin") + ", " + t("vendor")
+                : user.roles[0] === "Admin"
+                ? t("admin")
+                : t("vendor")}
             </Text>
           </Flex>
         )}

@@ -123,7 +123,7 @@ const PriceAnalytic = () => {
       <Box overflowX={{ sm: "scroll", xl: "hidden" }}>
         <Box p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">
-            {"Price Analytic"}
+             {t("priceAnalytic")}
           </Text>
         </Box>
       </Box>
