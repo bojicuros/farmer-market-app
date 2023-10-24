@@ -18,7 +18,6 @@ const UserProfile = () => {
   const [doPasswordsMatch, setDoPasswordsMatch] = useState(true);
   const { colorMode, toggleColorMode } = useColorMode();
   const { t, i18n } = useTranslation();
-  const isEnglish = i18n.language === "en";
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
@@ -82,7 +81,6 @@ const UserProfile = () => {
             </FormControl>
             <FormControl>
               <FormLabel>{t("lastName")}:</FormLabel>
-              <FormLabel>Email</FormLabel>
               {isEditing ? (
                 <Input type="text" defaultValue={"Markovic"} />
               ) : (
@@ -90,7 +88,7 @@ const UserProfile = () => {
               )}
             </FormControl>
             <FormControl>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{t("Email")}</FormLabel>
               {isEditing ? (
                 <Input type="email" defaultValue={"marko@gmail.com"} />
               ) : (
@@ -222,7 +220,7 @@ const UserProfile = () => {
               mb={10}
             >
               {t("turnOn")}
-              {colorMode === "light" ? "Dark" : "Light"}
+              {colorMode === "light" ? t("dark") : t("light")}
               {t("mode")}
             </Button>
           )}
