@@ -107,5 +107,13 @@
   "dark": "Dark",
   "light": "Light",
   "serbian": "Serbian",
-  "english": "English"
+  "english": "English",
+  "success": "Success",
+  "error": "Error",
+  "shortPass": "Password needs to be at least 8 characters",
+  "successfulPass": "Password changed successfully",
+  "wrongPass": "Password do not match",
+  "errorUpdatePass": "Error updating password",
+  "successfulUpdateInfo": "Successfully updated",
+  "errorUpdateInfo": "Error while updating"
 }

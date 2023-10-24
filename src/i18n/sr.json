@@ -114,5 +114,13 @@
   "Wednesday": "Srijeda",
   "Thursday": "Četvrtak",
   "Friday": "Petak",
-  "Saturday": "Subota"
+  "Saturday": "Subota",
+  "success": "Uspješno",
+  "error": "Greška",
+  "shortPass": "Šifra treba da sadrži bar 8 karaktera",
+  "successfulPass": "Šifra uspješno promijenjena",
+  "wrongPass": "Šifre se ne poklapaju",
+  "errorUpdatePass": "Greška prilikom ažuriranja šifre",
+  "successfulUpdateInfo": "Uspješno ažurirano",
+  "errorUpdateInfo": "Ažuriranje nije uspijelo"
 }
