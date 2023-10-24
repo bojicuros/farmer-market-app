@@ -6,8 +6,6 @@ import {
   AlertDialogHeader,
   AlertDialogCloseButton,
   AlertDialogBody,
-  AlertDialogFooter,
-  Button,
   useColorMode,
 } from "@chakra-ui/react";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
@@ -26,17 +24,16 @@ const PopupNotification: React.FC<PopupNotificationProps> = ({
   onClose,
   isSuccess,
   message,
-  duration = 3000,
+  duration = 2000,
 }) => {
   const { colorMode } = useColorMode();
   const bgColor = isSuccess ? "green.100" : "red.100";
   const bgColorDark = isSuccess ? "green.400" : "red.400";
   const iconColor = isSuccess ? "green.500" : "red.500";
   const iconColorDark = isSuccess ? "green.700" : "red.700";
-  const hoverColor = colorMode === "light" ? "blue.400" : "blue.600";
   const icon = isSuccess ? <CheckCircleIcon /> : <WarningIcon />;
-  const title = isSuccess ? "Success" : "Error";
   const { t } = useTranslation();
+  const title = isSuccess ? t("success") : t("error");
 
   useEffect(() => {
     if (isOpen) {
@@ -70,17 +67,7 @@ const PopupNotification: React.FC<PopupNotificationProps> = ({
           {icon} {title}
         </AlertDialogHeader>
         <AlertDialogCloseButton />
-        <AlertDialogBody>{message}</AlertDialogBody>
-        <AlertDialogFooter>
-          <Button
-            onClick={onClose}
-            bg={colorMode === "light" ? "blue.300" : "blue.700"}
-            _hover={{ background: hoverColor }}
-            ml={3}
-          >
-            {t("close")}
-          </Button>
-        </AlertDialogFooter>
+        <AlertDialogBody mb={5}>{message}</AlertDialogBody>
       </AlertDialogContent>
     </AlertDialog>
   );

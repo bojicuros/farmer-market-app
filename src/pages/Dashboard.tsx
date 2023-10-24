@@ -52,7 +52,7 @@ const Dashboard = () => {
             case MenuItems.ManageMarkets:
               return <MarketTable />;
             case MenuItems.Settings:
-              return <UserProfile />;
+              return <UserProfile user={user} />;
             case MenuItems.PriceAnalytic:
               return <PriceAnalytic />;
             case MenuItems.Products:
