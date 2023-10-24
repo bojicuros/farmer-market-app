@@ -7,7 +7,6 @@ import {
   useBreakpointValue,
   useColorMode,
   Link,
-  Text,
 } from "@chakra-ui/react";
 import axios, { API_URL } from "../../config/general";
 import PopupNotification from "../Common/PopupNotification";
@@ -44,8 +43,6 @@ const RegistrationForm = ({
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState(initialFormData);
-  const [doPasswordsMatch, setDoPasswordsMatch] = useState(true);
-  const [emailAvailable, setEmailAvailable] = useState(true);
 
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(true);
@@ -95,14 +92,14 @@ const RegistrationForm = ({
           setCreatedUserId(response.data.id);
           setIsRegistrationCompleted(true);
         } else {
-          setEmailAvailable(false);
+          handleOpenNotification(false, t("takenEmail"));
         }
       } catch (error) {
         resetFormData();
-        handleOpenNotification(false, "An error occurred during registration.");
+        handleOpenNotification(false, t("errorRegistration"));
       }
     } else {
-      setDoPasswordsMatch(false);
+      handleOpenNotification(false, t("wrongConfPassword"));
     }
   };
 
@@ -112,12 +109,11 @@ const RegistrationForm = ({
       alignItems="flex-start"
       p={isSmallerScreen ? "6" : "0"}
     >
-      <form onSubmit={handleSubmit}>
-        <Flex direction="column" p={5}>
+      <form onSubmit={handleSubmit} >
+        <Flex direction="column" p={5} gap={4}>
           <Input
             placeholder={t("firstName")}
             size="md"
-            mb="4"
             name="first_name"
             value={formData.first_name}
             onChange={handleInputChange}
@@ -126,7 +122,6 @@ const RegistrationForm = ({
           <Input
             placeholder={t("lastName")}
             size="md"
-            mb="4"
             name="last_name"
             value={formData.last_name}
             onChange={handleInputChange}
@@ -135,7 +130,6 @@ const RegistrationForm = ({
           <Input
             placeholder="Email"
             size="md"
-            mb="4"
             name="email"
             type="email"
             value={formData.email}
@@ -145,7 +139,6 @@ const RegistrationForm = ({
           <Input
             placeholder={t("password")}
             size="md"
-            mb="4"
             type="password"
             name="password"
             value={formData.password}
@@ -155,7 +148,6 @@ const RegistrationForm = ({
           <Input
             placeholder={t("confirmPassword")}
             size="md"
-            mb="4"
             type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
@@ -165,7 +157,6 @@ const RegistrationForm = ({
           <Input
             placeholder={t("phoneNumber")}
             size="md"
-            mb="4"
             name="phone_number"
             type="tel"
             value={formData.phone_number}
@@ -173,22 +164,13 @@ const RegistrationForm = ({
           />
           <Button
             bgGradient="linear(to-tr, green.400, yellow.300)"
+            mb={-3}
             color={colorMode === "light" ? "white" : "gray.700"}
             _hover={{ opacity: 0.8 }}
             type="submit"
           >
             {t("register")}
           </Button>
-          {!doPasswordsMatch && (
-            <Text mt="2" color="red">
-              {t("wrongConfPassword")}
-            </Text>
-          )}
-          {!emailAvailable && (
-            <Text mt="2" color="red">
-              {t("takenEmail")}
-            </Text>
-          )}
           <Flex mt="4" justify="center" align="center">
             <Link
               color={colorMode === "light" ? "green.500" : "green.300"}

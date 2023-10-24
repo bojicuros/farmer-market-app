@@ -6,7 +6,6 @@ import {
   useBreakpointValue,
   useColorMode,
   Link,
-  Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
@@ -15,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import axios, { API_URL } from "../../config/general";
 import { AuthUser } from "../../context/AuthContext";
 import { useTranslation } from "react-i18next";
+import PopupNotification from "../Common/PopupNotification";
 
 const LoginForm = () => {
   const { colorMode } = useColorMode();
@@ -23,7 +23,16 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { setAuth } = useAuth();
-  const [areCredentialsIncorrect, setAreCredentialsIncorrect] = useState(false);
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  const handleOpenNotification = (success: boolean, message: string) => {
+    setIsSuccess(success);
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  };
 
   const [formData, setFormData] = useState({
     email: "",
@@ -48,7 +57,7 @@ const LoginForm = () => {
       if (!decodedToken.is_active) navigate("/unauthorized");
       else navigate("/dashboard");
     } catch (error) {
-      setAreCredentialsIncorrect(true);
+      handleOpenNotification(false, t("wrongCredentials"));
     }
   };
 
@@ -88,7 +97,12 @@ const LoginForm = () => {
           >
             {t("login")}
           </Button>
-          {areCredentialsIncorrect && <Text mt="2" color="red"></Text>}
+          <PopupNotification
+            isOpen={notificationOpen}
+            onClose={() => setNotificationOpen(false)}
+            isSuccess={isSuccess}
+            message={notificationMessage}
+          />
           <Flex direction="column" mt="4" align="center">
             <Link
               color={colorMode === "light" ? "green.500" : "green.300"}

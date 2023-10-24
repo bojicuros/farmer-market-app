@@ -122,5 +122,7 @@
   "wrongPass": "Šifre se ne poklapaju",
   "errorUpdatePass": "Greška prilikom ažuriranja šifre",
   "successfulUpdateInfo": "Uspješno ažurirano",
-  "errorUpdateInfo": "Ažuriranje nije uspijelo"
+  "errorUpdateInfo": "Ažuriranje nije uspijelo",
+  "errorRegistration": "Greška prilikom registracije",
+  "errorEmailCheck": "Greška prilikom provjere email-a"
 }

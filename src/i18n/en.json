@@ -115,5 +115,7 @@
   "wrongPass": "Password do not match",
   "errorUpdatePass": "Error updating password",
   "successfulUpdateInfo": "Successfully updated",
-  "errorUpdateInfo": "Error while updating"
+  "errorUpdateInfo": "Error while updating",
+  "errorRegistration": "Error occurred during registration",
+  "errorEmailCheck": "Error while checking email"
 }

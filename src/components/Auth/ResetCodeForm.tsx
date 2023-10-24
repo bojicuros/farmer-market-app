@@ -5,11 +5,11 @@ import {
   Button,
   useBreakpointValue,
   useColorMode,
-  Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import axios, { API_URL } from "../../config/general";
 import { useTranslation } from "react-i18next";
+import PopupNotification from "../Common/PopupNotification";
 
 const CODE_LENGTH = 6;
 
@@ -28,8 +28,17 @@ const ResetCodeForm = ({
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
 
-  const [isIncorrectCode, setIsIncorrectCode] = useState(false);
   const [isLengthInvalid, setIsLengthInvalid] = useState(false);
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  const handleOpenNotification = (success: boolean, message: string) => {
+    setIsSuccess(success);
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  };
 
   const [formData, setFormData] = useState({
     code: "",
@@ -55,7 +64,7 @@ const ResetCodeForm = ({
       setIsCodeConfirmed(true);
       setUserCode(formData.code);
     } catch (e) {
-      setIsIncorrectCode(true);
+      handleOpenNotification(false, t("wrongCode"));
     }
   };
 
@@ -86,20 +95,14 @@ const ResetCodeForm = ({
           >
             {t("confirm")}
           </Button>
-          {isIncorrectCode && (
-            <Text mt="2" color="red">
-              {t("wrongCode")}
-            </Text>
-          )}
-          {isLengthInvalid && (
-            <Text mt="2" color="red">
-              {t("codeLength")}
-              {CODE_LENGTH}
-              {t("digits")}
-            </Text>
-          )}
         </Flex>
       </form>
+      <PopupNotification
+        isOpen={notificationOpen}
+        onClose={() => setNotificationOpen(false)}
+        isSuccess={isSuccess}
+        message={notificationMessage}
+      />
     </Box>
   );
 };
