@@ -6,10 +6,10 @@ import {
   Button,
   useBreakpointValue,
   useColorMode,
-  Text,
 } from "@chakra-ui/react";
 import axios, { API_URL } from "../../config/general";
 import { useTranslation } from "react-i18next";
+import PopupNotification from "../Common/PopupNotification";
 
 type EmailOfForgottenAccountFormProps = {
   setIsEmailConfirmed: (arg0: boolean) => void;
@@ -24,10 +24,19 @@ const EmailOfForgottenAccountForm = ({
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
 
-  const [isValidEmail, setIsValidEmail] = useState(true);
   const [formData, setFormData] = useState({
     email: "",
   });
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  const handleOpenNotification = (success: boolean, message: string) => {
+    setIsSuccess(success);
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -51,8 +60,9 @@ const EmailOfForgottenAccountForm = ({
         setIsEmailConfirmed(true);
         setUserEmail(formData.email);
       }
+      handleOpenNotification(false, t("wrongEmail"));
     } catch (e) {
-      setIsValidEmail(false);
+      handleOpenNotification(false, t("errorEmailCheck"));
     }
   };
 
@@ -82,13 +92,14 @@ const EmailOfForgottenAccountForm = ({
           >
             {t("confirm")}
           </Button>
-          {!isValidEmail && (
-            <Text mt="2" color="red">
-              {t("wrongEmail")}
-            </Text>
-          )}
         </Flex>
       </form>
+      <PopupNotification
+        isOpen={notificationOpen}
+        onClose={() => setNotificationOpen(false)}
+        isSuccess={isSuccess}
+        message={notificationMessage}
+      />
     </Box>
   );
 };

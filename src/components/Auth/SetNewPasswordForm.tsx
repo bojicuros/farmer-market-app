@@ -5,13 +5,13 @@ import {
   Button,
   useBreakpointValue,
   useColorMode,
-  Text,
   Link,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios, { API_URL } from "../../config/general";
 import { useTranslation } from "react-i18next";
+import PopupNotification from "../Common/PopupNotification";
 
 type SetNewPasswordFormProps = {
   userEmail: string;
@@ -27,12 +27,21 @@ const SetNewPasswordForm = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  const handleOpenNotification = (success: boolean, message: string) => {
+    setIsSuccess(success);
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  };
+
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
   });
 
-  const [passwordsDoNotMatch, setPasswordsDoNotMatch] = useState(false);
   const [isChangingPasswordFailed, setIsChangingPasswordFailed] =
     useState(false);
 
@@ -48,9 +57,8 @@ const SetNewPasswordForm = ({
     event.preventDefault();
 
     if (formData.password !== formData.confirmPassword)
-      setPasswordsDoNotMatch(true);
+      handleOpenNotification(false, t("wrongConfPassword"));
     else {
-      setPasswordsDoNotMatch(false);
       try {
         await axios.post(`${API_URL}/auth/password-token-confirm`, {
           email: userEmail,
@@ -60,6 +68,7 @@ const SetNewPasswordForm = ({
         navigate("/login");
       } catch (e) {
         setIsChangingPasswordFailed(true);
+        handleOpenNotification(false, t("resetFailed"));
       }
     }
   };
@@ -100,16 +109,8 @@ const SetNewPasswordForm = ({
           >
             {t("continue")}
           </Button>
-          {passwordsDoNotMatch && (
-            <Text mt="2" color="red">
-              {t("wrongConfPassword")}
-            </Text>
-          )}
           {isChangingPasswordFailed && (
             <Flex mt="4" justify="center" align="center">
-              <Text mt="2" color="red">
-                {t("resetFailed")}
-              </Text>
               <Link
                 color={colorMode === "light" ? "green.500" : "green.300"}
                 fontSize="sm"
@@ -121,6 +122,12 @@ const SetNewPasswordForm = ({
           )}
         </Flex>
       </form>
+      <PopupNotification
+        isOpen={notificationOpen}
+        onClose={() => setNotificationOpen(false)}
+        isSuccess={isSuccess}
+        message={notificationMessage}
+      />
     </Box>
   );
 };
