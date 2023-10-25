@@ -56,9 +56,9 @@ const Dashboard = () => {
             case MenuItems.PriceAnalytic:
               return <PriceAnalytic />;
             case MenuItems.Products:
-              return <ProductInfoTable editingPrices={false} />;
+              return <ProductInfoTable editingPrices={false} user={user} />;
             case MenuItems.Prices:
-              return <ProductInfoTable editingPrices={true} />;
+              return <ProductInfoTable editingPrices={true} user={user} />;
             default:
               return null;
           }

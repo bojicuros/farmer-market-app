@@ -14,6 +14,8 @@ import ProductTableRow from "./ProductTableRow";
 import ProductPriceRow from "./ProducePriceRow";
 import { useTranslation } from "react-i18next";
 import axios, { API_URL } from "../../config/general";
+import { AuthUser } from "../../context/AuthContext";
+import PopupNotification from "../Common/PopupNotification";
 
 export type ProductInfo = {
   id: string;
@@ -32,11 +34,23 @@ export type ProductPriceInfo = {
 
 type ProductInfoTableProps = {
   editingPrices: boolean;
+  user: AuthUser;
 };
 
-const ProductInfoTable = ({ editingPrices }: ProductInfoTableProps) => {
+const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  const handleOpenNotification = (success: boolean, message: string) => {
+    setIsSuccess(success);
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  };
+
   const captionsProducts = [
     t("product"),
     t("description"),
@@ -53,22 +67,43 @@ const ProductInfoTable = ({ editingPrices }: ProductInfoTableProps) => {
   ];
   const captions = editingPrices ? captionsPrices : captionsProducts;
 
+  const [marketId, setMarketId] = useState(null);
+
+  const fetchUsersMarket = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/users/get-vendors-market?id=${user.userId}`
+      );
+      const fetchedMarket = response.data;
+      if (fetchedMarket) {
+        setMarketId(fetchedMarket[0].market_id);
+      }
+    } catch (error) {
+      handleOpenNotification(false, "Error while detecting vendors market");
+    }
+  }, [setMarketId, user]);
+
+  useEffect(() => {
+    fetchUsersMarket();
+  }, [fetchUsersMarket]);
+
   const [productData, setProductData] = useState<ProductInfo[] | null>(null);
 
   const fetchProducts = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `${API_URL}/products/get-products?market_id=${"8606fa9b-8c02-4638-ba17-dcff5fcd531d"}`
-      );
-      const fetchedProducts = response.data;
-      if (fetchedProducts) {
-        console.log(fetchedProducts);
-        setProductData(fetchedProducts);
+    if (!editingPrices && marketId) {
+      try {
+        const response = await axios.get(
+          `${API_URL}/products/get-products?market_id=${marketId}`
+        );
+        const fetchedProducts = response.data;
+        if (fetchedProducts) {
+          setProductData(fetchedProducts);
+        }
+      } catch (error) {
+        handleOpenNotification(false, "Error while fetching products");
       }
-    } catch (error) {
-      console.error("Error fetching markets:", error);
     }
-  }, [setProductData]);
+  }, [setProductData, marketId, editingPrices]);
 
   useEffect(() => {
     fetchProducts();
@@ -79,18 +114,20 @@ const ProductInfoTable = ({ editingPrices }: ProductInfoTableProps) => {
   >(null);
 
   const fetchProductPrices = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `${API_URL}/products/get-product-prices?market_id=${"8606fa9b-8c02-4638-ba17-dcff5fcd531d"}`
-      );
-      const fetchedProductPrices = response.data;
-      if (fetchedProductPrices) {
-        setProductPriceData(fetchedProductPrices);
+    if (editingPrices && marketId) {
+      try {
+        const response = await axios.get(
+          `${API_URL}/products/get-product-prices?market_id=${marketId}`
+        );
+        const fetchedProductPrices = response.data;
+        if (fetchedProductPrices) {
+          setProductPriceData(fetchedProductPrices);
+        }
+      } catch (error) {
+        handleOpenNotification(false, "Error while fetching product prices");
       }
-    } catch (error) {
-      console.error("Error fetching markets:", error);
     }
-  }, [setProductPriceData]);
+  }, [setProductPriceData, marketId, editingPrices]);
 
   useEffect(() => {
     fetchProductPrices();
@@ -153,6 +190,12 @@ const ProductInfoTable = ({ editingPrices }: ProductInfoTableProps) => {
           </Table>
         </Box>
       </Box>
+      <PopupNotification
+        isOpen={notificationOpen}
+        onClose={() => setNotificationOpen(false)}
+        isSuccess={isSuccess}
+        message={notificationMessage}
+      />
     </Flex>
   );
 };
