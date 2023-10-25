@@ -11,12 +11,13 @@ import {
 import { FaShoppingBasket } from "react-icons/fa";
 import { ProductInfo } from "./ProductInfoTable";
 import { useTranslation } from "react-i18next";
+import { format } from "date-fns";
 
 const ProductTableRow = ({
   name,
   description,
   unit_of_measurement,
-  date,
+  created_at,
 }: ProductInfo) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
@@ -58,7 +59,7 @@ const ProductTableRow = ({
       </Td>
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-          {date}
+          {format(new Date(created_at), 'dd-MM-yy')}
         </Text>
       </Td>
       <Td>
