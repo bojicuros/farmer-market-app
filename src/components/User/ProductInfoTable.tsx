@@ -24,9 +24,10 @@ export type ProductInfo = {
 };
 
 export type ProductPriceInfo = {
+  id: string;
   name: string;
-  current_price: number;
-  date: string;
+  price_value: number;
+  updated_at: string;
 };
 
 type ProductInfoTableProps = {
@@ -73,53 +74,27 @@ const ProductInfoTable = ({ editingPrices }: ProductInfoTableProps) => {
     fetchProducts();
   }, [fetchProducts]);
 
-  const productPriceData: ProductPriceInfo[] = [
-    {
-      name: "Apples",
-      current_price: 2.34,
-      date: "14/06/21",
-    },
-    {
-      name: "Bananas",
-      current_price: 3.64,
-      date: "15/06/21",
-    },
-    {
-      name: "Oranges",
-      current_price: 3.69,
-      date: "16/06/21",
-    },
-    {
-      name: "Grapes",
-      current_price: 5.26,
-      date: "17/06/21",
-    },
-    {
-      name: "Strawberries",
-      current_price: 3.64,
-      date: "18/06/21",
-    },
-    {
-      name: "Pineapples",
-      current_price: 3.64,
-      date: "19/06/21",
-    },
-    {
-      name: "Mangos",
-      current_price: 3.64,
-      date: "20/06/21",
-    },
-    {
-      name: "Watermelons",
-      current_price: 3.64,
-      date: "21/06/21",
-    },
-    {
-      name: "Blueberries",
-      current_price: 3.64,
-      date: "22/06/21",
-    },
-  ];
+  const [productPriceData, setProductPriceData] = useState<
+    ProductPriceInfo[] | null
+  >(null);
+
+  const fetchProductPrices = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/products/get-product-prices?market_id=${"8606fa9b-8c02-4638-ba17-dcff5fcd531d"}`
+      );
+      const fetchedProductPrices = response.data;
+      if (fetchedProductPrices) {
+        setProductPriceData(fetchedProductPrices);
+      }
+    } catch (error) {
+      console.error("Error fetching markets:", error);
+    }
+  }, [setProductPriceData]);
+
+  useEffect(() => {
+    fetchProductPrices();
+  }, [fetchProductPrices]);
 
   return (
     <Flex direction="column" pt={{ base: "40px", md: "20px" }}>
@@ -162,13 +137,15 @@ const ProductInfoTable = ({ editingPrices }: ProductInfoTableProps) => {
                   );
                 })}
               {editingPrices &&
+                productPriceData &&
                 productPriceData.map((row: ProductPriceInfo) => {
                   return (
                     <ProductPriceRow
-                      key={`${row.name}-${row.date}`}
+                      key={row.id}
+                      id={row.id}
                       name={row.name}
-                      current_price={row.current_price}
-                      date={row.date}
+                      price_value={row.price_value}
+                      updated_at={row.updated_at}
                     />
                   );
                 })}

@@ -14,14 +14,14 @@ import {
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { BsCashCoin } from "react-icons/bs";
+import { ProductPriceInfo } from "./ProductInfoTable";
+import { format } from "date-fns";
 
-type ProductPriceInfo = {
-  name: string;
-  current_price: number;
-  date: string;
-};
-
-const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
+const ProductPriceRow = ({
+  name,
+  price_value,
+  updated_at,
+}: ProductPriceInfo) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
@@ -61,7 +61,7 @@ const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
           </InputLeftAddon>
           <Input
             type="number"
-            defaultValue={current_price}
+            defaultValue={price_value}
             fontSize="md"
             fontWeight="bold"
             textAlign={"center"}
@@ -81,7 +81,7 @@ const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
 
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-          {date}
+          {format(new Date(updated_at), "dd-MM-yy")}
         </Text>
       </Td>
       <Td>
