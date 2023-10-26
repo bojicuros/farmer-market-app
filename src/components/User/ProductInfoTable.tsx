@@ -26,8 +26,9 @@ export type ProductInfo = {
 };
 
 export type ProductPriceInfo = {
-  id: string;
+  user_id: string;
   name: string;
+  price_id: string;
   price_value: number;
   updated_at: string;
 };
@@ -40,6 +41,7 @@ type ProductInfoTableProps = {
 const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
+  const [refresh, setRefresh] = useState(false);
 
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(true);
@@ -68,6 +70,12 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
   const captions = editingPrices ? captionsPrices : captionsProducts;
 
   const [marketId, setMarketId] = useState(null);
+
+  const handleChildAction = () => {
+    setTimeout(() => {
+      setRefresh((prevRefresh) => !prevRefresh);
+    }, 1500);
+  };
 
   const fetchUsersMarket = useCallback(async () => {
     try {
@@ -131,7 +139,7 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
 
   useEffect(() => {
     fetchProductPrices();
-  }, [fetchProductPrices]);
+  }, [fetchProductPrices, refresh]);
 
   return (
     <Flex direction="column" pt={{ base: "40px", md: "20px" }}>
@@ -178,11 +186,13 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
                 productPriceData.map((row: ProductPriceInfo) => {
                   return (
                     <ProductPriceRow
-                      key={row.id}
-                      id={row.id}
+                      key={row.price_id}
+                      user_id={user.userId}
                       name={row.name}
+                      price_id={row.price_id}
                       price_value={row.price_value}
                       updated_at={row.updated_at}
+                      onChildAction={handleChildAction}
                     />
                   );
                 })}
