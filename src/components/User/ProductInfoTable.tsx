@@ -59,6 +59,7 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
     t("unit"),
     t("addedAt"),
     "",
+    "",
   ];
   const captionsPrices = [
     t("product"),
@@ -115,7 +116,7 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
 
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
+  }, [fetchProducts, refresh]);
 
   const [productPriceData, setProductPriceData] = useState<
     ProductPriceInfo[] | null
@@ -178,6 +179,7 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
                       description={row.description}
                       unit_of_measurement={row.unit_of_measurement}
                       created_at={row.created_at}
+                      onChildAction={handleChildAction}
                     />
                   );
                 })}
