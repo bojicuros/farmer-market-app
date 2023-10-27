@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   Table,
   Tbody,
@@ -7,6 +8,7 @@ import {
   Th,
   Thead,
   Tr,
+  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
@@ -16,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import axios, { API_URL } from "../../config/general";
 import { AuthUser } from "../../context/AuthContext";
 import PopupNotification from "../Common/PopupNotification";
+import AddProductForm from "./AddProductForm";
 
 export type ProductInfo = {
   id: string;
@@ -40,8 +43,11 @@ type ProductInfoTableProps = {
 
 const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
   const textColor = useColorModeValue("gray.700", "white");
+  const { colorMode } = useColorMode();
   const { t } = useTranslation();
   const [refresh, setRefresh] = useState(false);
+
+  const [isAddingProductActive, setIsAddingProductActive] = useState(false);
 
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(true);
@@ -142,14 +148,39 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
     fetchProductPrices();
   }, [fetchProductPrices, refresh]);
 
+  const showAddingProductForm = () => {
+    setIsAddingProductActive(true);
+  };
+
+  const hideAddingProductForm = () => {
+    setIsAddingProductActive(false);
+  };
+
   return (
     <Flex direction="column" pt={{ base: "40px", md: "20px" }}>
       <Box overflowX={{ sm: "scroll", xl: "hidden" }}>
-        <Box p="6px 0px 22px 0px">
+        <Flex
+          p="6px 0px 22px 0px"
+          align={"row"}
+          justifyContent={"space-between"}
+        >
           <Text fontSize="xl" color={textColor} fontWeight="bold">
             {editingPrices ? t("addPrices") : t("productTable")}
           </Text>
-        </Box>
+          {!editingPrices && (
+            <Button
+              bg={colorMode === "light" ? "green.400" : "green.500"}
+              _hover={{
+                bg: colorMode === "light" ? "green.500" : "green.600",
+              }}
+              color={colorMode === "light" ? "white" : "gray.900"}
+              onClick={showAddingProductForm}
+              mr={6}
+            >
+              Add product
+            </Button>
+          )}
+        </Flex>
         <Box>
           <Table variant="simple" color={textColor}>
             <Thead>
@@ -202,6 +233,11 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
           </Table>
         </Box>
       </Box>
+      <AddProductForm
+        isOpen={isAddingProductActive}
+        close={hideAddingProductForm}
+        handleOpenNotification={handleOpenNotification}
+      ></AddProductForm>
       <PopupNotification
         isOpen={notificationOpen}
         onClose={() => setNotificationOpen(false)}

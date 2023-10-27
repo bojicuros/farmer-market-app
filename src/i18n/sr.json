@@ -124,5 +124,19 @@
   "successfulUpdateInfo": "Uspješno ažurirano",
   "errorUpdateInfo": "Ažuriranje nije uspijelo",
   "errorRegistration": "Greška prilikom registracije",
-  "errorEmailCheck": "Greška prilikom provjere email-a"
+  "errorEmailCheck": "Greška prilikom provjere email-a",
+  "clear": "Otkazi",
+  "delete": "Obriši",
+  "priceUpdateSuccess": "Uspješno dodata cijena",
+  "priceUpdateFail": "Greška pri ažuriranju cijene",
+  "productDeleteSuccess": "Proizvod uspješno obrisan",
+  "productDeleteFail": "Greška pri brisanju proizvoda",
+  "productUpdateSuccess": "Proizvod uspješno ažuriran",
+  "productUpdateFail": "Greška pri brisanju proizvoda",
+  "productAddSuccess": "Proizvod uspješno dodat",
+  "productAddFail": "Greška pri dodavanju proizvoda",
+  "nameAndUnitNotEntered" : "Naziv i mjerna jedinica su obavezni",
+  "addNewProduct": "Dodaj novi proizvod",
+  "descriptionOptional": "Opis (opciono)",
+  "addProduct": "Dodaj proizvod"
 }
