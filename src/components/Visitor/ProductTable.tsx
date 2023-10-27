@@ -50,7 +50,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
 
       try {
         const response = await axios.get(
-          `${API_URL}/prices/get-latest-prices?market_id=${activeMarket}`
+          `${API_URL}/products/get-latest-prices?market_id=${activeMarket}`
         );
 
 

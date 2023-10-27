@@ -14,17 +14,84 @@ import {
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { BsCashCoin } from "react-icons/bs";
+import { ProductPriceInfo } from "./ProductInfoTable";
+import { format } from "date-fns";
+import { useState } from "react";
+import axios, { API_URL } from "../../config/general";
+import PopupNotification from "../Common/PopupNotification";
 
-type ProductPriceInfo = {
-  name: string;
-  current_price: number;
-  date: string;
+type OnChildAction = () => void;
+
+type ProductTableRowProps = ProductPriceInfo & {
+  onChildAction: OnChildAction;
 };
 
-const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
+const ProductPriceRow = ({
+  user_id,
+  name,
+  price_id,
+  price_value,
+  updated_at,
+  onChildAction,
+}: ProductTableRowProps) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
+
+  const [editMode, setEditMode] = useState(false);
+  const [price, setPrice] = useState(parseFloat(price_value.toFixed(2)));
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  const handleOpenNotification = (success: boolean, message: string) => {
+    setIsSuccess(success);
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  };
+
+  const enableEditOrSave = () => {
+    if (editMode) {
+      updatePriceValue();
+    }
+    setEditMode(!editMode);
+  };
+
+  const clearOrKeepPrice = () => {
+    if (editMode) {
+      setPrice(price_value);
+      setEditMode(!editMode);
+    } else {
+      updatePriceValue();
+    }
+  };
+
+  const updatePriceValue = async () => {
+    try {
+      await axios.post(`${API_URL}/products/update-product-price`, {
+        id: price_id,
+        price_value: price,
+        user_id: user_id,
+      });
+      handleOpenNotification(true, t("priceUpdateSuccess")); 
+      onChildAction();
+    } catch (e) {
+      handleOpenNotification(false, t("priceUpdateFail") ); 
+    }
+  };
+
+  const changePrice = (operation: string) => {
+    if (editMode) {
+      let updatedPrice = price;
+      if (operation === "increase") {
+        updatedPrice = parseFloat((price + 0.1).toFixed(2));
+      } else if (operation === "decrease" && price >= 0.1) {
+        updatedPrice = parseFloat((price - 0.1).toFixed(2));
+      }
+      setPrice(updatedPrice);
+    }
+  };
 
   return (
     <Tr>
@@ -53,7 +120,7 @@ const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
         <InputGroup>
           <InputLeftAddon
             cursor={"pointer"}
-            onClick={() => console.log("+")}
+            onClick={() => changePrice("decrease")}
             bg={colorMode === "light" ? "green.200" : "green.700"}
             _hover={{ bg: colorMode === "light" ? "green.300" : "green.600" }}
           >
@@ -61,16 +128,18 @@ const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
           </InputLeftAddon>
           <Input
             type="number"
-            defaultValue={current_price}
+            value={price}
             fontSize="md"
             fontWeight="bold"
             textAlign={"center"}
             minW={"60px"}
             maxW={"90px"}
+            disabled={!editMode}
+            onChange={(e) => setPrice(parseFloat(e.target.value))}
           />
           <InputRightAddon
             cursor={"pointer"}
-            onClick={() => console.log("-")}
+            onClick={() => changePrice("increase")}
             bg={colorMode === "light" ? "green.200" : "green.700"}
             _hover={{ bg: colorMode === "light" ? "green.300" : "green.600" }}
           >
@@ -81,18 +150,19 @@ const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
 
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-          {date}
+          {format(new Date(updated_at), "dd-MM-yy")}
         </Text>
       </Td>
       <Td>
         <Button p="0px" bg="transparent" variant="no-hover" cursor={"pointer"}>
           <Text
             fontSize="md"
-            color="yellow.400"
+            color={editMode ? "green.400" : "yellow.400"}
             fontWeight="bold"
             cursor="pointer"
+            onClick={enableEditOrSave}
           >
-            {t("edit")}
+            {editMode ? t("save") : t("edit")}
           </Text>
         </Button>
       </Td>
@@ -100,14 +170,21 @@ const ProductPriceRow = ({ name, current_price, date }: ProductPriceInfo) => {
         <Button p="0px" bg="transparent" variant="no-hover" cursor={"pointer"}>
           <Text
             fontSize="md"
-            color="green.400"
+            color={editMode ? "red.400" : "green.400"}
             fontWeight="bold"
             cursor="pointer"
+            onClick={clearOrKeepPrice}
           >
-            {t("keep")}
+            {editMode ? t("clear") : t("keep")}
           </Text>
         </Button>
       </Td>
+      <PopupNotification
+        isOpen={notificationOpen}
+        onClose={() => setNotificationOpen(false)}
+        isSuccess={isSuccess}
+        message={notificationMessage}
+      />
     </Tr>
   );
 };

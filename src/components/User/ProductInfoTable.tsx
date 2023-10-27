@@ -9,138 +9,138 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useCallback, useEffect, useState } from "react";
 import ProductTableRow from "./ProductTableRow";
 import ProductPriceRow from "./ProducePriceRow";
 import { useTranslation } from "react-i18next";
+import axios, { API_URL } from "../../config/general";
+import { AuthUser } from "../../context/AuthContext";
+import PopupNotification from "../Common/PopupNotification";
 
 export type ProductInfo = {
+  id: string;
   name: string;
   description: string;
   unit_of_measurement: string;
-  date: string;
+  created_at: string;
 };
 
 export type ProductPriceInfo = {
+  user_id: string;
   name: string;
-  current_price: number;
-  date: string;
+  price_id: string;
+  price_value: number;
+  updated_at: string;
 };
 
 type ProductInfoTableProps = {
   editingPrices: boolean;
+  user: AuthUser;
 };
 
-const ProductInfoTable = ({ editingPrices }: ProductInfoTableProps) => {
+const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
-  const captionsProducts = [t("product"), t("description"), t("unit"), t("addedAt"), ""];
-  const captionsPrices = [t("product"), t("currentPrice"), t("lastUpdated"), "", ""];
+  const [refresh, setRefresh] = useState(false);
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  const handleOpenNotification = (success: boolean, message: string) => {
+    setIsSuccess(success);
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  };
+
+  const captionsProducts = [
+    t("product"),
+    t("description"),
+    t("unit"),
+    t("addedAt"),
+    "",
+    "",
+  ];
+  const captionsPrices = [
+    t("product"),
+    t("currentPrice"),
+    t("lastUpdated"),
+    "",
+    "",
+  ];
   const captions = editingPrices ? captionsPrices : captionsProducts;
 
-  const productData: ProductInfo[] = [
-    {
-      name: "Apples",
-      description: "Fresh apples",
-      unit_of_measurement: "kilo",
-      date: "14/06/21",
-    },
-    {
-      name: "Bananas",
-      description: "Ripe bananas",
-      unit_of_measurement: "bunch",
-      date: "15/06/21",
-    },
-    {
-      name: "Oranges",
-      description: "Juicy oranges",
-      unit_of_measurement: "dozen",
-      date: "16/06/21",
-    },
-    {
-      name: "Grapes",
-      description: "Sweet grapes",
-      unit_of_measurement: "kilo",
-      date: "17/06/21",
-    },
-    {
-      name: "Strawberries",
-      description: "Fresh strawberries",
-      unit_of_measurement: "pound",
-      date: "18/06/21",
-    },
-    {
-      name: "Pineapples",
-      description: "Ripe pineapples",
-      unit_of_measurement: "each",
-      date: "19/06/21",
-    },
-    {
-      name: "Mangos",
-      description: "Tropical mangos",
-      unit_of_measurement: "each",
-      date: "20/06/21",
-    },
-    {
-      name: "Watermelons",
-      description: "Large watermelons",
-      unit_of_measurement: "each",
-      date: "21/06/21",
-    },
-    {
-      name: "Blueberries",
-      description: "Fresh blueberries",
-      unit_of_measurement: "pound",
-      date: "22/06/21",
-    },
-  ];
+  const [marketId, setMarketId] = useState(null);
 
-  const productPriceData: ProductPriceInfo[] = [
-    {
-      name: "Apples",
-      current_price: 2.34,
-      date: "14/06/21",
-    },
-    {
-      name: "Bananas",
-      current_price: 3.64,
-      date: "15/06/21",
-    },
-    {
-      name: "Oranges",
-      current_price: 3.69,
-      date: "16/06/21",
-    },
-    {
-      name: "Grapes",
-      current_price: 5.26,
-      date: "17/06/21",
-    },
-    {
-      name: "Strawberries",
-      current_price: 3.64,
-      date: "18/06/21",
-    },
-    {
-      name: "Pineapples",
-      current_price: 3.64,
-      date: "19/06/21",
-    },
-    {
-      name: "Mangos",
-      current_price: 3.64,
-      date: "20/06/21",
-    },
-    {
-      name: "Watermelons",
-      current_price: 3.64,
-      date: "21/06/21",
-    },
-    {
-      name: "Blueberries",
-      current_price: 3.64,
-      date: "22/06/21",
-    },
-  ];
+  const handleChildAction = () => {
+    setTimeout(() => {
+      setRefresh((prevRefresh) => !prevRefresh);
+    }, 1500);
+  };
+
+  const fetchUsersMarket = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/users/get-vendors-market?id=${user.userId}`
+      );
+      const fetchedMarket = response.data;
+      if (fetchedMarket) {
+        setMarketId(fetchedMarket[0].market_id);
+      }
+    } catch (error) {
+      handleOpenNotification(false, "Error while detecting vendors market");
+    }
+  }, [setMarketId, user]);
+
+  useEffect(() => {
+    fetchUsersMarket();
+  }, [fetchUsersMarket]);
+
+  const [productData, setProductData] = useState<ProductInfo[] | null>(null);
+
+  const fetchProducts = useCallback(async () => {
+    if (!editingPrices && marketId) {
+      try {
+        const response = await axios.get(
+          `${API_URL}/products/get-products?market_id=${marketId}`
+        );
+        const fetchedProducts = response.data;
+        if (fetchedProducts) {
+          setProductData(fetchedProducts);
+        }
+      } catch (error) {
+        handleOpenNotification(false, "Error while fetching products");
+      }
+    }
+  }, [setProductData, marketId, editingPrices]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts, refresh]);
+
+  const [productPriceData, setProductPriceData] = useState<
+    ProductPriceInfo[] | null
+  >(null);
+
+  const fetchProductPrices = useCallback(async () => {
+    if (editingPrices && marketId) {
+      try {
+        const response = await axios.get(
+          `${API_URL}/products/get-product-prices?market_id=${marketId}`
+        );
+        const fetchedProductPrices = response.data;
+        if (fetchedProductPrices) {
+          setProductPriceData(fetchedProductPrices);
+        }
+      } catch (error) {
+        handleOpenNotification(false, "Error while fetching product prices");
+      }
+    }
+  }, [setProductPriceData, marketId, editingPrices]);
+
+  useEffect(() => {
+    fetchProductPrices();
+  }, [fetchProductPrices, refresh]);
 
   return (
     <Flex direction="column" pt={{ base: "40px", md: "20px" }}>
@@ -169,25 +169,32 @@ const ProductInfoTable = ({ editingPrices }: ProductInfoTableProps) => {
             </Thead>
             <Tbody>
               {!editingPrices &&
+                productData &&
                 productData.map((row: ProductInfo) => {
                   return (
                     <ProductTableRow
-                      key={`${row.name}-${row.date}`}
+                      key={`${row.id}`}
+                      id={row.id}
                       name={row.name}
                       description={row.description}
                       unit_of_measurement={row.unit_of_measurement}
-                      date={row.date}
+                      created_at={row.created_at}
+                      onChildAction={handleChildAction}
                     />
                   );
                 })}
               {editingPrices &&
+                productPriceData &&
                 productPriceData.map((row: ProductPriceInfo) => {
                   return (
                     <ProductPriceRow
-                      key={`${row.name}-${row.date}`}
+                      key={row.price_id}
+                      user_id={user.userId}
                       name={row.name}
-                      current_price={row.current_price}
-                      date={row.date}
+                      price_id={row.price_id}
+                      price_value={row.price_value}
+                      updated_at={row.updated_at}
+                      onChildAction={handleChildAction}
                     />
                   );
                 })}
@@ -195,6 +202,12 @@ const ProductInfoTable = ({ editingPrices }: ProductInfoTableProps) => {
           </Table>
         </Box>
       </Box>
+      <PopupNotification
+        isOpen={notificationOpen}
+        onClose={() => setNotificationOpen(false)}
+        isSuccess={isSuccess}
+        message={notificationMessage}
+      />
     </Flex>
   );
 };
