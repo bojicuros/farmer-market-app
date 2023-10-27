@@ -117,5 +117,19 @@
   "successfulUpdateInfo": "Successfully updated",
   "errorUpdateInfo": "Error while updating",
   "errorRegistration": "Error occurred during registration",
-  "errorEmailCheck": "Error while checking email"
+  "errorEmailCheck": "Error while checking email",
+  "clear": "Clear",
+  "delete": "Delete",
+  "priceUpdateSuccess": "Price successfully added",
+  "priceUpdateFail": "Price update failed",
+  "productDeleteSuccess": "Products successfully deleted",
+  "productDeleteFail": "Error while deleting product",
+  "productUpdateSuccess": "Product successfully updated",
+  "productUpdateFail": "Error while updating product",
+  "productAddSuccess": "Product successfully added",
+  "productAddFail": "Error while adding product",
+  "nameAndUnitNotEntered" : "Name and unit of measurement are required.",
+  "addNewProduct": "Add new product",
+  "descriptionOptional": "Description (optional)",
+  "addProduct": "Add product"
 }
