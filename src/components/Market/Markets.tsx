@@ -20,7 +20,7 @@ export const Markets = ({ setActiveMarket }: MarketsProps) => {
 
   const fetchMarkets = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_URL}/markets/get-all`);
+      const response = await axios.get(`${API_URL}/markets/get-all-open`);
       const fetchedMarkets = response.data.map(
         (market: Market, index: number) => ({
           ...market,
