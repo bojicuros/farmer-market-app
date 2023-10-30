@@ -69,7 +69,7 @@ const ProductPriceRow = ({
 
   const updatePriceValue = async () => {
     try {
-      await axios.post(`${API_URL}/products/update-product-price`, {
+      await axios.post(`${API_URL}/products/add-product-price`, {
         id: price_id,
         price_value: price,
         user_id: user_id,

@@ -86,7 +86,7 @@ const ProductTableRow = ({
 
   const updateProductInfo = async () => {
     try {
-      const response = await axios.post(`${API_URL}/products/update-product`, {
+      const response = await axios.put(`${API_URL}/products/update-product`, {
         id: id,
         name: editedName,
         description: editedDescription,
