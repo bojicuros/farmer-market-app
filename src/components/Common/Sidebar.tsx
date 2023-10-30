@@ -10,7 +10,12 @@ type SidebarProps = {
   setAuth: (auth: Auth | null) => void;
 };
 
-const Sidebar = ({ activeItem, setActiveItem, user, setAuth }: SidebarProps) => {
+const Sidebar = ({
+  activeItem,
+  setActiveItem,
+  user,
+  setAuth,
+}: SidebarProps) => {
   const [isSmallerScreen] = useMediaQuery("(max-width: 768px)");
   const [isMediumScreen] = useMediaQuery(
     "(min-width: 768px) and (max-width: 1024px)"
@@ -19,7 +24,7 @@ const Sidebar = ({ activeItem, setActiveItem, user, setAuth }: SidebarProps) => 
 
   return (
     <Flex
-      h={isSmallerScreen ? (isSidebarCollapsed ? "10" : "80vh") : "95vh"}
+      h={isSidebarCollapsed ? "10" : "95vh"}
       marginTop="1"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       borderRadius="30px"
