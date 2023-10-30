@@ -146,7 +146,7 @@ const AddProductForm = ({
             color={colorMode === "light" ? "white" : "gray.900"}
             onClick={handleAddProduct}
           >
-            {t("addProduct")}
+            {t("confirm")}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -177,7 +177,7 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
               onClick={showAddingProductForm}
               mr={6}
             >
-              Add product
+              {t("addProduct")}
             </Button>
           )}
         </Flex>
