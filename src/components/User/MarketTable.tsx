@@ -11,39 +11,44 @@ import {
 } from "@chakra-ui/react";
 import MarketTableRow from "./MarketTableRow";
 import { useTranslation } from "react-i18next";
+import { useCallback, useEffect, useState } from "react";
+import axios, { API_URL } from "../../config/general";
 
 export type MarketInfo = {
+  id: string;
   name: string;
   address: string;
   is_open: boolean;
-  date: string;
+  created_at: string;
 };
 
 const MarketTable = () => {
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
   const captions = [t("market"), t("status"), t("openedAt"), ""];
+  const [refresh, setRefresh] = useState(false);
+  const [markets, setMarkets] = useState<MarketInfo[] | null>(null);
+  const handleChildAction = () => {
+    setTimeout(() => {
+      setRefresh((prevRefresh) => !prevRefresh);
+    }, 1500);
+  };
 
-  const employeesData = [
-    {
-      name: "Farmers Market",
-      address: "Dr. Mladena Stojanovica, Banja Luka",
-      is_open: true,
-      date: "14/06/21",
-    },
-    {
-      name: "Organic Market",
-      address: "Dr. Mladena Stojanovica, Banja Luka",
-      is_open: false,
-      date: "14/06/21",
-    },
-    {
-      name: "Local Market",
-      address: "Dr. Mladena Stojanovica, Banja Luka",
-      is_open: true,
-      date: "14/06/21",
-    },
-  ];
+  const fetchMarkets = useCallback(async () => {
+    try {
+      const response = await axios.get(`${API_URL}/markets/get-all`);
+
+      if (response.data.length > 0) {
+        setMarkets(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching markets:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchMarkets();
+  }, [fetchMarkets, refresh]);
 
   return (
     <Flex direction="column" pt={{ base: "40px", md: "20px" }}>
@@ -71,14 +76,16 @@ const MarketTable = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {employeesData.map((row: MarketInfo) => {
+              {markets?.map((row: MarketInfo) => {
                 return (
                   <MarketTableRow
-                    key={`${row.name}-${row.date}`}
+                    key={row.id}
+                    id={row.id}
                     name={row.name}
                     address={row.address}
                     is_open={row.is_open}
-                    date={row.date}
+                    created_at={row.created_at}
+                    onChildAction={handleChildAction}
                   />
                 );
               })}
