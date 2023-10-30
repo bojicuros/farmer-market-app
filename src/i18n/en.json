@@ -131,5 +131,9 @@
   "nameAndUnitNotEntered" : "Name and unit of measurement are required.",
   "addNewProduct": "Add new product",
   "descriptionOptional": "Description (optional)",
-  "addProduct": "Add product"
+  "addProduct": "Add product",
+  "marketChangeStatusSuccessful": "Market status successfully changed",
+  "marketChangeStatusFail": "Error while changing market status",
+  "marketUpdateSuccess": "Market successfully updated",
+  "marketUpdateFail":  "Error while updating market"
 }
