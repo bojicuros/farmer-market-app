@@ -7,6 +7,7 @@ import {
   useBreakpointValue,
   useColorMode,
   Link,
+  Text
 } from "@chakra-ui/react";
 import axios, { API_URL } from "../../config/general";
 import { useTranslation } from "react-i18next";
@@ -78,6 +79,9 @@ const EmailConfirmCodeForm = ({
     >
       <form onSubmit={handleSubmit}>
         <Flex direction="column" p={5}>
+          <Text size="md" mb={2}>
+            {t("enterCode")}
+          </Text>
           <Input
             placeholder={t("code")}
             size="md"
