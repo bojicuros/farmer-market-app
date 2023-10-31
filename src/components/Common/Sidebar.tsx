@@ -1,13 +1,14 @@
 import { Flex, useMediaQuery } from "@chakra-ui/react";
 import { useState } from "react";
 import SidebarMenu from "./SidebarMenu";
-import { Auth, AuthUser } from "../../context/AuthContext";
+import { Auth, AuthUser, UserInfo } from "../../context/AuthContext";
 
 type SidebarProps = {
   activeItem: string;
   setActiveItem: (arg0: string) => void;
   user: AuthUser;
   setAuth: (auth: Auth | null) => void;
+  userInfo: UserInfo | null;
 };
 
 const Sidebar = ({
@@ -15,6 +16,7 @@ const Sidebar = ({
   setActiveItem,
   user,
   setAuth,
+  userInfo
 }: SidebarProps) => {
   const [isSmallerScreen] = useMediaQuery("(max-width: 768px)");
   const [isMediumScreen] = useMediaQuery(
@@ -48,6 +50,7 @@ const Sidebar = ({
         setIsSidebarCollapsed={setIsSidebarCollapsed}
         user={user}
         setAuth={setAuth}
+        userInfo={userInfo}
       />
     </Flex>
   );

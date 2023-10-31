@@ -12,7 +12,7 @@ import jwt_decode from "jwt-decode";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import axios, { API_URL } from "../../config/general";
-import { AuthUser } from "../../context/AuthContext";
+import { AuthUser, UserInfo } from "../../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import PopupNotification from "../Common/PopupNotification";
 
@@ -51,13 +51,31 @@ const LoginForm = () => {
     event.preventDefault();
     try {
       const response = await axios.post(`${API_URL}/auth/login`, formData);
-      const token = response.data.accessToken;
-      const decodedToken = jwt_decode(token) as AuthUser;
-      setAuth({ accessToken: token, user: decodedToken });
-      if (!decodedToken.is_active) navigate("/unauthorized");
-      else navigate("/dashboard");
+      if (response.status === 200) {
+        const token = response.data.accessToken;
+        const user = jwt_decode(token) as AuthUser;
+        setAuth({ accessToken: token, user: user });
+        const userInfo = await fetchUserInfo(user);
+        if (!userInfo?.is_active) navigate("/unauthorized");
+        else navigate("/dashboard");
+      }
+      handleOpenNotification(false, t("errorWhileLogin"));
     } catch (error) {
       handleOpenNotification(false, t("wrongCredentials"));
+    }
+  };
+
+  const fetchUserInfo = async (user: AuthUser | undefined) => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/users/get-by-id?id=${user?.userId}`
+      );
+      if (response.status === 200) {
+        const fetchedInfo = response.data as UserInfo;
+        return fetchedInfo;
+      }
+    } catch (error) {
+      console.error("Error fetching user info:", error);
     }
   };
 

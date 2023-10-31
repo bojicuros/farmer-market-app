@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import EmailConfirmCodeForm from "./EmailConfirmCodeForm";
 import { Box, Button, Flex, Text, useColorMode } from "@chakra-ui/react";
 import axios, { API_URL } from "../../config/general";
-import { AuthUser } from "../../context/AuthContext";
+import { AuthUser, UserInfo } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 type EmailConfirmationProps = {
   user: AuthUser;
+  userInfo: UserInfo | null;
 };
 
-const EmailConfirmation = ({ user }: EmailConfirmationProps) => {
+const EmailConfirmation = ({ user, userInfo }: EmailConfirmationProps) => {
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [isCodeConfirmed, setIsCodeConfirmed] = useState(false);
   const { colorMode } = useColorMode();
@@ -26,7 +27,9 @@ const EmailConfirmation = ({ user }: EmailConfirmationProps) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await axios.post(`${API_URL}/auth/require-token?email=${user.email}`);
+      await axios.post(
+        `${API_URL}/auth/require-token?email=${userInfo?.email}`
+      );
       setIsCodeSent(true);
     } catch (error) {
       setIsCodeSent(false);
