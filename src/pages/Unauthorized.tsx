@@ -1,5 +1,5 @@
 import { VStack, Flex, useBreakpointValue, Box, Text } from "@chakra-ui/react";
-import Navbar from "../components/Common/Navbar";
+import NavbarAdmin from "../components/Common/NavbarAdmin";
 import Footer from "../components/Common/Footer";
 import { useTranslation } from "react-i18next";
 
@@ -12,7 +12,7 @@ const Unauthorized = () => {
   return (
     <Flex minHeight="100vh" flexDirection="column">
       <VStack flex="1" p={5}>
-        <Navbar />
+        <NavbarAdmin />
         <Box textAlign="center" mt="20vh">
           <Text fontSize={fontSizeSubheading} fontWeight="semibold">
             {t("unauthorizedAccess")}

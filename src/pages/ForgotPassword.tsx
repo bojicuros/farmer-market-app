@@ -1,5 +1,5 @@
 import { VStack, Flex, Text, Box, useBreakpointValue } from "@chakra-ui/react";
-import Navbar from "../components/Common/Navbar";
+import NavbarAdmin from "../components/Common/NavbarAdmin";
 import Footer from "../components/Common/Footer";
 import ResetCodeForm from "../components/Auth/ResetCodeForm";
 import SetNewPasswordForm from "../components/Auth/SetNewPasswordForm";
@@ -19,7 +19,7 @@ const ForgotPassword = () => {
   return (
     <Flex minHeight="100vh" flexDirection="column">
       <VStack flex="1" p={5}>
-        <Navbar />
+        <NavbarAdmin />
         <Flex
           direction={flexDirection}
           p={isSmallerScreen ? "0" : "28"}
