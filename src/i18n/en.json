@@ -135,5 +135,6 @@
   "marketChangeStatusSuccessful": "Market status successfully changed",
   "marketChangeStatusFail": "Error while changing market status",
   "marketUpdateSuccess": "Market successfully updated",
-  "marketUpdateFail":  "Error while updating market"
+  "marketUpdateFail":  "Error while updating market",
+  "errorWhileLogin": "Error while logging in"
 }

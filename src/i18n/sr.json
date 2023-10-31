@@ -142,5 +142,6 @@
   "marketChangeStatusSuccessful": "Status pijace uspješno ažuriran",
   "marketChangeStatusFail": "Greška prilikom ažuriranja statusa pijace",
   "marketUpdateSuccess": "Pijaca uspješno ažurirana",
-  "marketUpdateFail":  "Greška pri ažuriranju pijace"
+  "marketUpdateFail":  "Greška pri ažuriranju pijace",
+  "errorWhileLogin": "Greška prilikom prijavljivanja"
 }
