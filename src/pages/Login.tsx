@@ -1,8 +1,8 @@
 import { VStack, Flex, Text, Box, useBreakpointValue } from "@chakra-ui/react";
-import Navbar from "../components/Common/Navbar";
 import Footer from "../components/Common/Footer";
 import LoginForm from "../components/Auth/LoginForm";
 import { useTranslation } from "react-i18next";
+import NavbarAdmin from "../components/Common/NavbarAdmin";
 
 const Login = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
@@ -12,7 +12,7 @@ const Login = () => {
   return (
     <Flex minHeight="100vh" flexDirection="column">
       <VStack flex="1" p={5}>
-        <Navbar />
+        <NavbarAdmin />
         <Flex
           direction={flexDirection}
           p={isSmallerScreen ? "0" : "28"}

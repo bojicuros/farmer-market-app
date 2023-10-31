@@ -6,12 +6,12 @@ import {
   useBreakpointValue,
   Link,
 } from "@chakra-ui/react";
-import Navbar from "../components/Common/Navbar";
 import Footer from "../components/Common/Footer";
 import RegistrationForm from "../components/Auth/RegistrationForm";
 import { useState } from "react";
 import EmailConfirmCodeForm from "../components/Auth/EmailConfirmCodeForm";
 import { useTranslation } from "react-i18next";
+import NavbarAdmin from "../components/Common/NavbarAdmin";
 
 const Register = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
@@ -24,14 +24,15 @@ const Register = () => {
 
   return (
     <Flex minHeight="100vh" flexDirection="column">
-      <VStack flex="1" p={5}>
-        <Navbar />
+      <VStack flex="1" p={5} mb={"-8"}>
+        <NavbarAdmin />
         <Flex
           direction={flexDirection}
           p={isSmallerScreen ? "0" : "28"}
           alignSelf="center"
           justifyContent={"space-between"}
           minW={"100%"}
+          mb={"-8"}
         >
           <Box mt={isSmallerScreen ? "16" : "0"} position="relative">
             <Text fontSize="3xl" fontWeight="semibold">
