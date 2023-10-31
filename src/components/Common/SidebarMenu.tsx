@@ -18,7 +18,7 @@ import { FaShoppingBasket, FaStore } from "react-icons/fa";
 import { FiHome, FiSettings, FiMenu } from "react-icons/fi";
 import { AiOutlineCheckCircle, AiFillDollarCircle } from "react-icons/ai";
 import { MenuItems, UserRoles } from "../../util/enums";
-import { Auth, AuthUser } from "../../context/AuthContext";
+import { Auth, AuthUser, UserInfo } from "../../context/AuthContext";
 import { useTranslation } from "react-i18next";
 
 type SidebarMenuProps = {
@@ -28,6 +28,7 @@ type SidebarMenuProps = {
   setIsSidebarCollapsed: (arg0: boolean) => void;
   user: AuthUser;
   setAuth: (auth: Auth | null) => void;
+  userInfo: UserInfo | null;
 };
 
 const SidebarMenu = ({
@@ -37,6 +38,7 @@ const SidebarMenu = ({
   setActiveItem,
   user,
   setAuth,
+  userInfo,
 }: SidebarMenuProps) => {
   const navigate = useNavigate();
 
@@ -51,10 +53,10 @@ const SidebarMenu = ({
     if (user.roles.includes(UserRoles.Admin)) {
       setActiveItem(MenuItems.Dashboard);
     } else {
-      if (!user.is_confirmed) setActiveItem(MenuItems.EmailConfirmation);
+      if (!userInfo?.confirmed) setActiveItem(MenuItems.EmailConfirmation);
       else setActiveItem(MenuItems.Prices);
     }
-  }, [user.roles, user.is_confirmed, setActiveItem]);
+  }, [user.roles, userInfo, setActiveItem]);
 
   const handleNavItemClick = (itemTitle: string) => {
     setActiveItem(itemTitle);
@@ -142,7 +144,7 @@ const SidebarMenu = ({
 
   const MenuOptions = (
     <>
-      {!user.is_confirmed && (
+      {!userInfo?.confirmed && (
         <NavItem
           icon={AiOutlineCheckCircle}
           title={t("emailConfirmation")}
@@ -150,7 +152,7 @@ const SidebarMenu = ({
           onClick={() => handleNavItemClick("Email confirmation")}
         />
       )}
-      {user.is_approved && user.is_confirmed && (
+      {userInfo?.is_active && userInfo?.confirmed && (
         <>
           {user.roles.includes(UserRoles.Admin) &&
             user.roles.includes(UserRoles.Vendor) && (
@@ -202,7 +204,7 @@ const SidebarMenu = ({
               size="sm"
               color={colorMode === "light" ? "gray.100" : "black"}
             >
-              {user.name}
+              {userInfo?.first_name} {userInfo?.last_name}
             </Heading>
             <Text color={colorMode === "light" ? "gray.200" : "black"}>
               {user.roles.length === 2

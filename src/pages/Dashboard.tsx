@@ -1,22 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../components/Common/Sidebar";
 import EmployeeTable from "../components/User/EmployeeTable";
 import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
 import { MenuItems } from "../util/enums";
 import useAuth from "../hooks/useAuth";
-import { AuthUser } from "../context/AuthContext";
+import { AuthUser, UserInfo } from "../context/AuthContext";
 import EmailConfirmation from "../components/Auth/EmailConfirmation";
 import DashboardView from "../components/User/DashboardView";
 import MarketTable from "../components/User/MarketTable";
 import UserProfile from "../components/User/UserProfile";
 import PriceAnalytic from "../components/User/PriceAnalytic";
 import ProductInfoTable from "../components/User/ProductInfoTable";
+import axios, { API_URL } from "../config/general";
 
 const Dashboard = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const [activeItem, setActiveItem] = useState("");
   const { auth, setAuth } = useAuth();
   const user = auth?.user as AuthUser;
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get(
+          `${API_URL}/users/get-by-id?id=${user?.userId}`
+        );
+        if (response.status === 200) {
+          const fetchedInfo = response.data as UserInfo;
+          setUserInfo(fetchedInfo);
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, [user?.userId]);
 
   return (
     <Flex
@@ -29,6 +49,7 @@ const Dashboard = () => {
         setActiveItem={setActiveItem}
         user={user}
         setAuth={setAuth}
+        userInfo={userInfo}
       />
       <Box
         h={isSmallerScreen ? undefined : "95vh"}
@@ -46,7 +67,7 @@ const Dashboard = () => {
             case MenuItems.Confirmations:
               return <EmployeeTable areConfirmed={false} />;
             case MenuItems.EmailConfirmation:
-              return <EmailConfirmation user={user} />;
+              return <EmailConfirmation user={user} userInfo={userInfo} />;
             case MenuItems.Dashboard:
               return <DashboardView />;
             case MenuItems.ManageMarkets:
