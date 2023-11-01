@@ -83,8 +83,6 @@ const AddProductForm = ({
         productData
       );
 
-      console.log(response);
-
       if (response.status === 200)
         handleOpenNotification(true, t("productAddSuccess"));
       else handleOpenNotification(false, t("productAddFail"));
