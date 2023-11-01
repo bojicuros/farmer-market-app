@@ -11,6 +11,7 @@ import {
 import { useParams } from "react-router-dom";
 import axios, { API_URL } from "../../config/general";
 import { useTranslation } from "react-i18next";
+import PopupNotification from "../Common/PopupNotification";
 
 type SearchRecord = {
   type: string;
@@ -24,6 +25,16 @@ const Search = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { t } = useTranslation();
 
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  const handleOpenNotification = (success: boolean, message: string) => {
+    setIsSuccess(success);
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  };
+
   useEffect(() => {
     if (query) {
       const fetchSearchResults = async () => {
@@ -33,7 +44,7 @@ const Search = () => {
           );
           setSearchResults(response.data);
         } catch (error) {
-          console.log("Error while searching");
+          handleOpenNotification(false, "Error while searching");
         }
       };
       fetchSearchResults();
@@ -111,6 +122,12 @@ const Search = () => {
           </Text>
         </Flex>
       )}
+      <PopupNotification
+        isOpen={notificationOpen}
+        onClose={() => setNotificationOpen(false)}
+        isSuccess={isSuccess}
+        message={notificationMessage}
+      />
     </Flex>
   );
 };
