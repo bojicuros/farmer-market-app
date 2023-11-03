@@ -23,7 +23,6 @@ import AddProductForm from "./AddProductForm";
 export type ProductInfo = {
   id: string;
   name: string;
-  description: string;
   unit_of_measurement: string;
   created_at: string;
 };
@@ -61,7 +60,6 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
 
   const captionsProducts = [
     t("product"),
-    t("description"),
     t("unit"),
     t("addedAt"),
     "",
@@ -76,7 +74,7 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
   ];
   const captions = editingPrices ? captionsPrices : captionsProducts;
 
-  const [marketId, setMarketId] = useState(null);
+  // const [marketId, setMarketId] = useState(null);
 
   const handleChildAction = () => {
     setTimeout(() => {
@@ -84,31 +82,31 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
     }, 1500);
   };
 
-  const fetchUsersMarket = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `${API_URL}/users/get-vendors-market?id=${user.userId}`
-      );
-      const fetchedMarket = response.data;
-      if (fetchedMarket) {
-        setMarketId(fetchedMarket[0].market_id);
-      }
-    } catch (error) {
-      handleOpenNotification(false, "Error while detecting vendors market");
-    }
-  }, [setMarketId, user]);
+  // const fetchUsersMarket = useCallback(async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${API_URL}/users/get-vendors-market?id=${user.userId}`
+  //     );
+  //     const fetchedMarket = response.data;
+  //     if (fetchedMarket) {
+  //       setMarketId(fetchedMarket[0].market_id);
+  //     }
+  //   } catch (error) {
+  //     handleOpenNotification(false, "Error while detecting vendors market");
+  //   }
+  // }, [setMarketId, user]);
 
-  useEffect(() => {
-    fetchUsersMarket();
-  }, [fetchUsersMarket]);
+  // useEffect(() => {
+  //   fetchUsersMarket();
+  // }, [fetchUsersMarket]);
 
   const [productData, setProductData] = useState<ProductInfo[] | null>(null);
 
   const fetchProducts = useCallback(async () => {
-    if (!editingPrices && marketId) {
+    if (!editingPrices) {
       try {
         const response = await axios.get(
-          `${API_URL}/products/get-products?market_id=${marketId}`
+          `${API_URL}/products/get-all-products`
         );
         const fetchedProducts = response.data;
         if (fetchedProducts) {
@@ -118,35 +116,35 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
         handleOpenNotification(false, "Error while fetching products");
       }
     }
-  }, [setProductData, marketId, editingPrices]);
+  }, [setProductData, editingPrices]);
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts, refresh]);
 
-  const [productPriceData, setProductPriceData] = useState<
-    ProductPriceInfo[] | null
-  >(null);
+  // const [productPriceData, setProductPriceData] = useState<
+  //   ProductPriceInfo[] | null
+  // >(null);
 
-  const fetchProductPrices = useCallback(async () => {
-    if (editingPrices && marketId) {
-      try {
-        const response = await axios.get(
-          `${API_URL}/products/get-product-prices?market_id=${marketId}`
-        );
-        const fetchedProductPrices = response.data;
-        if (fetchedProductPrices) {
-          setProductPriceData(fetchedProductPrices);
-        }
-      } catch (error) {
-        handleOpenNotification(false, "Error while fetching product prices");
-      }
-    }
-  }, [setProductPriceData, marketId, editingPrices]);
+  // const fetchProductPrices = useCallback(async () => {
+  //   if (editingPrices && marketId) {
+  //     try {
+  //       const response = await axios.get(
+  //         `${API_URL}/products/get-product-prices?market_id=${marketId}`
+  //       );
+  //       const fetchedProductPrices = response.data;
+  //       if (fetchedProductPrices) {
+  //         setProductPriceData(fetchedProductPrices);
+  //       }
+  //     } catch (error) {
+  //       handleOpenNotification(false, "Error while fetching product prices");
+  //     }
+  //   }
+  // }, [setProductPriceData, marketId, editingPrices]);
 
-  useEffect(() => {
-    fetchProductPrices();
-  }, [fetchProductPrices, refresh]);
+  // useEffect(() => {
+  //   fetchProductPrices();
+  // }, [fetchProductPrices, refresh]);
 
   const showAddingProductForm = () => {
     setIsAddingProductActive(true);
@@ -207,14 +205,13 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
                       key={`${row.id}`}
                       id={row.id}
                       name={row.name}
-                      description={row.description}
                       unit_of_measurement={row.unit_of_measurement}
                       created_at={row.created_at}
                       onChildAction={handleChildAction}
                     />
                   );
                 })}
-              {editingPrices &&
+              {/* {editingPrices &&
                 productPriceData &&
                 productPriceData.map((row: ProductPriceInfo) => {
                   return (
@@ -228,7 +225,7 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
                       onChildAction={handleChildAction}
                     />
                   );
-                })}
+                })} */}
             </Tbody>
           </Table>
         </Box>
@@ -237,6 +234,7 @@ const ProductInfoTable = ({ editingPrices, user }: ProductInfoTableProps) => {
         isOpen={isAddingProductActive}
         close={hideAddingProductForm}
         handleOpenNotification={handleOpenNotification}
+        onChildAction={handleChildAction}
       ></AddProductForm>
       <PopupNotification
         isOpen={notificationOpen}

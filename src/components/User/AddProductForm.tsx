@@ -9,30 +9,32 @@ import {
   AlertDialogFooter,
   Button,
   Input,
-  Textarea,
   VStack,
   useColorMode,
   Text,
+  Select,
 } from "@chakra-ui/react";
 import axios, { API_URL } from "../../config/general";
 import { useTranslation } from "react-i18next";
+import { MeasureUnits } from "../../util/enums";
 
 type AddProductFormProps = {
   isOpen: boolean;
   close: () => void;
   handleOpenNotification: (success: boolean, message: string) => void;
+  onChildAction: () => void;
 };
 
 const AddProductForm = ({
   isOpen,
   close,
   handleOpenNotification,
+  onChildAction,
 }: AddProductFormProps) => {
   const { colorMode } = useColorMode();
 
   const [formData, setFormData] = useState({
     name: "",
-    description: "",
     unitOfMeasurement: "",
     error: "",
   });
@@ -53,7 +55,6 @@ const AddProductForm = ({
   const handleCloseForm = () => {
     setFormData({
       name: "",
-      description: "",
       unitOfMeasurement: "",
       error: "",
     });
@@ -65,27 +66,15 @@ const AddProductForm = ({
 
   const addProduct = async () => {
     try {
-      const productData: {
-        name: string;
-        unit_of_measurement: string;
-        description?: string;
-      } = {
+      const response = await axios.post(`${API_URL}/products/add-new-product`, {
         name: formData.name,
         unit_of_measurement: formData.unitOfMeasurement,
-      };
+      });
 
-      if (formData.description) {
-        productData.description = formData.description;
-      }
-
-      const response = await axios.post(
-        `${API_URL}/products/add-new-product`,
-        productData
-      );
-
-      if (response.status === 200)
+      if (response.status === 201) {
         handleOpenNotification(true, t("productAddSuccess"));
-      else handleOpenNotification(false, t("productAddFail"));
+        onChildAction();
+      } else handleOpenNotification(false, t("productAddFail"));
     } catch (e) {
       handleOpenNotification(false, t("productAddFail"));
     }
@@ -105,24 +94,17 @@ const AddProductForm = ({
         </AlertDialogHeader>
         <AlertDialogCloseButton />
         <AlertDialogBody>
-          <VStack spacing={5}>
+          <VStack spacing={5} align="left">
+            <Text> {t("productsName")}</Text>
             <Input
-              placeholder={`${t("product")} ${t("name")}`}
               value={formData.name}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
               required
             />
-            <Textarea
-              placeholder={t("descriptionOptional")}
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-            />
-            <Input
-              placeholder={t("measureUnit")}
+            <Text>{t("measureUnit")}</Text>
+            <Select
               value={formData.unitOfMeasurement}
               onChange={(e) =>
                 setFormData({
@@ -131,7 +113,15 @@ const AddProductForm = ({
                 })
               }
               required
-            ></Input>
+            >
+              <option value="">------</option>
+              {Object.values(MeasureUnits).map((unit) => (
+                <option key={unit} value={unit}>
+                  {unit}
+                </option>
+              ))}
+            </Select>
+
             <Text color={"red.400"}>{formData.error}</Text>
           </VStack>
         </AlertDialogBody>

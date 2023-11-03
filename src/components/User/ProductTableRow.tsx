@@ -3,6 +3,7 @@ import {
   Flex,
   Icon,
   Input,
+  Select,
   Td,
   Text,
   Tr,
@@ -16,6 +17,7 @@ import { format } from "date-fns";
 import { useState } from "react";
 import axios, { API_URL } from "../../config/general";
 import PopupNotification from "../Common/PopupNotification";
+import { MeasureUnits } from "../../util/enums";
 
 type OnChildAction = () => void;
 
@@ -26,7 +28,6 @@ type ProductTableRowProps = ProductInfo & {
 const ProductTableRow = ({
   id,
   name,
-  description,
   unit_of_measurement,
   created_at,
   onChildAction,
@@ -37,7 +38,6 @@ const ProductTableRow = ({
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(name);
-  const [editedDescription, setEditedDescription] = useState(description);
   const [editedUnitOfMeasurement, setEditedUnitOfMeasurement] =
     useState(unit_of_measurement);
 
@@ -55,7 +55,6 @@ const ProductTableRow = ({
     if (isEditing) {
       if (
         editedName !== name ||
-        editedDescription !== description ||
         editedUnitOfMeasurement !== unit_of_measurement
       )
         updateProductInfo();
@@ -75,7 +74,7 @@ const ProductTableRow = ({
       const response = await axios.delete(
         `${API_URL}/products/delete-product?id=${id}`
       );
-      if (response.status === 200) {
+      if (response.status === 204) {
         handleOpenNotification(true, t("productDeleteSuccess"));
         onChildAction();
       } else handleOpenNotification(false, t("productDeleteFail"));
@@ -89,7 +88,6 @@ const ProductTableRow = ({
       const response = await axios.put(`${API_URL}/products/update-product`, {
         id: id,
         name: editedName,
-        description: editedDescription,
         unit_of_measurement: editedUnitOfMeasurement,
       });
       if (response.status === 200) {
@@ -140,29 +138,7 @@ const ProductTableRow = ({
 
       <Td>
         {isEditing ? (
-          <Input
-            type="text"
-            fontSize="md"
-            color={textColor}
-            fontWeight="bold"
-            textAlign={"start"}
-            maxW={"200ox"}
-            value={editedDescription}
-            onChange={(e) => setEditedDescription(e.target.value)}
-            ml={"-4"}
-            mt={"-2"}
-          />
-        ) : (
-          <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-            {description}
-          </Text>
-        )}
-      </Td>
-
-      <Td>
-        {isEditing ? (
-          <Input
-            type="text"
+          <Select
             fontSize="md"
             color={textColor}
             fontWeight="bold"
@@ -172,7 +148,13 @@ const ProductTableRow = ({
             onChange={(e) => setEditedUnitOfMeasurement(e.target.value)}
             ml={"-4"}
             mt={"-2"}
-          />
+          >
+            {Object.values(MeasureUnits).map((unit) => (
+              <option key={unit} value={unit}>
+                {unit}
+              </option>
+            ))}
+          </Select>
         ) : (
           <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
             {unit_of_measurement}
