@@ -128,13 +128,14 @@
   "productUpdateFail": "Error while updating product",
   "productAddSuccess": "Product successfully added",
   "productAddFail": "Error while adding product",
-  "nameAndUnitNotEntered" : "Name and unit of measurement are required.",
+  "nameAndUnitNotEntered": "Name and unit of measurement are required.",
   "addNewProduct": "Add new product",
   "descriptionOptional": "Description (optional)",
   "addProduct": "Add product",
   "marketChangeStatusSuccessful": "Market status successfully changed",
   "marketChangeStatusFail": "Error while changing market status",
   "marketUpdateSuccess": "Market successfully updated",
-  "marketUpdateFail":  "Error while updating market",
-  "errorWhileLogin": "Error while logging in"
+  "marketUpdateFail": "Error while updating market",
+  "errorWhileLogin": "Error while logging in",
+  "vendorProducts": "Your products"
 }
