@@ -99,16 +99,16 @@ const SidebarMenu = ({
         onClick={() => handleNavItemClick(MenuItems.Dashboard)}
       />
       <NavItem
-        icon={IoAnalyticsOutline}
-        title={t("priceAnalytic")}
-        active={activeItem === MenuItems.PriceAnalytic}
-        onClick={() => handleNavItemClick(MenuItems.PriceAnalytic)}
-      />
-      <NavItem
         icon={AiOutlineCheckCircle}
         title={t("confirmations")}
         active={activeItem === MenuItems.Confirmations}
         onClick={() => handleNavItemClick(MenuItems.Confirmations)}
+      />
+      <NavItem
+        icon={BsPeopleFill}
+        title={t("manageEmployees")}
+        active={activeItem === MenuItems.ManageEmployees}
+        onClick={() => handleNavItemClick(MenuItems.ManageEmployees)}
       />
       <NavItem
         icon={FaStore}
@@ -117,10 +117,10 @@ const SidebarMenu = ({
         onClick={() => handleNavItemClick(MenuItems.ManageMarkets)}
       />
       <NavItem
-        icon={BsPeopleFill}
-        title={t("manageEmployees")}
-        active={activeItem === MenuItems.ManageEmployees}
-        onClick={() => handleNavItemClick(MenuItems.ManageEmployees)}
+        icon={FaShoppingBasket}
+        title={t("products")}
+        active={activeItem === MenuItems.Products}
+        onClick={() => handleNavItemClick(MenuItems.Products)}
       />
     </>
   );
@@ -130,14 +130,20 @@ const SidebarMenu = ({
       <NavItem
         icon={AiFillDollarCircle}
         title={t("prices")}
-        active={activeItem === "Prices"}
-        onClick={() => handleNavItemClick("Prices")}
+        active={activeItem === MenuItems.Prices}
+        onClick={() => handleNavItemClick(MenuItems.Prices)}
+      />
+      <NavItem
+        icon={IoAnalyticsOutline}
+        title={t("priceAnalytic")}
+        active={activeItem === MenuItems.PriceAnalytic}
+        onClick={() => handleNavItemClick(MenuItems.PriceAnalytic)}
       />
       <NavItem
         icon={FaShoppingBasket}
-        title={t("products")}
-        active={activeItem === "Products"}
-        onClick={() => handleNavItemClick("Products")}
+        title={t("vendorProducts")}
+        active={activeItem === MenuItems.YourProducts}
+        onClick={() => handleNavItemClick(MenuItems.YourProducts)}
       />
     </>
   );
@@ -148,8 +154,8 @@ const SidebarMenu = ({
         <NavItem
           icon={AiOutlineCheckCircle}
           title={t("emailConfirmation")}
-          active={activeItem === "Email confirmation"}
-          onClick={() => handleNavItemClick("Email confirmation")}
+          active={activeItem === MenuItems.EmailConfirmation}
+          onClick={() => handleNavItemClick(MenuItems.EmailConfirmation)}
         />
       )}
       {userInfo?.is_active && userInfo?.confirmed && (
@@ -236,6 +242,7 @@ const SidebarMenu = ({
           py={2}
           color={colorMode === "light" ? "gray.100" : "black"}
           mb="-10"
+          bg="blue"
         >
           <FiMenu size={24} onClick={toggleSidebar} cursor="pointer" />
         </Flex>
