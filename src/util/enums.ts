@@ -13,6 +13,7 @@ export enum MenuItems {
     ManageEmployees = "Manage Employees",
     Prices = "Prices",
     Products = "Products",
+    YourProducts = "Your Products",
     EmailConfirmation = "Email confirmation",
     Settings = "Settings",
   }

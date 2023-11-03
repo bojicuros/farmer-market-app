@@ -135,13 +135,14 @@
   "productUpdateFail": "Greška pri ažuriranju proizvoda",
   "productAddSuccess": "Proizvod uspješno dodat",
   "productAddFail": "Greška pri dodavanju proizvoda",
-  "nameAndUnitNotEntered" : "Naziv i mjerna jedinica su obavezni",
+  "nameAndUnitNotEntered": "Naziv i mjerna jedinica su obavezni",
   "addNewProduct": "Dodaj novi proizvod",
   "descriptionOptional": "Opis (opciono)",
   "addProduct": "Dodaj proizvod",
   "marketChangeStatusSuccessful": "Status pijace uspješno ažuriran",
   "marketChangeStatusFail": "Greška prilikom ažuriranja statusa pijace",
   "marketUpdateSuccess": "Pijaca uspješno ažurirana",
-  "marketUpdateFail":  "Greška pri ažuriranju pijace",
-  "errorWhileLogin": "Greška prilikom prijavljivanja"
+  "marketUpdateFail": "Greška pri ažuriranju pijace",
+  "errorWhileLogin": "Greška prilikom prijavljivanja",
+  "vendorProducts": "Vaši proizvodi"
 }
