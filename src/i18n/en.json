@@ -137,5 +137,12 @@
   "marketUpdateSuccess": "Market successfully updated",
   "marketUpdateFail": "Error while updating market",
   "errorWhileLogin": "Error while logging in",
-  "vendorProducts": "Your products"
+  "vendorProducts": "Your products",
+  "addMarket": "Add market",
+  "marketCreateSuccess": "Market created successfully",
+  "marketCreateFail": "Error creating market",
+  "marketsName": "Markets name",
+  "marketsAddress": "Markets address",
+  "nameAndAddressNotEntered": "Name and address are required.",
+  "productsName": "Name of product"
 }

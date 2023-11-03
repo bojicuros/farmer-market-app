@@ -144,5 +144,12 @@
   "marketUpdateSuccess": "Pijaca uspješno ažurirana",
   "marketUpdateFail": "Greška pri ažuriranju pijace",
   "errorWhileLogin": "Greška prilikom prijavljivanja",
-  "vendorProducts": "Vaši proizvodi"
+  "vendorProducts": "Vaši proizvodi",
+  "addMarket": "Dodaj pijacu",
+  "marketCreateSuccess": "Pijaca uspješno kreirana",
+  "marketCreateFail": "Greška pri kreiranju pijace",
+  "marketsName": "Naziv pijace",
+  "marketsAddress": "Adresa pijace",
+  "nameAndAddressNotEntered": "Naziv i adresa su obavezni.",
+  "productsName": "Naziv proizvoda"
 }
