@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   Table,
   Tbody,
@@ -7,12 +8,15 @@ import {
   Th,
   Thead,
   Tr,
+  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 import MarketTableRow from "./MarketTableRow";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
 import axios, { API_URL } from "../../config/general";
+import AddMarketForm from "./AddMarketForm";
+import PopupNotification from "../Common/PopupNotification";
 
 export type MarketInfo = {
   id: string;
@@ -24,10 +28,24 @@ export type MarketInfo = {
 
 const MarketTable = () => {
   const textColor = useColorModeValue("gray.700", "white");
+  const { colorMode } = useColorMode();
   const { t } = useTranslation();
   const captions = [t("market"), t("status"), t("openedAt"), ""];
+
   const [refresh, setRefresh] = useState(false);
   const [markets, setMarkets] = useState<MarketInfo[] | null>(null);
+  const [addingMarket, setAddingMarket] = useState(false);
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  const handleOpenNotification = (success: boolean, message: string) => {
+    setIsSuccess(success);
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  };
+
   const handleChildAction = () => {
     setTimeout(() => {
       setRefresh((prevRefresh) => !prevRefresh);
@@ -42,7 +60,7 @@ const MarketTable = () => {
         setMarkets(response.data);
       }
     } catch (error) {
-      console.error("Error fetching markets:", error);
+      handleOpenNotification(false, "Error fetching markets");
     }
   }, []);
 
@@ -50,14 +68,37 @@ const MarketTable = () => {
     fetchMarkets();
   }, [fetchMarkets, refresh]);
 
+  const showAddingMarketForm = () => {
+    setAddingMarket(true);
+  };
+
+  const hideAddingMarketForm = () => {
+    setAddingMarket(false);
+  };
+
   return (
     <Flex direction="column" pt={{ base: "40px", md: "20px" }}>
       <Box overflowX={{ sm: "scroll", xl: "hidden" }}>
-        <Box p="6px 0px 22px 0px">
+        <Flex
+          p="6px 0px 22px 0px"
+          align={"row"}
+          justifyContent={"space-between"}
+        >
           <Text fontSize="xl" color={textColor} fontWeight="bold">
             {t("marketsTable")}
           </Text>
-        </Box>
+          <Button
+            bg={colorMode === "light" ? "green.400" : "green.500"}
+            _hover={{
+              bg: colorMode === "light" ? "green.500" : "green.600",
+            }}
+            color={colorMode === "light" ? "white" : "gray.900"}
+            onClick={showAddingMarketForm}
+            mr={6}
+          >
+            {t("addMarket")}
+          </Button>
+        </Flex>
         <Box>
           <Table variant="simple" color={textColor}>
             <Thead>
@@ -93,6 +134,18 @@ const MarketTable = () => {
           </Table>
         </Box>
       </Box>
+      <AddMarketForm
+        isOpen={addingMarket}
+        close={hideAddingMarketForm}
+        handleOpenNotification={handleOpenNotification}
+        onChildAction={handleChildAction}
+      ></AddMarketForm>
+       <PopupNotification
+        isOpen={notificationOpen}
+        onClose={() => setNotificationOpen(false)}
+        isSuccess={isSuccess}
+        message={notificationMessage}
+      />
     </Flex>
   );
 };
