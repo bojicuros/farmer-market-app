@@ -15,9 +15,9 @@ import { ProductInfo } from "./ProductInfoTable";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { useState } from "react";
-import axios, { API_URL } from "../../config/general";
-import PopupNotification from "../Common/PopupNotification";
-import { MeasureUnits } from "../../util/enums";
+import axios, { API_URL } from "../../../config/general";
+import PopupNotification from "../../Common/PopupNotification";
+import { MeasureUnits } from "../../../util/enums";
 
 type OnChildAction = () => void;
 

@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/Common/Sidebar";
-import EmployeeTable from "../components/User/EmployeeTable";
+import EmployeeTable from "../components/User/Employees/EmployeeTable";
 import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
 import { MenuItems } from "../util/enums";
 import useAuth from "../hooks/useAuth";
 import { AuthUser, UserInfo } from "../context/AuthContext";
 import EmailConfirmation from "../components/Auth/EmailConfirmation";
-import DashboardView from "../components/User/DashboardView";
-import MarketTable from "../components/User/MarketTable";
-import UserProfile from "../components/User/UserProfile";
-import PriceAnalytic from "../components/User/PriceAnalytic";
-import ProductInfoTable from "../components/User/ProductInfoTable";
+import DashboardView from "../components/User/Dashboard/DashboardView";
+import MarketTable from "../components/User/Market/MarketTable";
+import UserProfile from "../components/User/Profile/UserProfile";
+import PriceAnalytic from "../components/User/Analytic/PriceAnalytic";
+import ProductInfoTable from "../components/User/Product/ProductInfoTable";
 import axios, { API_URL } from "../config/general";
 
 const Dashboard = () => {

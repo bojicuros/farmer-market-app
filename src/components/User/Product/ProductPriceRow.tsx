@@ -17,8 +17,8 @@ import { BsCashCoin } from "react-icons/bs";
 import { ProductPriceInfo } from "./ProductInfoTable";
 import { format } from "date-fns";
 import { useState } from "react";
-import axios, { API_URL } from "../../config/general";
-import PopupNotification from "../Common/PopupNotification";
+import axios, { API_URL } from "../../../config/general";
+import PopupNotification from "../../Common/PopupNotification";
 
 type OnChildAction = () => void;
 

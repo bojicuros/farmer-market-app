@@ -14,9 +14,9 @@ import {
 import MarketTableRow from "./MarketTableRow";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
-import axios, { API_URL } from "../../config/general";
+import axios, { API_URL } from "../../../config/general";
 import AddMarketForm from "./AddMarketForm";
-import PopupNotification from "../Common/PopupNotification";
+import PopupNotification from "../../Common/PopupNotification";
 
 export type MarketInfo = {
   id: string;

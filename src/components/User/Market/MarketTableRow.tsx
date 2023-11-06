@@ -13,8 +13,8 @@ import {
 import { BiStore } from "react-icons/bi";
 import { MarketInfo } from "./MarketTable";
 import { useTranslation } from "react-i18next";
-import axios, { API_URL } from "../../config/general";
-import PopupNotification from "../Common/PopupNotification";
+import axios, { API_URL } from "../../../config/general";
+import PopupNotification from "../../Common/PopupNotification";
 import { useState } from "react";
 import { format } from "date-fns";
 

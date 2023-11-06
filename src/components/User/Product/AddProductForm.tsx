@@ -14,9 +14,9 @@ import {
   Text,
   Select,
 } from "@chakra-ui/react";
-import axios, { API_URL } from "../../config/general";
+import axios, { API_URL } from "../../../config/general";
 import { useTranslation } from "react-i18next";
-import { MeasureUnits } from "../../util/enums";
+import { MeasureUnits } from "../../../util/enums";
 
 type AddProductFormProps = {
   isOpen: boolean;
