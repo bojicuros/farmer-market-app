@@ -13,7 +13,7 @@ import {
   useColorMode,
   Text,
 } from "@chakra-ui/react";
-import axios, { API_URL } from "../../config/general";
+import axios, { API_URL } from "../../../config/general";
 import { useTranslation } from "react-i18next";
 
 const DEFAULT_IMAGE =

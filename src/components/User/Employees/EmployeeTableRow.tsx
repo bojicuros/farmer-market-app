@@ -10,7 +10,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { FaUserCircle } from "react-icons/fa";
-import { UserRoles } from "../../util/enums";
+import { UserRoles } from "../../../util/enums";
 import { EmployeeInfo } from "./EmployeeTable";
 import { useTranslation } from "react-i18next";
 

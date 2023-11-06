@@ -13,11 +13,11 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import ProductTableRow from "./ProductTableRow";
-import ProductPriceRow from "./ProducePriceRow";
+import ProductPriceRow from "./ProductPriceRow";
 import { useTranslation } from "react-i18next";
-import axios, { API_URL } from "../../config/general";
-import { AuthUser } from "../../context/AuthContext";
-import PopupNotification from "../Common/PopupNotification";
+import axios, { API_URL } from "../../../config/general";
+import { AuthUser } from "../../../context/AuthContext";
+import PopupNotification from "../../Common/PopupNotification";
 import AddProductForm from "./AddProductForm";
 
 export type ProductInfo = {

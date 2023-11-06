@@ -11,9 +11,9 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { AuthUser } from "../../context/AuthContext";
-import axios, { API_URL } from "../../config/general";
-import PopupNotification from "../Common/PopupNotification";
+import { AuthUser } from "../../../context/AuthContext";
+import axios, { API_URL } from "../../../config/general";
+import PopupNotification from "../../Common/PopupNotification";
 
 type UserProfileProps = {
   user: AuthUser;

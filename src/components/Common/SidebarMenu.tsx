@@ -8,7 +8,7 @@ import {
   useMediaQuery,
   Box,
 } from "@chakra-ui/react";
-import NavItem from "../Nav/NavItem";
+import NavItem from "./NavItem";
 import { BiLogOut } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import { BsPeopleFill } from "react-icons/bs";
