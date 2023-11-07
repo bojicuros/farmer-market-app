@@ -12,19 +12,25 @@ import {
 import EmployeeTableRow from "./EmployeeTableRow";
 import UnconfirmedEmployeeRow from "./UnconfirmedEmployeeRow";
 import { useTranslation } from "react-i18next";
+import { useCallback, useEffect, useState } from "react";
+import axios, { API_URL } from "../../../config/general";
+import PopupNotification from "../../Common/PopupNotification";
 
 export type EmployeeInfo = {
+  id: string;
   email: string;
   name: string;
-  role: string;
+  role: string[];
+  markets: string[];
   active: boolean;
-  date: string;
 };
 
 export type UnconfirmedEmployeeInfo = {
+  id: string;
   email: string;
   name: string;
   date: string;
+  markets: string[];
 };
 
 type EmployeeTableProps = {
@@ -38,77 +44,77 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
     t("employee"),
     t("function"),
     t("status"),
-    t("employedAt"),
+    t("markets"),
     "",
   ];
-  const captionsUnconfirmed = [t("vendorInfo"), t("singedIn"), "", ""];
-  const captions = areConfirmed ? captionsConfirmed : captionsUnconfirmed;
-
-  const employeesData = [
-    {
-      name: "Marko Markovic",
-      email: "marko@example.com",
-      role: "Admin",
-      active: true,
-      date: "14/06/21",
-    },
-    {
-      name: "Janko Jankovic",
-      email: "janko@example.com",
-      role: "Vendor",
-      active: true,
-      date: "12/05/21",
-    },
-    {
-      name: "Ana Ilic",
-      email: "ana@example.com",
-      role: "Admin",
-      active: true,
-      date: "07/06/21",
-    },
-    {
-      name: "Aleksandar Obradovic",
-      email: "aleksandar@example.com",
-      role: "Admin, Vendor",
-      active: true,
-      date: "14/11/21",
-    },
-    {
-      name: "Danijel Tomic",
-      email: "danijel@example.com",
-      role: "Vendor",
-      active: false,
-      date: "21/01/21",
-    },
-    {
-      name: "Bojana Jerkovic",
-      email: "bojana@example.com",
-      role: "Admin, Vendor",
-      active: true,
-      date: "04/09/20",
-    },
-    {
-      name: "Dani Tomic",
-      email: "danijel@example.com",
-      role: "Vendor",
-      active: false,
-      date: "21/01/21",
-    },
-    {
-      name: "Boki Jerkovic",
-      email: "bojana@example.com",
-      role: "Admin, Vendor",
-      active: true,
-      date: "04/09/20",
-    },
+  const captionsUnconfirmed = [
+    t("vendorInfo"),
+    t("markets"),
+    t("singedIn"),
+    "",
+    "",
   ];
+  const captions = areConfirmed ? captionsConfirmed : captionsUnconfirmed;
+  const [refresh, setRefresh] = useState(false);
+
+  const [employees, setEmployees] = useState<EmployeeInfo[] | null>(null);
+  const [unconfirmedEmployees, setUnconfirmedEmployees] = useState<
+    UnconfirmedEmployeeInfo[] | null
+  >(null);
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  const handleOpenNotification = (success: boolean, message: string) => {
+    setIsSuccess(success);
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  };
+
+  const handleChildAction = () => {
+    setTimeout(() => {
+      setRefresh((prevRefresh) => !prevRefresh);
+    }, 1500);
+  };
+
+  const fetchEmployees = useCallback(async () => {
+    try {
+      const response = await axios.get(`${API_URL}/users/get-all-approved`);
+
+      if (response.status === 200) setEmployees(response.data);
+      else handleOpenNotification(false, "Error fetching employees");
+    } catch (error) {
+      handleOpenNotification(false, "Error fetching employees");
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchEmployees();
+  }, [fetchEmployees, refresh]);
+
+  const fetchUnconfirmedEmployees = useCallback(async () => {
+    try {
+      const response = await axios.get(`${API_URL}/users/get-all-unapproved`);
+
+      if (response.status === 200) setUnconfirmedEmployees(response.data);
+      else
+        handleOpenNotification(false, "Error fetching unconfirmed employees");
+    } catch (error) {
+      handleOpenNotification(false, "Error fetching unconfirmed employees");
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUnconfirmedEmployees();
+  }, [fetchUnconfirmedEmployees, refresh]);
 
   return (
     <Flex direction="column" pt={{ base: "40px", md: "20px" }}>
       <Box overflowX={{ sm: "scroll", xl: "hidden" }}>
         <Box p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">
-            {areConfirmed ? t("employeesTable"): t("unconfirmedRequests")}
+            {areConfirmed ? t("employeesTable") : t("unconfirmedRequests")}
           </Text>
         </Box>
         <Box>
@@ -129,33 +135,46 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
               </Tr>
             </Thead>
             <Tbody>
-              {employeesData.map((row: EmployeeInfo) => {
-                if (areConfirmed) {
-                  return (
-                    <EmployeeTableRow
-                      key={`${row.email}-${row.name}`}
-                      name={row.name}
-                      email={row.email}
-                      role={row.role}
-                      active={row.active}
-                      date={row.date}
-                    />
-                  );
-                } else {
-                  return (
-                    <UnconfirmedEmployeeRow
-                      key={`${row.email}-${row.name}`}
-                      name={row.name}
-                      email={row.email}
-                      date={row.date}
-                    />
-                  );
-                }
-              })}
+            {areConfirmed
+                ? employees?.map((row: EmployeeInfo) => {
+                    return (
+                      <EmployeeTableRow
+                        key={row.id}
+                        name={row.name}
+                        id={row.id}
+                        email={row.email}
+                        role={row.role}
+                        active={row.active}
+                        markets={row.markets}
+                        onChildAction={handleChildAction}
+                        handleOpenNotification={handleOpenNotification}
+                      />
+                    );
+                  })
+                : unconfirmedEmployees?.map((row: UnconfirmedEmployeeInfo) => {
+                    return (
+                      <UnconfirmedEmployeeRow
+                        key={row.id}
+                        id={row.id}
+                        name={row.name}
+                        email={row.email}
+                        date={row.date}
+                        markets={row.markets}
+                        onChildAction={handleChildAction}
+                        handleOpenNotification={handleOpenNotification}
+                      />
+                    );
+                  })}
             </Tbody>
           </Table>
         </Box>
       </Box>
+      <PopupNotification
+        isOpen={notificationOpen}
+        onClose={() => setNotificationOpen(false)}
+        isSuccess={isSuccess}
+        message={notificationMessage}
+      />
     </Flex>
   );
 };
