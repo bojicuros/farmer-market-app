@@ -144,5 +144,15 @@
   "marketsName": "Markets name",
   "marketsAddress": "Markets address",
   "nameAndAddressNotEntered": "Name and address are required.",
-  "productsName": "Name of product"
+  "productsName": "Name of product",
+  "markets": "Markets",
+  "employeeApproveSuccessful": "Employee approved successfully",
+  "employeeApproveFail": "Error approving employee",
+  "employeeRejectSuccessful": "Employee rejected successfully",
+  "employeeRejectFail": "Error rejecting employee",
+  "employeeChangeStatusSuccessful": "Employee status successfully changed",
+  "employeeChangeStatusFail": "Error while changing employee status",
+  "errorFetchingMarkets": "Error fetching markets",
+  "employeeInfoUpdateSuccessful": "Employee information successfully updated",
+  "employeeInfoUpdateFail": "Employee information update failed"
 }
