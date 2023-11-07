@@ -56,7 +56,8 @@ const LoginForm = () => {
         const user = jwt_decode(token) as AuthUser;
         setAuth({ accessToken: token, user: user });
         const userInfo = await fetchUserInfo(user);
-        if (!userInfo?.is_active) navigate("/unauthorized");
+        if (!userInfo?.is_active || !userInfo.is_approved)
+          navigate("/unauthorized");
         else navigate("/dashboard");
       }
       handleOpenNotification(false, t("errorWhileLogin"));
