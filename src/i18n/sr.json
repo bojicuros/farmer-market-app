@@ -153,7 +153,7 @@
   "nameAndAddressNotEntered": "Naziv i adresa su obavezni.",
   "productsName": "Naziv proizvoda",
   "markets": "Pijace",
-  "employeeApproveSuccessful": "Zaposleni uspješno odobred",
+  "employeeApproveSuccessful": "Zaposleni uspješno odobren",
   "employeeApproveFail": "Greška prilikom odobravanja zaposlenog",
   "employeeRejectSuccessful": "Zaposleni uspješno odbijen",
   "employeeRejectFail":  "Greška prilikom odbijanja zaposlenog",
@@ -161,5 +161,12 @@
   "employeeChangeStatusFail":  "Greška prilikom ažuriranja statusa zaposlenog",
   "errorFetchingMarkets": "Greška pri učitavanju pijaca",
   "employeeInfoUpdateSuccessful": "Podaci o zasposlenom uspješno ažurirani",
-  "employeeInfoUpdateFail": "Greška pri ažuriranju podataka zaposlenog"
+  "employeeInfoUpdateFail": "Greška pri ažuriranju podataka zaposlenog",
+  "removeFromYourProducts": "Uklonite iz vaših proizvoda",
+  "productSuccessfullyRemoved": "Proizvod uspješno uklonjen",
+  "productRemovingFailed": "Greška prilikom uklanjanja proizvoda",
+  "addProducts": "Dodavanje proizvoda",
+  "addToYourProducts": "Dodaj proizvod",
+  "productSuccessfullyAdded": "Proizvod uspješno dodat",
+  "productAddingFailed": "Dodavanje proizvoda nije uspijelo"
 }
