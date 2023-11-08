@@ -12,6 +12,7 @@ import UserProfile from "../components/User/Profile/UserProfile";
 import PriceAnalytic from "../components/User/Analytic/PriceAnalytic";
 import ProductInfoTable from "../components/User/Product/ProductInfoTable";
 import axios, { API_URL } from "../config/general";
+import PriceTable from "../components/User/Prices/PriceTable";
 
 const Dashboard = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
@@ -80,6 +81,8 @@ const Dashboard = () => {
               return <ProductInfoTable areProductsVendors={false} user={user} />;
             case MenuItems.YourProducts:
               return <ProductInfoTable areProductsVendors={true} user={user} />;
+            case MenuItems.Prices:
+              return <PriceTable user={user} />;
             default:
               return null;
           }
