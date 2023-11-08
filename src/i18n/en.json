@@ -120,7 +120,7 @@
   "errorEmailCheck": "Error while checking email",
   "clear": "Clear",
   "delete": "Delete",
-  "priceUpdateSuccess": "Price successfully added",
+  "priceUpdateSuccess": "Price successfully updated",
   "priceUpdateFail": "Price update failed",
   "productDeleteSuccess": "Products successfully deleted",
   "productDeleteFail": "Error while deleting product",
@@ -161,5 +161,9 @@
   "addProducts": "Add products",
   "addToYourProducts": "Add product",
   "productSuccessfullyAdded": "Product successfully added",
-  "productAddingFailed": "Product adding failed"
+  "productAddingFailed": "Product adding failed",
+  "priceAddingSuccess": "Price added successfully",
+  "priceAddingFail": "Error while adding price",
+  "addTodaysPrices": "Add todays prices",
+  "editPrices": "Edit prices"
 }

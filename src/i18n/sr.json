@@ -127,7 +127,7 @@
   "errorEmailCheck": "Greška prilikom provjere email-a",
   "clear": "Otkazi",
   "delete": "Obriši",
-  "priceUpdateSuccess": "Uspješno dodata cijena",
+  "priceUpdateSuccess": "Uspješno ažurirana cijena",
   "priceUpdateFail": "Greška pri ažuriranju cijene",
   "productDeleteSuccess": "Proizvod uspješno obrisan",
   "productDeleteFail": "Greška pri brisanju proizvoda",
@@ -168,5 +168,9 @@
   "addProducts": "Dodavanje proizvoda",
   "addToYourProducts": "Dodaj proizvod",
   "productSuccessfullyAdded": "Proizvod uspješno dodat",
-  "productAddingFailed": "Dodavanje proizvoda nije uspijelo"
+  "productAddingFailed": "Dodavanje proizvoda nije uspijelo",
+  "priceAddingSuccess": "Cijena uspješno dodata",
+  "priceAddingFail": "Greška pri dodavanju cijene",
+  "addTodaysPrices": "Dodaj današnje cijene",
+  "editPrices": "Uredi cijene"
 }
