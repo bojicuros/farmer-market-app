@@ -154,5 +154,12 @@
   "employeeChangeStatusFail": "Error while changing employee status",
   "errorFetchingMarkets": "Error fetching markets",
   "employeeInfoUpdateSuccessful": "Employee information successfully updated",
-  "employeeInfoUpdateFail": "Employee information update failed"
+  "employeeInfoUpdateFail": "Employee information update failed",
+  "removeFromYourProducts": "Remove from your products",
+  "productSuccessfullyRemoved": "Product removed successfully",
+  "productRemovingFailed": "Product removing failed",
+  "addProducts": "Add products",
+  "addToYourProducts": "Add product",
+  "productSuccessfullyAdded": "Product successfully added",
+  "productAddingFailed": "Product adding failed"
 }
