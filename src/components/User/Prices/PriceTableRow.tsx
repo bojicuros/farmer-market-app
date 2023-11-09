@@ -11,12 +11,12 @@ import {
   Tr,
   useColorMode,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { BsCashCoin } from "react-icons/bs";
 import { useState } from "react";
 import axios, { API_URL } from "../../../config/general";
-import PopupNotification from "../../Common/PopupNotification";
 import { PriceInfo } from "./PriceTable";
 
 type OnChildAction = () => void;
@@ -38,21 +38,12 @@ const PriceTableRow = ({
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
+  const toast = useToast();
 
   const [editMode, setEditMode] = useState(false);
   const [price, setPrice] = useState(
     latest_price ? parseFloat(latest_price.toFixed(2)) : 0
   );
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
 
   const enableEditOrSave = () => {
     if (editMode) {
@@ -82,11 +73,32 @@ const PriceTableRow = ({
           }
         );
         if (response.status === 200) {
-          handleOpenNotification(true, t("priceAddingSuccess"));
+          toast({
+            title: t("success"),
+            description: t("priceAddingSuccess"),
+            status: "success",
+            duration: 1500,
+            position: "top",
+            isClosable: true,
+          });
           onChildAction();
-        } else handleOpenNotification(false, t("priceAddingFail"));
+        } else   toast({
+          title: t("error"),
+          description: t("priceAddingFail"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
       } catch (e) {
-        handleOpenNotification(false, t("priceAddingFail"));
+        toast({
+          title: t("error"),
+          description: t("priceAddingFail"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
       }
   };
 
@@ -195,12 +207,6 @@ const PriceTableRow = ({
           </Button>
         )}
       </Td>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Tr>
   );
 };

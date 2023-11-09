@@ -7,6 +7,7 @@ import {
   Tr,
   useColorMode,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { FaUserCircle } from "react-icons/fa";
 import { UnconfirmedEmployeeInfo } from "./EmployeeTable";
@@ -18,7 +19,6 @@ type OnChildAction = () => void;
 
 type UnconfirmedEmployeeRowProps = UnconfirmedEmployeeInfo & {
   onChildAction: OnChildAction;
-  handleOpenNotification: (success: boolean, message: string) => void;
 };
 
 const UnconfirmedEmployeeRow = ({
@@ -28,11 +28,11 @@ const UnconfirmedEmployeeRow = ({
   date,
   markets,
   onChildAction,
-  handleOpenNotification,
 }: UnconfirmedEmployeeRowProps) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
+  const toast = useToast();
 
   const handleAcceptClick = () => {
     confirmEmployee();
@@ -46,11 +46,33 @@ const UnconfirmedEmployeeRow = ({
     try {
       const response = await axios.put(`${API_URL}/users/approve?id=${id}`);
       if (response.status === 200) {
-        handleOpenNotification(true, t("employeeApproveSuccessful"));
+        toast({
+          title: t("success"),
+          description: t("employeeApproveSuccessful"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
         onChildAction();
-      } else handleOpenNotification(false, t("employeeApproveFail"));
+      } else
+        toast({
+          title: t("error"),
+          description: t("employeeApproveFail"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (e) {
-      handleOpenNotification(false, t("employeeApproveFail"));
+      toast({
+        title: t("error"),
+        description: t("employeeApproveFail"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -58,11 +80,33 @@ const UnconfirmedEmployeeRow = ({
     try {
       const response = await axios.put(`${API_URL}/users/reject?id=${id}`);
       if (response.status === 200) {
-        handleOpenNotification(true, t("employeeRejectSuccessful"));
+        toast({
+          title: t("success"),
+          description: t("employeeRejectSuccessful"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
         onChildAction();
-      } else handleOpenNotification(false, t("employeeRejectFail"));
+      } else
+        toast({
+          title: t("error"),
+          description: t("employeeRejectFail"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (e) {
-      handleOpenNotification(false, t("employeeRejectFail"));
+      toast({
+        title: t("error"),
+        description: t("employeeRejectFail"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 

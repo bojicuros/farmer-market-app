@@ -7,9 +7,9 @@ import {
   useBreakpointValue,
   useColorMode,
   Link,
+  useToast,
 } from "@chakra-ui/react";
 import axios, { API_URL } from "../../config/general";
-import PopupNotification from "../Common/PopupNotification";
 import { useTranslation } from "react-i18next";
 
 interface FormData {
@@ -41,18 +41,9 @@ const RegistrationForm = ({
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
+  const toast = useToast();
 
   const [formData, setFormData] = useState(initialFormData);
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -92,14 +83,34 @@ const RegistrationForm = ({
           setCreatedUserId(response.data.id);
           setIsRegistrationCompleted(true);
         } else {
-          handleOpenNotification(false, t("takenEmail"));
+          toast({
+            title: t("takenEmail"),
+            status: "warning",
+            duration: 1500,
+            position: "top",
+            isClosable: true,
+          });
         }
       } catch (error) {
         resetFormData();
-        handleOpenNotification(false, t("errorRegistration"));
+        toast({
+          title: t("error"),
+          description: t("errorRegistration"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
       }
     } else {
-      handleOpenNotification(false, t("wrongConfPassword"));
+      toast({
+        title: t("error"),
+        description: t("wrongConfPassword"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -109,7 +120,7 @@ const RegistrationForm = ({
       alignItems="flex-start"
       p={isSmallerScreen ? "6" : "0"}
     >
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit}>
         <Flex direction="column" p={5} gap={4}>
           <Input
             placeholder={t("firstName")}
@@ -182,12 +193,6 @@ const RegistrationForm = ({
           </Flex>
         </Flex>
       </form>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Box>
   );
 };

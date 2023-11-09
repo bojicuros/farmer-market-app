@@ -1,4 +1,11 @@
-import { Box, Flex, SimpleGrid, Text, useBreakpointValue } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  SimpleGrid,
+  Text,
+  useBreakpointValue,
+  useToast,
+} from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { MarketCard } from "./MarketCard";
 import axios, { API_URL } from "../../config/general";
@@ -17,6 +24,7 @@ interface MarketsProps {
 export const Markets = ({ setActiveMarket }: MarketsProps) => {
   const [markets, setMarkets] = useState<Market[]>([]);
   const { t } = useTranslation();
+  const toast = useToast();
 
   const fetchMarkets = useCallback(async () => {
     try {
@@ -33,9 +41,16 @@ export const Markets = ({ setActiveMarket }: MarketsProps) => {
         setActiveMarket(fetchedMarkets[0].id);
       }
     } catch (error) {
-      console.error("Error fetching markets:", error);
+      toast({
+        title: t("error"),
+        description: t("errorFetchingMarkets"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
-  }, [setActiveMarket]);
+  }, [setActiveMarket, t, toast]);
 
   useEffect(() => {
     fetchMarkets();
@@ -55,8 +70,8 @@ export const Markets = ({ setActiveMarket }: MarketsProps) => {
   const paddingValue = useBreakpointValue({ base: 0, md: 20, lg: 32 });
   const paddingText = useBreakpointValue({ base: 0, md: 12, lg: 0 });
 
-  if(markets.length === 0){
-    return <Box mt={10}>{t("allMarketsClosed")}</Box>
+  if (markets.length === 0) {
+    return <Box mt={10}>{t("allMarketsClosed")}</Box>;
   }
 
   return (

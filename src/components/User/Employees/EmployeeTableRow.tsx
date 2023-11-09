@@ -11,6 +11,7 @@ import {
   VStack,
   useColorMode,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { FaUserCircle } from "react-icons/fa";
 import { CiCirclePlus, CiCircleMinus, CiEdit } from "react-icons/ci";
@@ -25,7 +26,6 @@ type OnChildAction = () => void;
 
 type EmployeeTableRowProps = EmployeeInfo & {
   onChildAction: OnChildAction;
-  handleOpenNotification: (success: boolean, message: string) => void;
 };
 
 const EmployeeTableRow = ({
@@ -36,11 +36,11 @@ const EmployeeTableRow = ({
   active,
   markets,
   onChildAction,
-  handleOpenNotification,
 }: EmployeeTableRowProps) => {
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
+  const toast = useToast();
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(name);
@@ -95,9 +95,9 @@ const EmployeeTableRow = ({
   };
 
   const updateEmployeeInfo = async () => {
-    const nameParts = editedName.split(' ');
+    const nameParts = editedName.split(" ");
     const firstName = nameParts[0];
-    const lastName = nameParts.slice(1).join(' ');
+    const lastName = nameParts.slice(1).join(" ");
     try {
       const response = await axios.post(`${API_URL}/users/update-user-info`, {
         id: id,
@@ -108,11 +108,33 @@ const EmployeeTableRow = ({
         markets: editedMarkets,
       });
       if (response.status === 200) {
-        handleOpenNotification(true, t("employeeInfoUpdateSuccessful"));
+        toast({
+          title: t("success"),
+          description: t("employeeInfoUpdateSuccessful"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
         onChildAction();
-      } else handleOpenNotification(false, t("employeeInfoUpdateFail"));
+      } else
+        toast({
+          title: t("error"),
+          description: t("employeeInfoUpdateFail"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (e) {
-      handleOpenNotification(false, t("employeeInfoUpdateFail"));
+      toast({
+        title: t("error"),
+        description: t("employeeInfoUpdateFail"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -122,11 +144,33 @@ const EmployeeTableRow = ({
         `${API_URL}/users/toggle-active-status?id=${id}`
       );
       if (response.status === 200) {
-        handleOpenNotification(true, t("employeeChangeStatusSuccessful"));
+        toast({
+          title: t("success"),
+          description: t("employeeChangeStatusSuccessful"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
         onChildAction();
-      } else handleOpenNotification(false, t("employeeChangeStatusFail"));
+      } else
+        toast({
+          title: t("error"),
+          description: t("employeeChangeStatusFail"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (e) {
-      handleOpenNotification(false, t("employeeChangeStatusFail"));
+      toast({
+        title: t("error"),
+        description: t("employeeChangeStatusFail"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -289,7 +333,6 @@ const EmployeeTableRow = ({
           isOpen={selectingMarkets}
           onClose={hideMarketSelectionForm}
           onSubmit={setEditedMarkets}
-          handleOpenNotification={handleOpenNotification}
         ></VendorsMarketSelectForm>
       </Td>
 

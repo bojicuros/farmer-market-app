@@ -11,6 +11,7 @@ import {
   Tr,
   useColorMode,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import ProductTableRow from "./ProductTableRow";
@@ -18,7 +19,6 @@ import VendorProductRow from "./VendorProductRow";
 import { useTranslation } from "react-i18next";
 import axios, { API_URL } from "../../../config/general";
 import { AuthUser } from "../../../context/AuthContext";
-import PopupNotification from "../../Common/PopupNotification";
 import AddProductForm from "./AddProductForm";
 import VendorProductAddingRow from "./VendorProductAddingRow";
 
@@ -50,19 +50,10 @@ const ProductInfoTable = ({
   const textColor = useColorModeValue("gray.700", "white");
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
+  const toast = useToast();
   const [refresh, setRefresh] = useState(false);
 
   const [isAddingProductActive, setIsAddingProductActive] = useState(false);
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
 
   const captionsProducts = [t("product"), t("unit"), t("addedAt"), "", ""];
   const captionsVendorProducts = [t("product"), t("unit"), t("market"), ""];
@@ -89,10 +80,17 @@ const ProductInfoTable = ({
           setProductData(fetchedProducts);
         }
       } catch (error) {
-        handleOpenNotification(false, "Error while fetching products");
+        toast({
+          title: t("error"),
+          description: t("errorFetchingProducts"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
       }
     }
-  }, [setProductData, areProductsVendors]);
+  }, [setProductData, areProductsVendors, t, toast]);
 
   useEffect(() => {
     fetchProducts();
@@ -121,12 +119,34 @@ const ProductInfoTable = ({
         if (response.status === 200) {
           const fetchedProducts = response.data;
           setVendorsProducts(fetchedProducts);
-        } else handleOpenNotification(false, "Error while fetching products");
+        } else
+          toast({
+            title: t("error"),
+            description: t("errorFetchingVendorsProducts"),
+            status: "error",
+            duration: 1500,
+            position: "top",
+            isClosable: true,
+          });
       } catch (error) {
-        handleOpenNotification(false, "Error while fetching products");
+        toast({
+          title: t("error"),
+          description: t("errorFetchingVendorsProducts"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
       }
     }
-  }, [setVendorsProducts, areProductsVendors, user, vendorsProductAdding]);
+  }, [
+    setVendorsProducts,
+    areProductsVendors,
+    user,
+    vendorsProductAdding,
+    t,
+    toast,
+  ]);
 
   useEffect(() => {
     fetchVendorsProducts();
@@ -145,12 +165,34 @@ const ProductInfoTable = ({
         if (response.status === 200) {
           const fetchedProducts = response.data;
           setNonVendorsProducts(fetchedProducts);
-        } else handleOpenNotification(false, "Error while fetching products");
+        } else
+          toast({
+            title: t("error"),
+            description: t("errorFetchingNonVendorsProducts"),
+            status: "error",
+            duration: 1500,
+            position: "top",
+            isClosable: true,
+          });
       } catch (error) {
-        handleOpenNotification(false, "Error while fetching products");
+        toast({
+          title: t("error"),
+          description: t("errorFetchingNonVendorsProducts"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
       }
     }
-  }, [setNonVendorsProducts, areProductsVendors, user, vendorsProductAdding]);
+  }, [
+    setNonVendorsProducts,
+    areProductsVendors,
+    user,
+    vendorsProductAdding,
+    t,
+    toast,
+  ]);
 
   useEffect(() => {
     fetchNonVendorsProducts();
@@ -272,15 +314,8 @@ const ProductInfoTable = ({
       <AddProductForm
         isOpen={isAddingProductActive}
         close={hideAddingProductForm}
-        handleOpenNotification={handleOpenNotification}
         onChildAction={handleChildAction}
       ></AddProductForm>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Flex>
   );
 };

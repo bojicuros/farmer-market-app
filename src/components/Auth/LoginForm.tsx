@@ -6,6 +6,7 @@ import {
   useBreakpointValue,
   useColorMode,
   Link,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
@@ -14,25 +15,15 @@ import { useNavigate } from "react-router-dom";
 import axios, { API_URL } from "../../config/general";
 import { AuthUser, UserInfo } from "../../context/AuthContext";
 import { useTranslation } from "react-i18next";
-import PopupNotification from "../Common/PopupNotification";
 
 const LoginForm = () => {
   const { colorMode } = useColorMode();
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
+  const toast = useToast();
 
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { setAuth } = useAuth();
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
 
   const [formData, setFormData] = useState({
     email: "",
@@ -59,10 +50,24 @@ const LoginForm = () => {
         if (!userInfo?.is_active || !userInfo.is_approved)
           navigate("/unauthorized");
         else navigate("/dashboard");
-      }
-      handleOpenNotification(false, t("errorWhileLogin"));
+      } else
+        toast({
+          title: t("error"),
+          description: t("errorWhileLogin"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (error) {
-      handleOpenNotification(false, t("wrongCredentials"));
+      toast({
+        title: t("error"),
+        description: t("wrongCredentials"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -76,7 +81,14 @@ const LoginForm = () => {
         return fetchedInfo;
       }
     } catch (error) {
-      console.error("Error fetching user info:", error);
+      toast({
+        title: t("error"),
+        description: t("errorFetchingUserInfo"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -116,12 +128,6 @@ const LoginForm = () => {
           >
             {t("login")}
           </Button>
-          <PopupNotification
-            isOpen={notificationOpen}
-            onClose={() => setNotificationOpen(false)}
-            isSuccess={isSuccess}
-            message={notificationMessage}
-          />
           <Flex direction="column" mt="4" align="center">
             <Link
               color={colorMode === "light" ? "green.500" : "green.300"}

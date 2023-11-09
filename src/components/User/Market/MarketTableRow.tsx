@@ -9,12 +9,12 @@ import {
   Tr,
   useColorMode,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { BiStore } from "react-icons/bi";
 import { MarketInfo } from "./MarketTable";
 import { useTranslation } from "react-i18next";
 import axios, { API_URL } from "../../../config/general";
-import PopupNotification from "../../Common/PopupNotification";
 import { useState } from "react";
 import { format } from "date-fns";
 
@@ -35,20 +35,11 @@ const MarketTableRow = ({
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
+  const toast = useToast();
   const [isEditing, setIsEditing] = useState(false);
 
   const [editedName, setEditedName] = useState(name);
   const [editedAddress, setEditedAddress] = useState(address);
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
 
   const toggleMarketOpenStatus = async () => {
     try {
@@ -56,11 +47,33 @@ const MarketTableRow = ({
         `${API_URL}/markets/toggle-open-status?id=${id}`
       );
       if (response.status === 200) {
-        handleOpenNotification(true, t("marketChangeStatusSuccessful"));
+        toast({
+          title: t("success"),
+          description: t("marketChangeStatusSuccessful"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
         onChildAction();
-      } else handleOpenNotification(false, t("marketChangeStatusFail"));
+      } else
+        toast({
+          title: t("error"),
+          description: t("marketChangeStatusFail"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (e) {
-      handleOpenNotification(false, t("marketChangeStatusFail"));
+      toast({
+        title: t("error"),
+        description: t("marketChangeStatusFail"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -87,11 +100,33 @@ const MarketTableRow = ({
         address: editedAddress,
       });
       if (response.status === 200) {
-        handleOpenNotification(true, t("marketUpdateSuccess"));
+        toast({
+          title: t("success"),
+          description: t("marketUpdateSuccess"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
         onChildAction();
-      } else handleOpenNotification(false, t("marketUpdateFail"));
+      } else
+        toast({
+          title: t("error"),
+          description: t("marketUpdateFail"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (e) {
-      handleOpenNotification(false, t("marketUpdateFail"));
+      toast({
+        title: t("error"),
+        description: t("marketUpdateFail"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -204,12 +239,6 @@ const MarketTableRow = ({
           </Button>
         )}
       </Td>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Tr>
   );
 };

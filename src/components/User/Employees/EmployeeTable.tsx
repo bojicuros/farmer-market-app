@@ -8,13 +8,13 @@ import {
   Thead,
   Tr,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import EmployeeTableRow from "./EmployeeTableRow";
 import UnconfirmedEmployeeRow from "./UnconfirmedEmployeeRow";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
 import axios, { API_URL } from "../../../config/general";
-import PopupNotification from "../../Common/PopupNotification";
 
 export type EmployeeInfo = {
   id: string;
@@ -56,21 +56,12 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
   ];
   const captions = areConfirmed ? captionsConfirmed : captionsUnconfirmed;
   const [refresh, setRefresh] = useState(false);
+  const toast = useToast();
 
   const [employees, setEmployees] = useState<EmployeeInfo[] | null>(null);
   const [unconfirmedEmployees, setUnconfirmedEmployees] = useState<
     UnconfirmedEmployeeInfo[] | null
   >(null);
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
 
   const handleChildAction = () => {
     setTimeout(() => {
@@ -83,11 +74,26 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
       const response = await axios.get(`${API_URL}/users/get-all-approved`);
 
       if (response.status === 200) setEmployees(response.data);
-      else handleOpenNotification(false, "Error fetching employees");
+      else
+        toast({
+          title: t("error"),
+          description: t("errorFetchingEmployees"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (error) {
-      handleOpenNotification(false, "Error fetching employees");
+      toast({
+        title: t("error"),
+        description: t("errorFetchingEmployees"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
-  }, []);
+  }, [t, toast]);
 
   useEffect(() => {
     fetchEmployees();
@@ -96,14 +102,26 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
   const fetchUnconfirmedEmployees = useCallback(async () => {
     try {
       const response = await axios.get(`${API_URL}/users/get-all-unapproved`);
-
       if (response.status === 200) setUnconfirmedEmployees(response.data);
-      else
-        handleOpenNotification(false, "Error fetching unconfirmed employees");
+      else toast({
+        title: t("error"),
+        description: t("errorFetchingUnconfirmedEmployees"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     } catch (error) {
-      handleOpenNotification(false, "Error fetching unconfirmed employees");
+      toast({
+        title: t("error"),
+        description: t("errorFetchingUnconfirmedEmployees"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
-  }, []);
+  }, [t, toast]);
 
   useEffect(() => {
     fetchUnconfirmedEmployees();
@@ -135,7 +153,7 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
               </Tr>
             </Thead>
             <Tbody>
-            {areConfirmed
+              {areConfirmed
                 ? employees?.map((row: EmployeeInfo) => {
                     return (
                       <EmployeeTableRow
@@ -147,7 +165,6 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
                         active={row.active}
                         markets={row.markets}
                         onChildAction={handleChildAction}
-                        handleOpenNotification={handleOpenNotification}
                       />
                     );
                   })
@@ -161,7 +178,6 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
                         date={row.date}
                         markets={row.markets}
                         onChildAction={handleChildAction}
-                        handleOpenNotification={handleOpenNotification}
                       />
                     );
                   })}
@@ -169,12 +185,6 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
           </Table>
         </Box>
       </Box>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Flex>
   );
 };

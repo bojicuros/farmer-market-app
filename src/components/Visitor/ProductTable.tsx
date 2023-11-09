@@ -12,6 +12,7 @@ import {
   Text,
   Button,
   ButtonGroup,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios, { API_URL } from "../../config/general";
@@ -43,6 +44,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
   const { t } = useTranslation();
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(0);
+  const toast = useToast();
 
   useEffect(() => {
     async function fetchProductsAndPrices() {
@@ -52,7 +54,6 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
         const response = await axios.get(
           `${API_URL}/products/get-latest-prices?market_id=${activeMarket}`
         );
-
 
         const fetchedProducts = response.data.map((priceData: any) => ({
           name: priceData.product.name,
@@ -77,12 +78,19 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
           setDate(`${translatedDayOfWeek} ${formattedDate}`);
         }
       } catch (error) {
-        console.error("Error fetching prices:", error);
+        toast({
+          title: t("error"),
+          description: t("errorFetchingPrices"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
       }
     }
 
     fetchProductsAndPrices();
-  }, [activeMarket, t, currentPage, startIndex]);
+  }, [activeMarket, t, currentPage, startIndex, toast]);
 
   const goToPage = (page: number) => {
     setCurrentPage(page);

@@ -1,4 +1,4 @@
-import { Box, Flex, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid, Text, useToast } from "@chakra-ui/react";
 import DashboardInfoCard from "./DashboardInfoCard";
 import { BsCoin } from "react-icons/bs";
 import { BiStore } from "react-icons/bi";
@@ -8,7 +8,6 @@ import PriceAddingPercentageCard from "./PriceAddingPercentageCard";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
 import axios, { API_URL } from "../../../config/general";
-import PopupNotification from "../../Common/PopupNotification";
 
 export type MarketPricePercentage = {
   market: string;
@@ -25,31 +24,36 @@ type DashboardInfo = {
 
 const DashboardView = () => {
   const { t } = useTranslation();
+  const toast = useToast();
 
   const [dashboardInfo, setDashboardInfo] = useState<DashboardInfo | null>(
     null
   );
 
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
-
   const fetchDashboardInfo = useCallback(async () => {
     try {
       const response = await axios.get(`${API_URL}/dashboard`);
-      console.log(response.data);
       if (response.status === 200) setDashboardInfo(response.data);
-      else handleOpenNotification(false, "Error while fetching dashboard info");
+      else
+        toast({
+          title: t("error"),
+          description: t("errorDashboardInfo"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (error) {
-      handleOpenNotification(false, "Error while fetching dashboard info");
+      toast({
+        title: t("error"),
+        description: t("errorDashboardInfo"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
-  }, [setDashboardInfo]);
+  }, [setDashboardInfo, t, toast]);
 
   useEffect(() => {
     fetchDashboardInfo();
@@ -110,12 +114,6 @@ const DashboardView = () => {
             )
           )}
       </SimpleGrid>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Flex>
   );
 };

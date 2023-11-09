@@ -7,12 +7,11 @@ import {
   Tr,
   useColorMode,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { VendorProductInfo } from "./ProductInfoTable";
-import { useState } from "react";
 import axios, { API_URL } from "../../../config/general";
-import PopupNotification from "../../Common/PopupNotification";
 import { FaShoppingBasket } from "react-icons/fa";
 
 type OnChildAction = () => void;
@@ -33,16 +32,7 @@ const VendorProductRow = ({
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
+  const toast = useToast();
 
   const removeProduct = async () => {
     try {
@@ -50,11 +40,33 @@ const VendorProductRow = ({
         `${API_URL}/products/delete-user-product?product_id=${id}&user_id=${user_id}&market_id=${market_id}`
       );
       if (response.status === 204) {
-        handleOpenNotification(true, t("productSuccessfullyRemoved"));
+        toast({
+          title: t("success"),
+          description: t("productSuccessfullyRemoved"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
         onChildAction();
-      } else handleOpenNotification(false, t("productRemovingFailed"));
+      } else
+        toast({
+          title: t("error"),
+          description: t("productRemovingFailed"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (e) {
-      handleOpenNotification(false, t("productRemovingFailed"));
+      toast({
+        title: t("error"),
+        description: t("productRemovingFailed"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -111,12 +123,6 @@ const VendorProductRow = ({
           </Text>
         </Button>
       </Td>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Tr>
   );
 };

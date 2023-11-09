@@ -172,5 +172,15 @@
   "priceAddingSuccess": "Cijena uspješno dodata",
   "priceAddingFail": "Greška pri dodavanju cijene",
   "addTodaysPrices": "Dodaj današnje cijene",
-  "editPrices": "Uredi cijene"
+  "editPrices": "Uredi cijene",
+  "deletedProfile": "Profil je obrisan",
+  "errorFetchingUserInfo": "Greška pri prikupljanju informacija o korisniku",
+  "errorDashboardInfo": "Greška pri preuzimanju informacija o panelu",
+  "errorFetchingEmployees": "Greška pri preuzimanju zaposlenih",
+  "errorFetchingUnconfirmedEmployees": "Greška pri preuzimanju nepotvrđenih zaposlenih",
+  "errorFetchingPrices": "Greška pri preuzimanju cena",
+  "errorFetchingProducts": "Greška pri preuzimanju proizvoda",
+  "errorFetchingVendorsProducts": "Greška pri preuzimanju proizvoda od prodavaca",
+  "errorFetchingNonVendorsProducts": "Greška pri preuzimanju proizvoda koji nisu od prodavaca",
+  "errorPerformingSearch": "Greška pri izvršavanju pretrage"  
 }
