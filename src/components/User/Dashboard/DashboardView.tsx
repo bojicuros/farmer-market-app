@@ -6,9 +6,54 @@ import { FaUsers } from "react-icons/fa";
 import { BsFillBagCheckFill } from "react-icons/bs";
 import PriceAddingPercentageCard from "./PriceAddingPercentageCard";
 import { useTranslation } from "react-i18next";
+import { useCallback, useEffect, useState } from "react";
+import axios, { API_URL } from "../../../config/general";
+import PopupNotification from "../../Common/PopupNotification";
+
+export type MarketPricePercentage = {
+  market: string;
+  percentage: number | null;
+};
+
+type DashboardInfo = {
+  num_of_markets: number;
+  num_of_products: number;
+  num_of_employees: number;
+  num_of_price_today: number;
+  market_price_percentage: MarketPricePercentage[];
+};
 
 const DashboardView = () => {
   const { t } = useTranslation();
+
+  const [dashboardInfo, setDashboardInfo] = useState<DashboardInfo | null>(
+    null
+  );
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  const handleOpenNotification = (success: boolean, message: string) => {
+    setIsSuccess(success);
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  };
+
+  const fetchDashboardInfo = useCallback(async () => {
+    try {
+      const response = await axios.get(`${API_URL}/dashboard`);
+      console.log(response.data);
+      if (response.status === 200) setDashboardInfo(response.data);
+      else handleOpenNotification(false, "Error while fetching dashboard info");
+    } catch (error) {
+      handleOpenNotification(false, "Error while fetching dashboard info");
+    }
+  }, [setDashboardInfo]);
+
+  useEffect(() => {
+    fetchDashboardInfo();
+  }, [fetchDashboardInfo]);
 
   return (
     <Flex flexDirection="column" pt={{ base: "40px", md: "20px" }}>
@@ -23,18 +68,26 @@ const DashboardView = () => {
         alignContent={"center"}
         justifyContent={"center"}
       >
-        <DashboardInfoCard title="Markets" amount={3} icon={BiStore} />
+        <DashboardInfoCard
+          title="Markets"
+          amount={dashboardInfo ? dashboardInfo.num_of_markets : 0}
+          icon={BiStore}
+        />
         <DashboardInfoCard
           title="Product"
-          amount={23}
+          amount={dashboardInfo ? dashboardInfo.num_of_products : 0}
           icon={BsFillBagCheckFill}
         />
         <DashboardInfoCard
           title="Prices added today"
-          amount={25}
+          amount={dashboardInfo ? dashboardInfo.num_of_price_today : 0}
           icon={BsCoin}
         />
-        <DashboardInfoCard title="Employees" amount={10} icon={FaUsers} />
+        <DashboardInfoCard
+          title="Employees"
+          amount={dashboardInfo ? dashboardInfo.num_of_employees : 0}
+          icon={FaUsers}
+        />
       </SimpleGrid>
       <Text fontSize="large" mt={16} mb={10}>
         {t("percentageOfPrices")}
@@ -47,10 +100,22 @@ const DashboardView = () => {
         alignContent={"center"}
         justifyContent={"center"}
       >
-        <PriceAddingPercentageCard />
-        <PriceAddingPercentageCard />
-        <PriceAddingPercentageCard />
+        {dashboardInfo &&
+          dashboardInfo.market_price_percentage.map(
+            (marketPercentage: MarketPricePercentage) => (
+              <PriceAddingPercentageCard
+                market={marketPercentage.market}
+                percentage={marketPercentage.percentage}
+              />
+            )
+          )}
       </SimpleGrid>
+      <PopupNotification
+        isOpen={notificationOpen}
+        onClose={() => setNotificationOpen(false)}
+        isSuccess={isSuccess}
+        message={notificationMessage}
+      />
     </Flex>
   );
 };

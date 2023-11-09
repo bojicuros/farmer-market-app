@@ -6,10 +6,15 @@ import {
   useBreakpointValue,
   useColorMode,
 } from "@chakra-ui/react";
+import { MarketPricePercentage } from "./DashboardView";
 
-const PriceAddingPercentageCard = () => {
+const PriceAddingPercentageCard = ({
+  market,
+  percentage,
+}: MarketPricePercentage) => {
   const { colorMode } = useColorMode();
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
+  const color = typeof percentage === "number" ? "green" : "red";
 
   return (
     <Flex
@@ -22,16 +27,25 @@ const PriceAddingPercentageCard = () => {
     >
       <CircularProgress
         size={220}
-        value={70}
+        value={typeof percentage === "number" ? percentage : 100}
         thickness={6}
-        color={colorMode === "light" ? "green.400" : "green.500"}
+        color={colorMode === "light" ? `${color}.400` : `${color}.500`}
       >
         <CircularProgressLabel>
           <Flex direction="column" justify="center" align="center">
-            <Text fontSize={"4xl"} fontWeight="bold" mb="4px">
-              70%
-            </Text>
-            <Text fontSize="sm">Organic Farm Market</Text>
+            {typeof percentage === "number" ? (
+              <Text fontSize={"4xl"} fontWeight="bold" mb="4px">
+                {`${percentage}%`}
+              </Text>
+            ) : (
+              <Text fontSize={"sm"} fontWeight="bold" mb="4px">
+                {"There are no products"}
+                <br />
+                {"in this market"}
+              </Text>
+            )}
+
+            <Text fontSize="sm">{market}</Text>
           </Flex>
         </CircularProgressLabel>
       </CircularProgress>
