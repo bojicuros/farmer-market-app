@@ -196,7 +196,7 @@ const SidebarMenu = ({
   const userPart = (
     <Flex p="5%" flexDir="column" w="100%" alignItems="flex-start" ml="4">
       <Divider ml={"-4"} />
-      <Flex mt={4} align="center">
+      <Flex mt={4} align="center"> 
         <Avatar size="sm" src="avatar-1.jpg" />
         {user && (
           <Flex
@@ -242,7 +242,6 @@ const SidebarMenu = ({
           py={2}
           color={colorMode === "light" ? "gray.100" : "black"}
           mb="-10"
-          bg="blue"
         >
           <FiMenu size={24} onClick={toggleSidebar} cursor="pointer" />
         </Flex>

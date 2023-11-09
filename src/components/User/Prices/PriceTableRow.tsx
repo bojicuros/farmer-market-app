@@ -71,18 +71,23 @@ const PriceTableRow = ({
   };
 
   const addPriceValue = async () => {
-    try {
-      await axios.post(`${API_URL}/prices/add-product-price`, {
-        user_id: user_id,
-        market_id: market_id,
-        product_id: product_id,
-        price_value: price,
-      });
-      handleOpenNotification(true, t("priceAddingSuccess"));
-      onChildAction();
-    } catch (e) {
-      handleOpenNotification(false, t("priceAddingFail"));
-    }
+      try {
+        const response = await axios.post(
+          `${API_URL}/prices/add-product-price`,
+          {
+            user_id: user_id,
+            market_id: market_id,
+            product_id: product_id,
+            price_value: price,
+          }
+        );
+        if (response.status === 200) {
+          handleOpenNotification(true, t("priceAddingSuccess"));
+          onChildAction();
+        } else handleOpenNotification(false, t("priceAddingFail"));
+      } catch (e) {
+        handleOpenNotification(false, t("priceAddingFail"));
+      }
   };
 
   const changePrice = (operation: string) => {
