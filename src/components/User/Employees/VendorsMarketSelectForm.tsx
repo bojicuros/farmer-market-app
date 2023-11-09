@@ -10,6 +10,7 @@ import {
   VStack,
   Checkbox,
   useColorMode,
+  useToast,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import axios, { API_URL } from "../../../config/general";
@@ -20,7 +21,6 @@ type VendorsMarketSelectFormProps = {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (markets: string[]) => void;
-  handleOpenNotification: (success: boolean, message: string) => void;
 };
 
 type MarketInfo = {
@@ -36,23 +36,38 @@ const VendorsMarketSelectForm = ({
   isOpen,
   onClose,
   onSubmit,
-  handleOpenNotification,
 }: VendorsMarketSelectFormProps) => {
   const { colorMode } = useColorMode();
   const [allMarkets, setAllMarkets] = useState([]);
   const [selectedMarkets, setSelectedMarkets] = useState(markets);
   const leastDestructiveRef = useRef(null);
+  const toast = useToast();
 
   const fetchMarkets = useCallback(async () => {
     try {
       const response = await axios.get(`${API_URL}/markets/get-all`);
       if (response.status === 200)
         setAllMarkets(response.data.map((market: MarketInfo) => market.name));
-      else handleOpenNotification(false, t("errorFetchingMarkets"));
+      else
+        toast({
+          title: t("error"),
+          description: t("errorFetchingMarkets"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (error) {
-      handleOpenNotification(false, t("errorFetchingMarkets"));
+      toast({
+        title: t("error"),
+        description: t("errorFetchingMarkets"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
-  }, [handleOpenNotification]);
+  }, [toast]);
 
   useEffect(() => {
     fetchMarkets();

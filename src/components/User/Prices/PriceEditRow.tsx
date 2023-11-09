@@ -12,12 +12,12 @@ import {
   VStack,
   useColorMode,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { BsCashCoin } from "react-icons/bs";
 import { useState } from "react";
 import axios, { API_URL } from "../../../config/general";
-import PopupNotification from "../../Common/PopupNotification";
 import { PriceEditInfo } from "./PriceTable";
 
 type OnChildAction = () => void;
@@ -37,19 +37,10 @@ const PriceEditRow = ({
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
+  const toast = useToast();
 
   const [editMode, setEditMode] = useState(false);
   const [price, setPrice] = useState(parseFloat(price_value.toFixed(2)));
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
 
   const enableEditOrSave = () => {
     if (editMode) {
@@ -75,11 +66,33 @@ const PriceEditRow = ({
         }
       );
       if (response.status === 200) {
-        handleOpenNotification(true, t("priceUpdateSuccess"));
+        toast({
+          title: t("success"),
+          description: t("priceUpdateSuccess"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
         onChildAction();
-      } else handleOpenNotification(false, t("priceUpdateFail"));
+      } else
+        toast({
+          title: t("error"),
+          description: t("priceUpdateFail"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (e) {
-      handleOpenNotification(false, t("priceUpdateFail"));
+      toast({
+        title: t("error"),
+        description: t("priceUpdateFail"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -193,12 +206,6 @@ const PriceEditRow = ({
           )}
         </VStack>
       </Td>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Tr>
   );
 };

@@ -12,6 +12,7 @@ import {
   VStack,
   useColorMode,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import axios, { API_URL } from "../../../config/general";
 import { useTranslation } from "react-i18next";
@@ -22,17 +23,16 @@ const DEFAULT_IMAGE =
 type AddMarketFormProps = {
   isOpen: boolean;
   close: () => void;
-  handleOpenNotification: (success: boolean, message: string) => void;
   onChildAction: () => void;
 };
 
 const AddMarketForm = ({
   isOpen,
   close,
-  handleOpenNotification,
   onChildAction,
 }: AddMarketFormProps) => {
   const { colorMode } = useColorMode();
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -74,11 +74,33 @@ const AddMarketForm = ({
       });
 
       if (response.status === 201) {
-        handleOpenNotification(true, t("marketCreateSuccess"));
+        toast({
+          title: t("success"),
+          description: t("marketCreateSuccess"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
         onChildAction();
-      } else handleOpenNotification(false, t("marketCreateFail"));
+      } else
+        toast({
+          title: t("error"),
+          description: t("marketCreateFail"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (e) {
-      handleOpenNotification(false, t("marketCreateFail"));
+      toast({
+        title: t("error"),
+        description: t("marketCreateFail"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 

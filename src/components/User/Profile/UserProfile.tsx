@@ -8,12 +8,12 @@ import {
   Text,
   useBreakpointValue,
   useColorMode,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AuthUser } from "../../../context/AuthContext";
 import axios, { API_URL } from "../../../config/general";
-import PopupNotification from "../../Common/PopupNotification";
 
 type UserProfileProps = {
   user: AuthUser;
@@ -38,6 +38,7 @@ const UserProfile = ({ user }: UserProfileProps) => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const { colorMode, toggleColorMode } = useColorMode();
   const { t, i18n } = useTranslation();
+  const toast = useToast();
 
   const inputFirstNameRef = useRef<HTMLInputElement | null>(null);
   const inputLastNameRef = useRef<HTMLInputElement | null>(null);
@@ -46,16 +47,6 @@ const UserProfile = ({ user }: UserProfileProps) => {
 
   const inputPasswordRef = useRef<HTMLInputElement | null>(null);
   const inputPasswordConfirmRef = useRef<HTMLInputElement | null>(null);
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
 
   useEffect(() => {
     async function fetchUserInfo() {
@@ -66,12 +57,19 @@ const UserProfile = ({ user }: UserProfileProps) => {
 
         setUserInfo(response.data);
       } catch (error) {
-        console.error("Error fetching user info:", error);
+        toast({
+          title: t("error"),
+          description: t("errorFetchingUserInfo"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
       }
     }
 
     fetchUserInfo();
-  }, [user]);
+  }, [user, t, toast]);
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
@@ -121,33 +119,81 @@ const UserProfile = ({ user }: UserProfileProps) => {
           email: inputEmailRef.current?.value,
           phone_number: inputPhoneNumberRef.current?.value,
         };
-        await axios.put(`${API_URL}/users/update`, {
+        const response = await axios.put(`${API_URL}/users/update`, {
           id: user.userId,
           ...inputInfo,
         });
-        setUserInfo(inputInfo as UserInfo);
-        handleOpenNotification(true, t("successfulUpdateInfo"));
+        if (response.status === 200) {
+          setUserInfo(inputInfo as UserInfo);
+          toast({
+            title: t("success"),
+            description: t("successfulUpdateInfo"),
+            status: "success",
+            duration: 1500,
+            position: "top",
+            isClosable: true,
+          });
+        } else
+          toast({
+            title: t("error"),
+            description: t("errorUpdateInfo"),
+            status: "error",
+            duration: 1500,
+            position: "top",
+            isClosable: true,
+          });
       } catch (error) {
-        handleOpenNotification(false, t("errorUpdateInfo"));
+        toast({
+          title: t("error"),
+          description: t("errorUpdateInfo"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
       }
     }
   };
 
   async function updateUserPassword() {
     try {
-      await axios.put(`${API_URL}/users/update`, {
+      const response = await axios.put(`${API_URL}/users/update`, {
         id: user.userId,
         password: inputPasswordRef.current?.value,
       });
+      if (response.status === 200) {
+        toast({
+          title: t("success"),
+          description: t("successfulPass"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
+      } else
+        toast({
+          title: t("error"),
+          description: t("errorUpdatePass"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
       if (inputPasswordRef.current) {
         inputPasswordRef.current.value = "";
       }
       if (inputPasswordConfirmRef.current) {
         inputPasswordConfirmRef.current.value = "";
       }
-      handleOpenNotification(true, t("successfulPass"));
     } catch (error) {
-      handleOpenNotification(false, t("errorUpdatePass"));
+      toast({
+        title: t("error"),
+        description: t("errorUpdatePass"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   }
 
@@ -158,12 +204,27 @@ const UserProfile = ({ user }: UserProfileProps) => {
       inputPasswordRef.current.value.length < 8 ||
       inputPasswordConfirmRef.current.value.length < 8
     ) {
-      handleOpenNotification(false, t("shortPass"));
+      toast({
+        title: t("error"),
+        description: t("shortPass"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     } else if (
       inputPasswordRef.current?.value === inputPasswordConfirmRef.current?.value
     ) {
       updateUserPassword();
-    } else handleOpenNotification(false, t("wrongPass"));
+    } else
+      toast({
+        title: t("error"),
+        description: t("wrongPass"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
   };
 
   const toggleLanguage = () => {
@@ -376,12 +437,6 @@ const UserProfile = ({ user }: UserProfileProps) => {
           )}
         </Flex>
       </Box>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Flex>
   );
 };

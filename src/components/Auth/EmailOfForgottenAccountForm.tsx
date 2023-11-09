@@ -6,10 +6,10 @@ import {
   Button,
   useBreakpointValue,
   useColorMode,
+  useToast,
 } from "@chakra-ui/react";
 import axios, { API_URL } from "../../config/general";
 import { useTranslation } from "react-i18next";
-import PopupNotification from "../Common/PopupNotification";
 
 type EmailOfForgottenAccountFormProps = {
   setIsEmailConfirmed: (arg0: boolean) => void;
@@ -23,20 +23,11 @@ const EmailOfForgottenAccountForm = ({
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     email: "",
   });
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -60,9 +51,23 @@ const EmailOfForgottenAccountForm = ({
         setIsEmailConfirmed(true);
         setUserEmail(formData.email);
       }
-      handleOpenNotification(false, t("wrongEmail"));
+      toast({
+        title: t("error"),
+        description: t("wrongEmail"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     } catch (e) {
-      handleOpenNotification(false, t("errorEmailCheck"));
+      toast({
+        title: t("error"),
+        description: t("errorEmailCheck"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -94,12 +99,6 @@ const EmailOfForgottenAccountForm = ({
           </Button>
         </Flex>
       </form>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Box>
   );
 };

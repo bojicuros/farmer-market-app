@@ -5,11 +5,11 @@ import {
   Button,
   useBreakpointValue,
   useColorMode,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import axios, { API_URL } from "../../config/general";
 import { useTranslation } from "react-i18next";
-import PopupNotification from "../Common/PopupNotification";
 
 const CODE_LENGTH = 6;
 
@@ -27,18 +27,9 @@ const ResetCodeForm = ({
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
+  const toast = useToast();
 
   const [isLengthInvalid, setIsLengthInvalid] = useState(false);
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
 
   const [formData, setFormData] = useState({
     code: "",
@@ -64,7 +55,14 @@ const ResetCodeForm = ({
       setIsCodeConfirmed(true);
       setUserCode(formData.code);
     } catch (e) {
-      handleOpenNotification(false, t("wrongCode"));
+      toast({
+        title: t("error"),
+        description: t("wrongCode"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -97,12 +95,6 @@ const ResetCodeForm = ({
           </Button>
         </Flex>
       </form>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Box>
   );
 };

@@ -13,6 +13,7 @@ import {
   useColorMode,
   Text,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import axios, { API_URL } from "../../../config/general";
 import { useTranslation } from "react-i18next";
@@ -21,17 +22,16 @@ import { MeasureUnits } from "../../../util/enums";
 type AddProductFormProps = {
   isOpen: boolean;
   close: () => void;
-  handleOpenNotification: (success: boolean, message: string) => void;
   onChildAction: () => void;
 };
 
 const AddProductForm = ({
   isOpen,
   close,
-  handleOpenNotification,
   onChildAction,
 }: AddProductFormProps) => {
   const { colorMode } = useColorMode();
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -72,11 +72,33 @@ const AddProductForm = ({
       });
 
       if (response.status === 201) {
-        handleOpenNotification(true, t("productAddSuccess"));
+        toast({
+          title: t("success"),
+          description: t("productAddSuccess"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
         onChildAction();
-      } else handleOpenNotification(false, t("productAddFail"));
+      } else
+        toast({
+          title: t("error"),
+          description: t("productAddFail"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (e) {
-      handleOpenNotification(false, t("productAddFail"));
+      toast({
+        title: t("error"),
+        description: t("productAddFail"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 

@@ -9,12 +9,12 @@ import {
   Thead,
   Tr,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios, { API_URL } from "../../../config/general";
 import { AuthUser } from "../../../context/AuthContext";
-import PopupNotification from "../../Common/PopupNotification";
 import PriceTableRow from "./PriceTableRow";
 import PriceEditRow from "./PriceEditRow";
 
@@ -41,17 +41,8 @@ export type PriceEditInfo = {
 const PriceTable = ({ user }: ProductInfoTableProps) => {
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
+  const toast = useToast();
   const [refresh, setRefresh] = useState(false);
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
 
   const [pricesEditing, arePricesEditing] = useState(false);
 
@@ -72,9 +63,16 @@ const PriceTable = ({ user }: ProductInfoTableProps) => {
       );
       if (response.status === 200) setPriceData(response.data);
     } catch (error) {
-      handleOpenNotification(false, "Error while fetching prices");
+      toast({
+        title: t("error"),
+        description: t("errorFetchingPrices"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
-  }, [setPriceData, user]);
+  }, [setPriceData, user, t, toast]);
 
   useEffect(() => {
     fetchPriceInfo();
@@ -91,9 +89,16 @@ const PriceTable = ({ user }: ProductInfoTableProps) => {
       );
       if (response.status === 200) setPriceEditData(response.data);
     } catch (error) {
-      handleOpenNotification(false, "Error while fetching prices");
+      toast({
+        title: t("error"),
+        description: t("errorFetchingPrices"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
-  }, [setPriceEditData, user]);
+  }, [setPriceEditData, user, t, toast]);
 
   useEffect(() => {
     fetchPriceEditInfo();
@@ -177,12 +182,6 @@ const PriceTable = ({ user }: ProductInfoTableProps) => {
           </Table>
         </Box>
       </Box>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Flex>
   );
 };

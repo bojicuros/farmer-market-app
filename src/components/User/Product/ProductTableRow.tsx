@@ -9,6 +9,7 @@ import {
   Tr,
   useColorMode,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { FaShoppingBasket } from "react-icons/fa";
 import { ProductInfo } from "./ProductInfoTable";
@@ -16,7 +17,6 @@ import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { useState } from "react";
 import axios, { API_URL } from "../../../config/general";
-import PopupNotification from "../../Common/PopupNotification";
 import { MeasureUnits } from "../../../util/enums";
 
 type OnChildAction = () => void;
@@ -35,21 +35,12 @@ const ProductTableRow = ({
   const { colorMode } = useColorMode();
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
+  const toast = useToast();
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(name);
   const [editedUnitOfMeasurement, setEditedUnitOfMeasurement] =
     useState(unit_of_measurement);
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
 
   const editOrSaveProductInfo = () => {
     if (isEditing) {
@@ -75,11 +66,33 @@ const ProductTableRow = ({
         `${API_URL}/products/delete-product?id=${id}`
       );
       if (response.status === 204) {
-        handleOpenNotification(true, t("productDeleteSuccess"));
+        toast({
+          title: t("success"),
+          description: t("productDeleteSuccess"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
         onChildAction();
-      } else handleOpenNotification(false, t("productDeleteFail"));
+      } else
+        toast({
+          title: t("error"),
+          description: t("productDeleteFail"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (e) {
-      handleOpenNotification(false, t("productDeleteFail"));
+      toast({
+        title: t("error"),
+        description: t("productDeleteFail"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -91,11 +104,33 @@ const ProductTableRow = ({
         unit_of_measurement: editedUnitOfMeasurement,
       });
       if (response.status === 200) {
-        handleOpenNotification(true, t("productUpdateSuccess"));
+        toast({
+          title: t("success"),
+          description: t("productUpdateSuccess"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
         onChildAction();
-      } else handleOpenNotification(false, t("productUpdateFail"));
+      } else
+        toast({
+          title: t("error"),
+          description: t("productUpdateFail"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (e) {
-      handleOpenNotification(false, t("productUpdateFail"));
+      toast({
+        title: t("error"),
+        description: t("productUpdateFail"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
   };
 
@@ -206,12 +241,6 @@ const ProductTableRow = ({
           </Text>
         </Button>
       </Td>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Tr>
   );
 };

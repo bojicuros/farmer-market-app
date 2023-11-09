@@ -6,12 +6,12 @@ import {
   useBreakpointValue,
   useColorMode,
   Link,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios, { API_URL } from "../../config/general";
 import { useTranslation } from "react-i18next";
-import PopupNotification from "../Common/PopupNotification";
 
 type SetNewPasswordFormProps = {
   userEmail: string;
@@ -26,16 +26,7 @@ const SetNewPasswordForm = ({
   const { colorMode } = useColorMode();
   const navigate = useNavigate();
   const { t } = useTranslation();
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     password: "",
@@ -57,7 +48,14 @@ const SetNewPasswordForm = ({
     event.preventDefault();
 
     if (formData.password !== formData.confirmPassword)
-      handleOpenNotification(false, t("wrongConfPassword"));
+      toast({
+        title: t("error"),
+        description: t("wrongConfPassword"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     else {
       try {
         await axios.post(`${API_URL}/auth/password-token-confirm`, {
@@ -68,7 +66,14 @@ const SetNewPasswordForm = ({
         navigate("/login");
       } catch (e) {
         setIsChangingPasswordFailed(true);
-        handleOpenNotification(false, t("resetFailed"));
+        toast({
+          title: t("error"),
+          description: t("resetFailed"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
       }
     }
   };
@@ -122,12 +127,6 @@ const SetNewPasswordForm = ({
           )}
         </Flex>
       </form>
-      <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Box>
   );
 };

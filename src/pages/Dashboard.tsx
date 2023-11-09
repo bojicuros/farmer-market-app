@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/Common/Sidebar";
 import EmployeeTable from "../components/User/Employees/EmployeeTable";
-import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Flex, useBreakpointValue, useToast } from "@chakra-ui/react";
 import { MenuItems } from "../util/enums";
 import useAuth from "../hooks/useAuth";
 import { AuthUser, UserInfo } from "../context/AuthContext";
@@ -13,6 +13,7 @@ import PriceAnalytic from "../components/User/Analytic/PriceAnalytic";
 import ProductInfoTable from "../components/User/Product/ProductInfoTable";
 import axios, { API_URL } from "../config/general";
 import PriceTable from "../components/User/Prices/PriceTable";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
   const isSmallerScreen = useBreakpointValue({ base: true, md: false });
@@ -20,6 +21,9 @@ const Dashboard = () => {
   const { auth, setAuth } = useAuth();
   const user = auth?.user as AuthUser;
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  const { t } = useTranslation();
+  const toast = useToast();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -32,12 +36,18 @@ const Dashboard = () => {
           setUserInfo(fetchedInfo);
         }
       } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
+        toast({
+          title: t("error"),
+          description: t("errorFetchingUserInfo"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });      }
     };
 
     fetchUserInfo();
-  }, [user?.userId]);
+  }, [user, t, toast]);
 
   return (
     <Flex

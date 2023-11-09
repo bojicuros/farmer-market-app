@@ -10,13 +10,13 @@ import {
   Tr,
   useColorMode,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import MarketTableRow from "./MarketTableRow";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
 import axios, { API_URL } from "../../../config/general";
 import AddMarketForm from "./AddMarketForm";
-import PopupNotification from "../../Common/PopupNotification";
 
 export type MarketInfo = {
   id: string;
@@ -31,20 +31,11 @@ const MarketTable = () => {
   const { colorMode } = useColorMode();
   const { t } = useTranslation();
   const captions = [t("market"), t("status"), t("openedAt"), ""];
+  const toast = useToast();
 
   const [refresh, setRefresh] = useState(false);
   const [markets, setMarkets] = useState<MarketInfo[] | null>(null);
   const [addingMarket, setAddingMarket] = useState(false);
-
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  const handleOpenNotification = (success: boolean, message: string) => {
-    setIsSuccess(success);
-    setNotificationMessage(message);
-    setNotificationOpen(true);
-  };
 
   const handleChildAction = () => {
     setTimeout(() => {
@@ -56,13 +47,27 @@ const MarketTable = () => {
     try {
       const response = await axios.get(`${API_URL}/markets/get-all`);
 
-      if (response.data.length > 0) {
-        setMarkets(response.data);
-      }
+      if (response.status === 200) setMarkets(response.data);
+      else
+        toast({
+          title: t("error"),
+          description: t("errorFetchingMarkets"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (error) {
-      handleOpenNotification(false, "Error fetching markets");
+      toast({
+        title: t("error"),
+        description: t("errorFetchingMarkets"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
     }
-  }, []);
+  }, [t, toast]);
 
   useEffect(() => {
     fetchMarkets();
@@ -137,15 +142,8 @@ const MarketTable = () => {
       <AddMarketForm
         isOpen={addingMarket}
         close={hideAddingMarketForm}
-        handleOpenNotification={handleOpenNotification}
         onChildAction={handleChildAction}
       ></AddMarketForm>
-       <PopupNotification
-        isOpen={notificationOpen}
-        onClose={() => setNotificationOpen(false)}
-        isSuccess={isSuccess}
-        message={notificationMessage}
-      />
     </Flex>
   );
 };

@@ -165,5 +165,15 @@
   "priceAddingSuccess": "Price added successfully",
   "priceAddingFail": "Error while adding price",
   "addTodaysPrices": "Add todays prices",
-  "editPrices": "Edit prices"
+  "editPrices": "Edit prices",
+  "deletedProfile": "Profile is now deleted",
+  "errorFetchingUserInfo": "Error fetching user info",
+  "errorDashboardInfo": "Error fetching dashboard info",
+  "errorFetchingEmployees": "Error fetching employees",
+  "errorFetchingUnconfirmedEmployees" : "Error fetching unconfirmed employees",
+  "errorFetchingPrices": "Error fetching prices",
+  "errorFetchingProducts": "Error fetching products",
+  "errorFetchingVendorsProducts": "Error fetching vendors products",
+  "errorFetchingNonVendorsProducts": "Error fetching products that are not vendors",
+  "errorPerformingSearch": "Error performing search"
 }
