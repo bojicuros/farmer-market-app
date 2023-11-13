@@ -52,7 +52,7 @@
   "availableAt": "Available at ",
   "availableMarkets": "Available Markets",
   "noResults": "No results found.",
-  "enterCode": "Enter the code to reset password",
+  "enterCode": "Enter the code you received via email",
   "enterCodePlease": "Please enter the code you've received to reset your password.",
   "welcomeAlt": "Welcome!",
   "signIn": "Sign in to Your Account",
@@ -175,5 +175,7 @@
   "errorFetchingProducts": "Error fetching products",
   "errorFetchingVendorsProducts": "Error fetching vendors products",
   "errorFetchingNonVendorsProducts": "Error fetching products that are not vendors",
-  "errorPerformingSearch": "Error performing search"
+  "errorPerformingSearch": "Error performing search",
+  "assignMarketFirst": "You need to assign market to vendor first",
+  "errorAddingMarketsToUser": "Error adding markets to vendor"
 }

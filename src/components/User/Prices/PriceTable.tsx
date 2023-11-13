@@ -167,8 +167,9 @@ const PriceTable = ({ user }: ProductInfoTableProps) => {
                     />
                   ))
                 : priceData &&
-                  priceData.map((row: PriceInfo) => (
+                  priceData.map((row: PriceInfo, index: number) => (
                     <PriceTableRow
+                      key={index}
                       product_id={row.product_id}
                       product_name={row.product_name}
                       market_id={row.market_id}

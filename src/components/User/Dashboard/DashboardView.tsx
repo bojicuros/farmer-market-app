@@ -73,21 +73,25 @@ const DashboardView = () => {
         justifyContent={"center"}
       >
         <DashboardInfoCard
+          key="Markets"
           title="Markets"
           amount={dashboardInfo ? dashboardInfo.num_of_markets : 0}
           icon={BiStore}
         />
         <DashboardInfoCard
+          key="Product"
           title="Product"
           amount={dashboardInfo ? dashboardInfo.num_of_products : 0}
           icon={BsFillBagCheckFill}
         />
         <DashboardInfoCard
+          key="Prices added today"
           title="Prices added today"
           amount={dashboardInfo ? dashboardInfo.num_of_price_today : 0}
           icon={BsCoin}
         />
         <DashboardInfoCard
+          key="Employees"
           title="Employees"
           amount={dashboardInfo ? dashboardInfo.num_of_employees : 0}
           icon={FaUsers}
@@ -108,6 +112,7 @@ const DashboardView = () => {
           dashboardInfo.market_price_percentage.map(
             (marketPercentage: MarketPricePercentage) => (
               <PriceAddingPercentageCard
+                key={marketPercentage.market}
                 market={marketPercentage.market}
                 percentage={marketPercentage.percentage}
               />

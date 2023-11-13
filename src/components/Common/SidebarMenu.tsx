@@ -99,12 +99,6 @@ const SidebarMenu = ({
         onClick={() => handleNavItemClick(MenuItems.Dashboard)}
       />
       <NavItem
-        icon={AiOutlineCheckCircle}
-        title={t("confirmations")}
-        active={activeItem === MenuItems.Confirmations}
-        onClick={() => handleNavItemClick(MenuItems.Confirmations)}
-      />
-      <NavItem
         icon={BsPeopleFill}
         title={t("manageEmployees")}
         active={activeItem === MenuItems.ManageEmployees}

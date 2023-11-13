@@ -54,8 +54,8 @@ const EmailConfirmCodeForm = ({
       toast({
         title: t("error"),
         description:
-          attemptsLeft > 0
-            ? `${attemptsLeft} ${t("errorInCode")}.`
+          attemptsLeft - 1 > 0
+            ? `${attemptsLeft - 1} ${t("errorInCode")}.`
             : t("deletedProfile"),
         status: "error",
         duration: 1500,
@@ -72,43 +72,45 @@ const EmailConfirmCodeForm = ({
       alignItems="flex-start"
       p={isSmallerScreen ? "10" : "0"}
     >
-      <form onSubmit={handleSubmit}>
-        <Flex direction="column" p={5}>
-          <Text size="md" mb={2}>
-            {t("enterCode")}
-          </Text>
-          <Input
-            placeholder={t("code")}
-            size="md"
-            mb="4"
-            name="code"
-            type="number"
-            value={formData.code}
-            onChange={handleInputChange}
-            required
-          />
-          <Button
-            bgGradient="linear(to-tr, green.400, yellow.300)"
-            color={colorMode === "light" ? "white" : "gray.700"}
-            _hover={{ opacity: 0.8 }}
-            type="submit"
-            disabled={attemptsLeft === 0}
+      {attemptsLeft > 0 && (
+        <form onSubmit={handleSubmit}>
+          <Flex direction="column" p={5}>
+            <Text size="md" mb={2}>
+              {t("enterCode")}
+            </Text>
+            <Input
+              placeholder={t("code")}
+              size="md"
+              mb="4"
+              name="code"
+              type="number"
+              value={formData.code}
+              onChange={handleInputChange}
+              required
+            />
+            <Button
+              bgGradient="linear(to-tr, green.400, yellow.300)"
+              color={colorMode === "light" ? "white" : "gray.700"}
+              _hover={{ opacity: 0.8 }}
+              type="submit"
+              disabled={attemptsLeft === 0}
+            >
+              {t("confirm")}
+            </Button>
+          </Flex>
+        </form>
+      )}
+      {attemptsLeft === 0 && (
+        <Flex mt="4" justify="center" marginTop="20" align="center">
+          <Link
+            color={colorMode === "light" ? "green.500" : "green.300"}
+            fontSize="sm"
+            href="/register"
           >
-            {t("confirm")}
-          </Button>
-          {attemptsLeft === 0 && (
-            <Flex mt="4" justify="center" align="center">
-              <Link
-                color={colorMode === "light" ? "green.500" : "green.300"}
-                fontSize="sm"
-                href="/register"
-              >
-                {t("again")}.
-              </Link>
-            </Flex>
-          )}
+            {t("again")}.
+          </Link>
         </Flex>
-      </form>
+      )}
     </Box>
   );
 };
