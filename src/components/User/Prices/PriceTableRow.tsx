@@ -62,35 +62,24 @@ const PriceTableRow = ({
   };
 
   const addPriceValue = async () => {
-      try {
-        const response = await axios.post(
-          `${API_URL}/prices/add-product-price`,
-          {
-            user_id: user_id,
-            market_id: market_id,
-            product_id: product_id,
-            price_value: price,
-          }
-        );
-        if (response.status === 200) {
-          toast({
-            title: t("success"),
-            description: t("priceAddingSuccess"),
-            status: "success",
-            duration: 1500,
-            position: "top",
-            isClosable: true,
-          });
-          onChildAction();
-        } else   toast({
-          title: t("error"),
-          description: t("priceAddingFail"),
-          status: "error",
+    try {
+      const response = await axios.post(`${API_URL}/prices/add-product-price`, {
+        user_id: user_id,
+        market_id: market_id,
+        product_id: product_id,
+        price_value: price,
+      });
+      if (response.status === 200) {
+        toast({
+          title: t("success"),
+          description: t("priceAddingSuccess"),
+          status: "success",
           duration: 1500,
           position: "top",
           isClosable: true,
         });
-      } catch (e) {
+        onChildAction();
+      } else
         toast({
           title: t("error"),
           description: t("priceAddingFail"),
@@ -99,7 +88,16 @@ const PriceTableRow = ({
           position: "top",
           isClosable: true,
         });
-      }
+    } catch (e) {
+      toast({
+        title: t("error"),
+        description: t("priceAddingFail"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
+    }
   };
 
   const changePrice = (operation: string) => {
@@ -175,13 +173,18 @@ const PriceTableRow = ({
         </Text>
       </Td>
       <Td>
-        <Button p="0px" bg="transparent" variant="no-hover" cursor={"pointer"}>
+        <Button
+          p="0px"
+          bg="transparent"
+          variant="no-hover"
+          cursor={"pointer"}
+          onClick={enableEditOrSave}
+        >
           <Text
             fontSize="md"
             color={editMode ? "green.400" : "yellow.400"}
             fontWeight="bold"
             cursor="pointer"
-            onClick={enableEditOrSave}
           >
             {editMode ? t("save") : t("edit")}
           </Text>
@@ -194,13 +197,13 @@ const PriceTableRow = ({
             bg="transparent"
             variant="no-hover"
             cursor={"pointer"}
+            onClick={clearOrKeepPrice}
           >
             <Text
               fontSize="md"
               color={editMode ? "red.400" : "green.400"}
               fontWeight="bold"
               cursor="pointer"
-              onClick={clearOrKeepPrice}
             >
               {editMode ? t("clear") : t("keep")}
             </Text>
