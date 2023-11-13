@@ -52,7 +52,7 @@
   "availableAt": "Dostupno u ",
   "availableMarkets": "Dostupne pijace",
   "noResults": "Nema pronađenih rezultata.",
-  "enterCode": "Unesite kod za restartovanje šifre",
+  "enterCode": "Unesite kod koji ste dobili putem emaila",
   "enterCodePlease": "Molimo Vas da unesete kod koji ste primili za restartovanje šifre.",
   "welcomeAlt": "Dobrodošli!",
   "signIn": "Prijavite se na Vaš nalog",
@@ -182,5 +182,7 @@
   "errorFetchingProducts": "Greška pri preuzimanju proizvoda",
   "errorFetchingVendorsProducts": "Greška pri preuzimanju proizvoda od prodavaca",
   "errorFetchingNonVendorsProducts": "Greška pri preuzimanju proizvoda koji nisu od prodavaca",
-  "errorPerformingSearch": "Greška pri izvršavanju pretrage"  
+  "errorPerformingSearch": "Greška pri izvršavanju pretrage",
+  "assignMarketFirst": "Potrebno je da prvo dodjelite pijacu prodavcu",
+  "errorAddingMarketsToUser": "Greška prilikom dodjeljivanja pijace prodavcu"
 }
