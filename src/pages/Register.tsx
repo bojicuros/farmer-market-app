@@ -32,7 +32,7 @@ const Register = () => {
           alignSelf="center"
           justifyContent={"space-between"}
           minW={"100%"}
-          mb={"-8"}
+          mb={"-16"}
         >
           <Box mt={isSmallerScreen ? "16" : "0"} position="relative">
             <Text fontSize="3xl" fontWeight="semibold">
@@ -48,24 +48,22 @@ const Register = () => {
             </Text>
             <Text>{t("registerAdditionalText")}</Text>
           </Box>
-          {!isRegistrationCompleted && (
+          {!isRegistrationCompleted ? (
             <RegistrationForm
               setIsRegistrationCompleted={setIsRegistrationCompleted}
               setCreatedUserId={setCreatedUserId}
             />
-          )}
-          {isRegistrationCompleted && !isCodeConfirmed && (
-            <EmailConfirmCodeForm
-              setIsCodeConfirmed={setIsCodeConfirmed}
-              createdUserId={createdUserId}
-            />
-          )}
-          {isRegistrationCompleted && isCodeConfirmed && (
+          ) : isCodeConfirmed ? (
             <Flex mt={20} justify="center" align="center">
               <Link color="green.400" fontSize="sm" href="/login">
                 {t("successfulRegister")}
               </Link>
             </Flex>
+          ) : (
+            <EmailConfirmCodeForm
+              setIsCodeConfirmed={setIsCodeConfirmed}
+              createdUserId={createdUserId}
+            />
           )}
         </Flex>
       </VStack>

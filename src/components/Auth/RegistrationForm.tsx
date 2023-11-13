@@ -8,6 +8,9 @@ import {
   useColorMode,
   Link,
   useToast,
+  CheckboxGroup,
+  Checkbox,
+  HStack,
 } from "@chakra-ui/react";
 import axios, { API_URL } from "../../config/general";
 import { useTranslation } from "react-i18next";
@@ -18,6 +21,8 @@ interface FormData {
   email: string;
   password: string;
   phone_number?: string;
+  is_admin: boolean;
+  is_vendor: boolean;
 }
 
 const initialFormData = {
@@ -27,6 +32,8 @@ const initialFormData = {
   password: "",
   confirmPassword: "",
   phone_number: "",
+  is_admin: false,
+  is_vendor: false,
 };
 
 type RegistrationFormProps = {
@@ -53,6 +60,13 @@ const RegistrationForm = ({
     }));
   };
 
+  const handleCheckboxChange = (name: keyof FormData) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: !prevFormData[name],
+    }));
+  };
+
   const resetFormData = () => {
     setFormData(initialFormData);
   };
@@ -66,6 +80,8 @@ const RegistrationForm = ({
         last_name: formData.last_name,
         email: formData.email,
         password: formData.password,
+        is_admin: formData.is_admin,
+        is_vendor: formData.is_vendor,
       };
 
       if (formData.phone_number !== "") {
@@ -173,6 +189,24 @@ const RegistrationForm = ({
             value={formData.phone_number}
             onChange={handleInputChange}
           />
+          <CheckboxGroup colorScheme="green" defaultValue={[]}>
+            <HStack align="center" justifyContent={"space-around"}>
+              <Checkbox
+                isChecked={formData.is_admin}
+                onChange={() => handleCheckboxChange("is_admin")}
+                required={!formData.is_vendor}
+              >
+                {t("admin")}
+              </Checkbox>
+              <Checkbox
+                isChecked={formData.is_vendor}
+                onChange={() => handleCheckboxChange("is_vendor")}
+              >
+                {t("vendor")}
+              </Checkbox>
+            </HStack>
+          </CheckboxGroup>
+
           <Button
             bgGradient="linear(to-tr, green.400, yellow.300)"
             mb={-3}
