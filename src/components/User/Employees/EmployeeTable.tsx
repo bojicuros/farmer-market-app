@@ -1,6 +1,7 @@
 import {
   Box,
   Flex,
+  HStack,
   Table,
   Tbody,
   Text,
@@ -30,14 +31,12 @@ export type UnconfirmedEmployeeInfo = {
   email: string;
   name: string;
   date: string;
-  markets: string[];
+  role: string[];
 };
 
-type EmployeeTableProps = {
-  areConfirmed: boolean;
-};
 
-const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
+const EmployeeTable = () => {
+  const [employeesConfirmed, areEmployeesConfirmed] = useState(true);
   const textColor = useColorModeValue("gray.700", "white");
   const { t } = useTranslation();
   const captionsConfirmed = [
@@ -48,13 +47,14 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
     "",
   ];
   const captionsUnconfirmed = [
-    t("vendorInfo"),
-    t("markets"),
+    t("employee"),
+    t("function"),
     t("singedIn"),
+    t("markets"),
     "",
     "",
   ];
-  const captions = areConfirmed ? captionsConfirmed : captionsUnconfirmed;
+  const captions = employeesConfirmed ? captionsConfirmed : captionsUnconfirmed;
   const [refresh, setRefresh] = useState(false);
   const toast = useToast();
 
@@ -131,9 +131,27 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
     <Flex direction="column" pt={{ base: "40px", md: "20px" }}>
       <Box overflowX={{ sm: "scroll", xl: "hidden" }}>
         <Box p="6px 0px 22px 0px">
-          <Text fontSize="xl" color={textColor} fontWeight="bold">
-            {areConfirmed ? t("employeesTable") : t("unconfirmedRequests")}
-          </Text>
+        <HStack>
+            <Text
+              fontSize="xl"
+              color={employeesConfirmed ? textColor : "gray.400"}
+              fontWeight="bold"
+              cursor={"pointer"}
+              onClick={() => areEmployeesConfirmed(true)}
+            >
+              {t("employeesTable")}
+            </Text>
+            <Text
+              fontSize="xl"
+              color={employeesConfirmed ? "gray.400" : textColor}
+              fontWeight="bold"
+              ml={2}
+              cursor={"pointer"}
+              onClick={() => areEmployeesConfirmed(false)}
+            >
+              {t("unconfirmedRequests")}
+            </Text>
+          </HStack>
         </Box>
         <Box>
           <Table variant="simple" color={textColor}>
@@ -153,7 +171,7 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
               </Tr>
             </Thead>
             <Tbody>
-              {areConfirmed
+              {employeesConfirmed
                 ? employees?.map((row: EmployeeInfo) => {
                     return (
                       <EmployeeTableRow
@@ -176,7 +194,7 @@ const EmployeeTable = ({ areConfirmed }: EmployeeTableProps) => {
                         name={row.name}
                         email={row.email}
                         date={row.date}
-                        markets={row.markets}
+                        role={row.role}
                         onChildAction={handleChildAction}
                       />
                     );
