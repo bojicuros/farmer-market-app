@@ -177,5 +177,13 @@
   "errorFetchingNonVendorsProducts": "Error fetching products that are not vendors",
   "errorPerformingSearch": "Error performing search",
   "assignMarketFirst": "You need to assign market to vendor first",
-  "errorAddingMarketsToUser": "Error adding markets to vendor"
+  "errorAddingMarketsToUser": "Error adding markets to vendor",
+  "pricesOf": "Price of",
+  "yourPrice": "Your price",
+  "concurrentPrice": "price",
+  "errorFetchingMonthlyPrices": "Error fetching monthly prices",
+  "selectMarketAndProduct": "To view price select market and product",
+  "compare": "Compare",
+  "selectVendor": "Select vendor",
+  "comparePrices": " Want to compare your prices with prices of other vendors?"
 }

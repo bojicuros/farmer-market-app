@@ -184,5 +184,13 @@
   "errorFetchingNonVendorsProducts": "Greška pri preuzimanju proizvoda koji nisu od prodavaca",
   "errorPerformingSearch": "Greška pri izvršavanju pretrage",
   "assignMarketFirst": "Potrebno je da prvo dodjelite pijacu prodavcu",
-  "errorAddingMarketsToUser": "Greška prilikom dodjeljivanja pijace prodavcu"
+  "errorAddingMarketsToUser": "Greška prilikom dodjeljivanja pijace prodavcu",
+  "pricesOf": "Cijena",
+  "yourPrice": "Vaša cijena",
+  "concurrentPrice": "cijena",
+  "errorFetchingMonthlyPrices": "Greška pri preuzimanju mjesečnih cijena",
+  "selectMarketAndProduct": "Da biste vidjeli cijene izaberite pijacu i proizvod",
+  "compare": "Uporedi",
+  "selectVendor": "Izaberi prodavca",
+  "comparePrices": "Da li želite da uporedite cijene sa cijenama drugih prodavaca?"
 }
