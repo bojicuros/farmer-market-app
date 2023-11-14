@@ -84,7 +84,7 @@ const Dashboard = () => {
             case MenuItems.Settings:
               return <UserProfile user={user} />;
             case MenuItems.PriceAnalytic:
-              return <PriceAnalytic />;
+              return <PriceAnalytic user={user} />;
             case MenuItems.Products:
               return <ProductInfoTable areProductsVendors={false} user={user} />;
             case MenuItems.YourProducts:

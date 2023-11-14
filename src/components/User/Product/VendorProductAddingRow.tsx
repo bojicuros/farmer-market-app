@@ -46,9 +46,9 @@ const VendorProductAddingRow = ({
       );
       if (response.status === 201) {
         toast({
-          title: t("error"),
+          title: t("success"),
           description: t("productSuccessfullyAdded"),
-          status: "error",
+          status: "success",
           duration: 1500,
           position: "top",
           isClosable: true,
