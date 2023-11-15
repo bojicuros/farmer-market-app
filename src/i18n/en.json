@@ -43,7 +43,7 @@
   "codeLength": "Code must have ",
   "digits": "digits.",
   "tryAgain": "Try again here.",
-  "emptyMarket": "Currently there are no products in this market.",
+  "emptyMarket": "There are no prices on this date.",
   "pricesOn": "Prices on: ",
   "name": "Name",
   "price": "Price",
@@ -185,5 +185,6 @@
   "selectMarketAndProduct": "To view price select market and product",
   "compare": "Compare",
   "selectVendor": "Select vendor",
-  "comparePrices": " Want to compare your prices with prices of other vendors?"
+  "comparePrices": " Want to compare your prices with prices of other vendors?",
+  "today": "Today"
 }

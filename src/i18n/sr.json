@@ -43,7 +43,7 @@
   "codeLength": "Kod mora imati ",
   "digits": "znamenki.",
   "tryAgain": "Pokušajte ponovno ovdje.",
-  "emptyMarket": "Trenutno nema proizvoda na ovoj pijaci.",
+  "emptyMarket": "Cijene za ovaj datum nisu unesene.",
   "pricesOn": "Cijene na dan: ",
   "name": "Ime",
   "price": "Cijena",
@@ -192,5 +192,6 @@
   "selectMarketAndProduct": "Da biste vidjeli cijene izaberite pijacu i proizvod",
   "compare": "Uporedi",
   "selectVendor": "Izaberi prodavca",
-  "comparePrices": "Da li želite da uporedite cijene sa cijenama drugih prodavaca?"
+  "comparePrices": "Da li želite da uporedite cijene sa cijenama drugih prodavaca?",
+  "today": "Danas"
 }
