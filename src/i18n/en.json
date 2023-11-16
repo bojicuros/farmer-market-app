@@ -186,5 +186,10 @@
   "compare": "Compare",
   "selectVendor": "Select vendor",
   "comparePrices": " Want to compare your prices with prices of other vendors?",
-  "today": "Today"
+  "today": "Today",
+  "pricesAddedToday": "Prices added today",
+  "employees": "Employees",
+  "keepAllPrices": "Keep all prices",
+  "errorAddingPrices": "Error adding prices",
+  "pricesSuccessfullyAdded": "Prices successfully added"
 }

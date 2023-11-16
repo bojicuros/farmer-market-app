@@ -74,25 +74,25 @@ const DashboardView = () => {
       >
         <DashboardInfoCard
           key="Markets"
-          title="Markets"
+          title={t("markets")}
           amount={dashboardInfo ? dashboardInfo.num_of_markets : 0}
           icon={BiStore}
         />
         <DashboardInfoCard
           key="Product"
-          title="Product"
+          title={t("products")}
           amount={dashboardInfo ? dashboardInfo.num_of_products : 0}
           icon={BsFillBagCheckFill}
         />
         <DashboardInfoCard
           key="Prices added today"
-          title="Prices added today"
+          title={t("pricesAddedToday")}
           amount={dashboardInfo ? dashboardInfo.num_of_price_today : 0}
           icon={BsCoin}
         />
         <DashboardInfoCard
           key="Employees"
-          title="Employees"
+          title={t("employees")}
           amount={dashboardInfo ? dashboardInfo.num_of_employees : 0}
           icon={FaUsers}
         />

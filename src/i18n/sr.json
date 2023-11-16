@@ -193,5 +193,10 @@
   "compare": "Uporedi",
   "selectVendor": "Izaberi prodavca",
   "comparePrices": "Da li želite da uporedite cijene sa cijenama drugih prodavaca?",
-  "today": "Danas"
+  "today": "Danas",
+  "pricesAddedToday": "Cijene dodate danas",
+  "employees": "Zaposleni",
+  "keepAllPrices": "Zadrži sve cijene",
+  "errorAddingPrices": "Greška pri dodavanju cijena",
+  "pricesSuccessfullyAdded": "Cijene uspješno dodate"
 }
