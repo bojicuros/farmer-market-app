@@ -8,7 +8,7 @@ import {
   Link,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +24,28 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { setAuth } = useAuth();
+
+  const accessToken = sessionStorage.getItem("accessToken");
+
+  function isTokenExpired(token: AuthUser) {
+    const currentTime = Math.floor(Date.now() / 1000);
+    if (token.exp < currentTime) return true;
+    return false;
+  }
+
+  useEffect(() => {
+    if (accessToken !== null) {
+      const token = jwt_decode(accessToken) as AuthUser;
+      if (isTokenExpired(token)) {
+        navigate("/login");
+        sessionStorage.removeItem("accessToken");
+      } else {
+        setAuth({ accessToken: accessToken, user: token });
+        navigate("/dashboard");
+      }
+    }
+  }, [accessToken, navigate, setAuth]);
+
 
   const [formData, setFormData] = useState({
     email: "",
@@ -43,13 +65,20 @@ const LoginForm = () => {
     try {
       const response = await axios.post(`${API_URL}/auth/login`, formData);
       if (response.status === 200) {
-        const token = response.data.accessToken;
-        const user = jwt_decode(token) as AuthUser;
-        setAuth({ accessToken: token, user: user });
-        const userInfo = await fetchUserInfo(user);
-        if (!userInfo?.is_active || !userInfo.is_approved)
+        const accessToken = response.data.accessToken;
+        const refreshToken = response.data.refreshToken;
+        const token = jwt_decode(accessToken) as AuthUser;
+        if (isTokenExpired(token)) {
           navigate("/unauthorized");
-        else navigate("/dashboard");
+        } else {
+          setAuth({ accessToken: accessToken, user: token });
+          sessionStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
+          const userInfo = await fetchUserInfo(token);
+          if (!userInfo?.is_active || !userInfo.is_approved)
+            navigate("/unauthorized");
+          else navigate("/dashboard");
+        }
       } else
         toast({
           title: t("error"),
