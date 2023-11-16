@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   HStack,
   Table,
@@ -8,6 +9,7 @@ import {
   Th,
   Thead,
   Tr,
+  useColorMode,
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
@@ -40,6 +42,7 @@ export type PriceEditInfo = {
 
 const PriceTable = ({ user }: ProductInfoTableProps) => {
   const textColor = useColorModeValue("gray.700", "white");
+  const { colorMode } = useColorMode();
   const { t } = useTranslation();
   const toast = useToast();
   const [refresh, setRefresh] = useState(false);
@@ -104,6 +107,42 @@ const PriceTable = ({ user }: ProductInfoTableProps) => {
     fetchPriceEditInfo();
   }, [fetchPriceEditInfo, refresh]);
 
+  const keepPricesForUser = async () => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/prices/keep-prices?user_id=${user.userId}`
+      );
+      if (response.status === 200) {
+        setRefresh((prevRefresh) => !prevRefresh);
+        toast({
+          title: t("success"),
+          description: t("pricesSuccessfullyAdded"),
+          status: "success",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
+      } else
+        toast({
+          title: t("error"),
+          description: t("errorAddingPrices"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
+    } catch (error) {
+      toast({
+        title: t("error"),
+        description: t("errorAddingPrices"),
+        status: "error",
+        duration: 1500,
+        position: "top",
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Flex direction="column" pt={{ base: "40px", md: "20px" }}>
       <Box overflowX={{ sm: "scroll", xl: "hidden" }}>
@@ -133,6 +172,19 @@ const PriceTable = ({ user }: ProductInfoTableProps) => {
               {t("editPrices")}
             </Text>
           </HStack>
+          {!pricesEditing && (
+            <Button
+              bg={colorMode === "light" ? "green.400" : "green.500"}
+              _hover={{
+                bg: colorMode === "light" ? "green.500" : "green.600",
+              }}
+              color={colorMode === "light" ? "white" : "gray.900"}
+              onClick={keepPricesForUser}
+              mr={6}
+            >
+              {t("keepAllPrices")}
+            </Button>
+          )}
         </Flex>
         <Box>
           <Table variant="simple" color={textColor}>
