@@ -14,7 +14,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 import { useTranslation } from "react-i18next";
 
 const DEFAULT_IMAGE =
@@ -67,7 +67,7 @@ const AddMarketForm = ({
 
   const addMarket = async () => {
     try {
-      const response = await axios.post(`${API_URL}/markets/create`, {
+      const response = await axiosPrivate.post(`/markets/create`, {
         name: formData.name,
         address: formData.address,
         image_url: DEFAULT_IMAGE,

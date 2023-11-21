@@ -17,7 +17,7 @@ import { useCallback, useEffect, useState } from "react";
 import ProductTableRow from "./ProductTableRow";
 import VendorProductRow from "./VendorProductRow";
 import { useTranslation } from "react-i18next";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 import { AuthUser } from "../../../context/AuthContext";
 import AddProductForm from "./AddProductForm";
 import VendorProductAddingRow from "./VendorProductAddingRow";
@@ -72,9 +72,7 @@ const ProductInfoTable = ({
   const fetchProducts = useCallback(async () => {
     if (!areProductsVendors) {
       try {
-        const response = await axios.get(
-          `${API_URL}/products/get-all-products`
-        );
+        const response = await axiosPrivate.get(`/products/get-all-products`);
         const fetchedProducts = response.data;
         if (fetchedProducts) {
           setProductData(fetchedProducts);
@@ -113,8 +111,8 @@ const ProductInfoTable = ({
   const fetchVendorsProducts = useCallback(async () => {
     if (areProductsVendors && !vendorsProductAdding) {
       try {
-        const response = await axios.get(
-          `${API_URL}/products/get-users-products?user_id=${user.userId}`
+        const response = await axiosPrivate.get(
+          `/products/get-users-products?user_id=${user.userId}`
         );
         if (response.status === 200) {
           const fetchedProducts = response.data;
@@ -159,8 +157,8 @@ const ProductInfoTable = ({
   const fetchNonVendorsProducts = useCallback(async () => {
     if (areProductsVendors && vendorsProductAdding) {
       try {
-        const response = await axios.get(
-          `${API_URL}/products/get-products-not-associated-with-user?user_id=${user.userId}`
+        const response = await axiosPrivate.get(
+          `/products/get-products-not-associated-with-user?user_id=${user.userId}`
         );
         if (response.status === 200) {
           const fetchedProducts = response.data;

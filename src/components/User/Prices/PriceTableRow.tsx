@@ -16,7 +16,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { BsCashCoin } from "react-icons/bs";
 import { useState } from "react";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 import { PriceInfo } from "./PriceTable";
 
 type OnChildAction = () => void;
@@ -63,7 +63,7 @@ const PriceTableRow = ({
 
   const addPriceValue = async () => {
     try {
-      const response = await axios.post(`${API_URL}/prices/add-product-price`, {
+      const response = await axiosPrivate.post(`/prices/add-product-price`, {
         user_id: user_id,
         market_id: market_id,
         product_id: product_id,

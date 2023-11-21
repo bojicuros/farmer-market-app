@@ -10,7 +10,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import axios, { API_URL } from "../../config/general";
+import axios  from "../../config/general";
 import { useTranslation } from "react-i18next";
 
 type EmailConfirmCodeFormProps = {
@@ -45,7 +45,7 @@ const EmailConfirmCodeForm = ({
     event.preventDefault();
 
     try {
-      await axios.post(`${API_URL}/auth/email-token-confirm`, {
+      await axios.post(`/auth/email-token-confirm`, {
         user_id: createdUserId,
         token: formData.code,
       });

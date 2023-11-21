@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { VendorProductInfo } from "./ProductInfoTable";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 import { FaShoppingBasket } from "react-icons/fa";
 
 type OnChildAction = () => void;
@@ -36,8 +36,8 @@ const VendorProductRow = ({
 
   const removeProduct = async () => {
     try {
-      const response = await axios.delete(
-        `${API_URL}/products/delete-user-product?product_id=${id}&user_id=${user_id}&market_id=${market_id}`
+      const response = await axiosPrivate.delete(
+        `/products/delete-user-product?product_id=${id}&user_id=${user_id}&market_id=${market_id}`
       );
       if (response.status === 204) {
         toast({

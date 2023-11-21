@@ -12,7 +12,7 @@ import {
   Checkbox,
   HStack,
 } from "@chakra-ui/react";
-import axios, { API_URL } from "../../config/general";
+import axios  from "../../config/general";
 import { useTranslation } from "react-i18next";
 
 interface FormData {
@@ -89,11 +89,11 @@ const RegistrationForm = ({
       }
       try {
         const res = await axios.post(
-          `${API_URL}/auth/email-available?email=${payload.email}`
+          `/auth/email-available?email=${payload.email}`
         );
         if (res.data.available) {
           const response = await axios.post(
-            `${API_URL}/auth/register`,
+            `/auth/register`,
             payload
           );
           setCreatedUserId(response.data.id);

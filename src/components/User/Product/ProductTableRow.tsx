@@ -16,7 +16,7 @@ import { ProductInfo } from "./ProductInfoTable";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { useState } from "react";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate }  from "../../../config/general";
 import { MeasureUnits } from "../../../util/enums";
 
 type OnChildAction = () => void;
@@ -62,8 +62,8 @@ const ProductTableRow = ({
 
   const deleteProduct = async () => {
     try {
-      const response = await axios.delete(
-        `${API_URL}/products/delete-product?id=${id}`
+      const response = await axiosPrivate.delete(
+        `/products/delete-product?id=${id}`
       );
       if (response.status === 204) {
         toast({
@@ -98,7 +98,7 @@ const ProductTableRow = ({
 
   const updateProductInfo = async () => {
     try {
-      const response = await axios.put(`${API_URL}/products/update-product`, {
+      const response = await axiosPrivate.put(`/products/update-product`, {
         id: id,
         name: editedName,
         unit_of_measurement: editedUnitOfMeasurement,

@@ -15,7 +15,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { UnconfirmedEmployeeInfo } from "./EmployeeTable";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate }  from "../../../config/general";
 import { CiEdit } from "react-icons/ci";
 import VendorsMarketSelectForm from "./VendorsMarketSelectForm";
 import { useState } from "react";
@@ -73,7 +73,7 @@ const UnconfirmedEmployeeRow = ({
 
   const confirmEmployee = async () => {
     try {
-      const response = await axios.put(`${API_URL}/users/approve?id=${id}`);
+      const response = await axiosPrivate.put(`/users/approve?id=${id}`);
       if (response.status === 200) {
         toast({
           title: t("success"),
@@ -107,7 +107,7 @@ const UnconfirmedEmployeeRow = ({
 
   const rejectEmployee = async () => {
     try {
-      const response = await axios.put(`${API_URL}/users/reject?id=${id}`);
+      const response = await axiosPrivate.put(`/users/reject?id=${id}`);
       if (response.status === 200) {
         toast({
           title: t("success"),
@@ -141,8 +141,8 @@ const UnconfirmedEmployeeRow = ({
 
   const addVendorsMarkets = async () => {
     try {
-      const response = await axios.post(
-        `${API_URL}/users/add-markets-to-user`,
+      const response = await axiosPrivate.post(
+        `/users/add-markets-to-user`,
         {
           id: id,
           marketNames: editedMarkets,

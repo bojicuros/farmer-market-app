@@ -15,7 +15,7 @@ import {
 import MarketTableRow from "./MarketTableRow";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 import AddMarketForm from "./AddMarketForm";
 
 export type MarketInfo = {
@@ -45,7 +45,7 @@ const MarketTable = () => {
 
   const fetchMarkets = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_URL}/markets/get-all`);
+      const response = await axiosPrivate.get(`/markets/get-all`);
 
       if (response.status === 200) setMarkets(response.data);
       else

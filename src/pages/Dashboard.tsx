@@ -11,7 +11,7 @@ import MarketTable from "../components/User/Market/MarketTable";
 import UserProfile from "../components/User/Profile/UserProfile";
 import PriceAnalytic from "../components/User/Analytic/PriceAnalytic";
 import ProductInfoTable from "../components/User/Product/ProductInfoTable";
-import axios, { API_URL } from "../config/general";
+import { axiosPrivate }  from "../config/general";
 import PriceTable from "../components/User/Prices/PriceTable";
 import { useTranslation } from "react-i18next";
 
@@ -28,8 +28,8 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(
-          `${API_URL}/users/get-by-id?id=${user?.userId}`
+        const response = await axiosPrivate.get(
+          `/users/get-by-id?id=${user?.userId}`
         );
         if (response.status === 200) {
           const fetchedInfo = response.data as UserInfo;
