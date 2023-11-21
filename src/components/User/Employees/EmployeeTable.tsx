@@ -15,7 +15,7 @@ import EmployeeTableRow from "./EmployeeTableRow";
 import UnconfirmedEmployeeRow from "./UnconfirmedEmployeeRow";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 
 export type EmployeeInfo = {
   id: string;
@@ -33,7 +33,6 @@ export type UnconfirmedEmployeeInfo = {
   date: string;
   role: string[];
 };
-
 
 const EmployeeTable = () => {
   const [employeesConfirmed, areEmployeesConfirmed] = useState(true);
@@ -71,7 +70,7 @@ const EmployeeTable = () => {
 
   const fetchEmployees = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_URL}/users/get-all-approved`);
+      const response = await axiosPrivate.get(`/users/get-all-approved`);
 
       if (response.status === 200) setEmployees(response.data);
       else
@@ -101,16 +100,17 @@ const EmployeeTable = () => {
 
   const fetchUnconfirmedEmployees = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_URL}/users/get-all-unapproved`);
+      const response = await axiosPrivate.get(`/users/get-all-unapproved`);
       if (response.status === 200) setUnconfirmedEmployees(response.data);
-      else toast({
-        title: t("error"),
-        description: t("errorFetchingUnconfirmedEmployees"),
-        status: "error",
-        duration: 1500,
-        position: "top",
-        isClosable: true,
-      });
+      else
+        toast({
+          title: t("error"),
+          description: t("errorFetchingUnconfirmedEmployees"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
     } catch (error) {
       toast({
         title: t("error"),
@@ -131,7 +131,7 @@ const EmployeeTable = () => {
     <Flex direction="column" pt={{ base: "40px", md: "20px" }}>
       <Box overflowX={{ sm: "scroll", xl: "hidden" }}>
         <Box p="6px 0px 22px 0px">
-        <HStack>
+          <HStack>
             <Text
               fontSize="xl"
               color={employeesConfirmed ? textColor : "gray.400"}

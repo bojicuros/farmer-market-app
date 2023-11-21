@@ -12,9 +12,10 @@ import { useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import axios, { API_URL } from "../../config/general";
+import axios from "../../config/general";
 import { AuthUser, UserInfo } from "../../context/AuthContext";
 import { useTranslation } from "react-i18next";
+import { axiosPrivate } from "../../config/general";
 
 const LoginForm = () => {
   const { colorMode } = useColorMode();
@@ -46,7 +47,6 @@ const LoginForm = () => {
     }
   }, [accessToken, navigate, setAuth]);
 
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -63,7 +63,7 @@ const LoginForm = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, formData);
+      const response = await axios.post(`/auth/login`, formData);
       if (response.status === 200) {
         const accessToken = response.data.accessToken;
         const refreshToken = response.data.refreshToken;
@@ -75,9 +75,9 @@ const LoginForm = () => {
           sessionStorage.setItem("accessToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
           const userInfo = await fetchUserInfo(token);
-          if (!userInfo?.is_active || !userInfo.is_approved)
-            navigate("/unauthorized");
-          else navigate("/dashboard");
+          if (userInfo && userInfo.is_active && userInfo.is_approved)
+            navigate("/dashboard");
+          else navigate("/unauthorized");
         }
       } else
         toast({
@@ -102,12 +102,21 @@ const LoginForm = () => {
 
   const fetchUserInfo = async (user: AuthUser | undefined) => {
     try {
-      const response = await axios.get(
-        `${API_URL}/users/get-by-id?id=${user?.userId}`
+      const response = await axiosPrivate.get(
+        `/users/get-by-id?id=${user?.userId}`
       );
       if (response.status === 200) {
         const fetchedInfo = response.data as UserInfo;
         return fetchedInfo;
+      } else {
+        toast({
+          title: t("error"),
+          description: t("errorFetchingUserInfo"),
+          status: "error",
+          duration: 1500,
+          position: "top",
+          isClosable: true,
+        });
       }
     } catch (error) {
       toast({

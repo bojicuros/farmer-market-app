@@ -7,7 +7,7 @@ import { BsFillBagCheckFill } from "react-icons/bs";
 import PriceAddingPercentageCard from "./PriceAddingPercentageCard";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 
 export type MarketPricePercentage = {
   market: string;
@@ -32,7 +32,7 @@ const DashboardView = () => {
 
   const fetchDashboardInfo = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_URL}/dashboard`);
+      const response = await axiosPrivate.get(`/dashboard`);
       if (response.status === 200) setDashboardInfo(response.data);
       else
         toast({

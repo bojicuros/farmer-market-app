@@ -8,7 +8,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import axios, { API_URL } from "../../config/general";
+import axios  from "../../config/general";
 import { useTranslation } from "react-i18next";
 
 const CODE_LENGTH = 6;
@@ -48,7 +48,7 @@ const ResetCodeForm = ({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await axios.post(`${API_URL}/auth/validate-reset-token`, {
+      await axios.post(`/auth/validate-reset-token`, {
         email: userEmail,
         token: formData.code,
       });

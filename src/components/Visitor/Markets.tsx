@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { MarketCard } from "./MarketCard";
-import axios, { API_URL } from "../../config/general";
+import axios  from "../../config/general";
 import { useTranslation } from "react-i18next";
 
 export interface Market {
@@ -28,7 +28,7 @@ export const Markets = ({ setActiveMarket }: MarketsProps) => {
 
   const fetchMarkets = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_URL}/markets/get-all-open`);
+      const response = await axios.get(`/markets/get-all-open`);
       const fetchedMarkets = response.data.map(
         (market: Market, index: number) => ({
           ...market,

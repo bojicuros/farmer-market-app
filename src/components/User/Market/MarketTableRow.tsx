@@ -14,7 +14,7 @@ import {
 import { BiStore } from "react-icons/bi";
 import { MarketInfo } from "./MarketTable";
 import { useTranslation } from "react-i18next";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 import { useState } from "react";
 import { format } from "date-fns";
 
@@ -43,8 +43,8 @@ const MarketTableRow = ({
 
   const toggleMarketOpenStatus = async () => {
     try {
-      const response = await axios.put(
-        `${API_URL}/markets/toggle-open-status?id=${id}`
+      const response = await axiosPrivate.put(
+        `/markets/toggle-open-status?id=${id}`
       );
       if (response.status === 200) {
         toast({
@@ -94,7 +94,7 @@ const MarketTableRow = ({
 
   const updateMarket = async () => {
     try {
-      const response = await axios.put(`${API_URL}/markets/update-by-id`, {
+      const response = await axiosPrivate.put(`/markets/update-by-id`, {
         id: id,
         name: editedName,
         address: editedAddress,

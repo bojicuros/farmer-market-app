@@ -17,7 +17,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { BsCashCoin } from "react-icons/bs";
 import { useState } from "react";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 import { PriceEditInfo } from "./PriceTable";
 
 type OnChildAction = () => void;
@@ -58,13 +58,10 @@ const PriceEditRow = ({
 
   const updatePriceValue = async () => {
     try {
-      const response = await axios.put(
-        `${API_URL}/prices/update-product-price`,
-        {
-          id: id,
-          price_value: price,
-        }
-      );
+      const response = await axiosPrivate.put(`/prices/update-product-price`, {
+        id: id,
+        price_value: price,
+      });
       if (response.status === 200) {
         toast({
           title: t("success"),

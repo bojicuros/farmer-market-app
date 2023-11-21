@@ -13,7 +13,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AuthUser } from "../../../context/AuthContext";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 
 type UserProfileProps = {
   user: AuthUser;
@@ -51,8 +51,8 @@ const UserProfile = ({ user }: UserProfileProps) => {
   useEffect(() => {
     async function fetchUserInfo() {
       try {
-        const response = await axios.get(
-          `${API_URL}/users/get-by-id?id=${user.userId}`
+        const response = await axiosPrivate.get(
+          `/users/get-by-id?id=${user.userId}`
         );
 
         setUserInfo(response.data);
@@ -119,7 +119,7 @@ const UserProfile = ({ user }: UserProfileProps) => {
           email: inputEmailRef.current?.value,
           phone_number: inputPhoneNumberRef.current?.value,
         };
-        const response = await axios.put(`${API_URL}/users/update`, {
+        const response = await axiosPrivate.put(`/users/update`, {
           id: user.userId,
           ...inputInfo,
         });
@@ -157,7 +157,7 @@ const UserProfile = ({ user }: UserProfileProps) => {
 
   async function updateUserPassword() {
     try {
-      const response = await axios.put(`${API_URL}/users/update`, {
+      const response = await axiosPrivate.put(`/users/update`, {
         id: user.userId,
         password: inputPasswordRef.current?.value,
       });

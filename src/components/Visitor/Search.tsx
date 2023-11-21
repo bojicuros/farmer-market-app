@@ -10,7 +10,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import axios, { API_URL } from "../../config/general";
+import axios  from "../../config/general";
 import { useTranslation } from "react-i18next";
 
 type SearchRecord = {
@@ -31,7 +31,7 @@ const Search = () => {
       const fetchSearchResults = async () => {
         try {
           const response = await axios.get(
-            `${API_URL}/search?query=${encodeURIComponent(query)}`
+            `/search?query=${encodeURIComponent(query)}`
           );
           setSearchResults(response.data);
         } catch (error) {

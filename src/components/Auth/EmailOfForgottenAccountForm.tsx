@@ -8,7 +8,7 @@ import {
   useColorMode,
   useToast,
 } from "@chakra-ui/react";
-import axios, { API_URL } from "../../config/general";
+import axios  from "../../config/general";
 import { useTranslation } from "react-i18next";
 
 type EmailOfForgottenAccountFormProps = {
@@ -42,11 +42,11 @@ const EmailOfForgottenAccountForm = ({
 
     try {
       const res = await axios.post(
-        `${API_URL}/auth/email-available?email=${formData.email}`
+        `/auth/email-available?email=${formData.email}`
       );
       if (!res.data.available) {
         await axios.post(
-          `${API_URL}/auth/forgot-password?email=${formData.email}`
+          `/auth/forgot-password?email=${formData.email}`
         );
         setIsEmailConfirmed(true);
         setUserEmail(formData.email);

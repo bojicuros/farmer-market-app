@@ -13,7 +13,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 import { t } from "i18next";
 
 type VendorsMarketSelectFormProps = {
@@ -45,7 +45,7 @@ const VendorsMarketSelectForm = ({
 
   const fetchMarkets = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_URL}/markets/get-all`);
+      const response = await axiosPrivate.get(`/markets/get-all`);
       if (response.status === 200)
         setAllMarkets(response.data.map((market: MarketInfo) => market.name));
       else

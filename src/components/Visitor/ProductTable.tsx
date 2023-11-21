@@ -18,7 +18,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import axios, { API_URL } from "../../config/general";
+import axios  from "../../config/general";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
@@ -97,7 +97,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
 
       try {
         const response = await axios.get(
-          `${API_URL}/prices/get-prices-by-date?market_id=${activeMarket}&date=${selectedDate}`
+          `/prices/get-prices-by-date?market_id=${activeMarket}&date=${selectedDate}`
         );
 
         if (response.status === 200) {

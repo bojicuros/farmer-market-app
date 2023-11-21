@@ -15,7 +15,7 @@ import {
   Select,
   useToast,
 } from "@chakra-ui/react";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 import { useTranslation } from "react-i18next";
 import { MeasureUnits } from "../../../util/enums";
 
@@ -66,7 +66,7 @@ const AddProductForm = ({
 
   const addProduct = async () => {
     try {
-      const response = await axios.post(`${API_URL}/products/add-new-product`, {
+      const response = await axiosPrivate.post(`/products/add-new-product`, {
         name: formData.name,
         unit_of_measurement: formData.unitOfMeasurement,
       });

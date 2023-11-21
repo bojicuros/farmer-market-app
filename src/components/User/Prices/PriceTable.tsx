@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 import { AuthUser } from "../../../context/AuthContext";
 import PriceTableRow from "./PriceTableRow";
 import PriceEditRow from "./PriceEditRow";
@@ -61,8 +61,8 @@ const PriceTable = ({ user }: ProductInfoTableProps) => {
 
   const fetchPriceInfo = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `${API_URL}/prices/get-products-without-todays-prices?user_id=${user.userId}`
+      const response = await axiosPrivate.get(
+        `/prices/get-products-without-todays-prices?user_id=${user.userId}`
       );
       if (response.status === 200) setPriceData(response.data);
     } catch (error) {
@@ -87,8 +87,8 @@ const PriceTable = ({ user }: ProductInfoTableProps) => {
 
   const fetchPriceEditInfo = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `${API_URL}/prices/get-todays-user-prices?user_id=${user.userId}`
+      const response = await axiosPrivate.get(
+        `/prices/get-todays-user-prices?user_id=${user.userId}`
       );
       if (response.status === 200) setPriceEditData(response.data);
     } catch (error) {
@@ -109,8 +109,8 @@ const PriceTable = ({ user }: ProductInfoTableProps) => {
 
   const keepPricesForUser = async () => {
     try {
-      const response = await axios.post(
-        `${API_URL}/prices/keep-prices?user_id=${user.userId}`
+      const response = await axiosPrivate.post(
+        `/prices/keep-prices?user_id=${user.userId}`
       );
       if (response.status === 200) {
         setRefresh((prevRefresh) => !prevRefresh);

@@ -12,7 +12,7 @@ import {
 import LineChart from "./LineChart";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate } from "../../../config/general";
 import { AuthUser } from "../../../context/AuthContext";
 
 type PriceAnalyticProps = {
@@ -111,8 +111,8 @@ const PriceAnalytic = ({ user }: PriceAnalyticProps) => {
         isClosable: true,
       });
     try {
-      const response = await axios.get(
-        `${API_URL}/prices/get-monthly-prices?user_id=${user.userId}&market_id=${selectedMarket}&product_id=${selectedProduct}`
+      const response = await axiosPrivate.get(
+        `/prices/get-monthly-prices?user_id=${user.userId}&market_id=${selectedMarket}&product_id=${selectedProduct}`
       );
       if (response.status === 200) {
         const dates = [];
@@ -159,8 +159,8 @@ const PriceAnalytic = ({ user }: PriceAnalyticProps) => {
         isClosable: true,
       });
     try {
-      const response = await axios.get(
-        `${API_URL}/prices/get-monthly-prices?user_id=${selectedVendor}&market_id=${selectedMarket}&product_id=${selectedProduct}`
+      const response = await axiosPrivate.get(
+        `/prices/get-monthly-prices?user_id=${selectedVendor}&market_id=${selectedMarket}&product_id=${selectedProduct}`
       );
       if (response.status === 200) {
         const values = [];
@@ -192,8 +192,8 @@ const PriceAnalytic = ({ user }: PriceAnalyticProps) => {
 
   const getConcurrentVendors = async () => {
     try {
-      const response = await axios.get(
-        `${API_URL}/products/users-who-sell-product?user_id=${user.userId}&market_id=${selectedMarket}&product_id=${selectedProduct}`
+      const response = await axiosPrivate.get(
+        `/products/users-who-sell-product?user_id=${user.userId}&market_id=${selectedMarket}&product_id=${selectedProduct}`
       );
       if (response.status === 200) {
         setConcurrentVendors(response.data);
@@ -205,8 +205,8 @@ const PriceAnalytic = ({ user }: PriceAnalyticProps) => {
 
   const fetchProducts = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `${API_URL}/products/get-users-products?user_id=${user.userId}`
+      const response = await axiosPrivate.get(
+        `/products/get-users-products?user_id=${user.userId}`
       );
       if (response.status === 200) {
         setFetchedProducts(response.data);

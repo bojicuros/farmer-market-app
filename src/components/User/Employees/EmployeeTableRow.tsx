@@ -18,7 +18,7 @@ import { CiCirclePlus, CiCircleMinus, CiEdit } from "react-icons/ci";
 import { UserRoles } from "../../../util/enums";
 import { EmployeeInfo } from "./EmployeeTable";
 import { useTranslation } from "react-i18next";
-import axios, { API_URL } from "../../../config/general";
+import { axiosPrivate }  from "../../../config/general";
 import { useState } from "react";
 import VendorsMarketSelectForm from "./VendorsMarketSelectForm";
 
@@ -99,7 +99,7 @@ const EmployeeTableRow = ({
     const firstName = nameParts[0];
     const lastName = nameParts.slice(1).join(" ");
     try {
-      const response = await axios.post(`${API_URL}/users/update-user-info`, {
+      const response = await axiosPrivate.post(`/users/update-user-info`, {
         id: id,
         first_name: firstName,
         last_name: lastName,
@@ -140,8 +140,8 @@ const EmployeeTableRow = ({
 
   const toggleEmployeeActiveStatus = async () => {
     try {
-      const response = await axios.put(
-        `${API_URL}/users/toggle-active-status?id=${id}`
+      const response = await axiosPrivate.put(
+        `/users/toggle-active-status?id=${id}`
       );
       if (response.status === 200) {
         toast({

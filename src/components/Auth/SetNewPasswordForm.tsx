@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios, { API_URL } from "../../config/general";
+import axios  from "../../config/general";
 import { useTranslation } from "react-i18next";
 
 type SetNewPasswordFormProps = {
@@ -58,7 +58,7 @@ const SetNewPasswordForm = ({
       });
     else {
       try {
-        await axios.post(`${API_URL}/auth/password-token-confirm`, {
+        await axios.post(`/auth/password-token-confirm`, {
           email: userEmail,
           token: userCode,
           password: formData.password,
