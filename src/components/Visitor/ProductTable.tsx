@@ -18,8 +18,8 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import axios  from "../../config/general";
-import { format } from "date-fns";
+import axios from "../../config/general";
+import { format, getHours, sub } from "date-fns";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -72,6 +72,8 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
 
   const [date, setDate] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDateAdjusted, setSelectedDateAdjusted] = useState(false);
+  const marketOpeningHours = 8;
 
   const { t } = useTranslation();
   const toast = useToast();
@@ -89,6 +91,15 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
       if (!activeMarket) return;
 
       if (activeMarket !== currentMarket) setCurrentPage(1);
+
+      const currentHour = getHours(selectedDate);
+      const isMarketOpen = currentHour >= marketOpeningHours;
+
+      if (!isMarketOpen && !selectedDateAdjusted) {
+        const yesterday = sub(selectedDate, { days: 1 });
+        setSelectedDate(yesterday);
+        setSelectedDateAdjusted(true);
+      }
 
       const dayOfWeek = format(selectedDate, "eeee");
       const translatedDayOfWeek = t(dayOfWeek);
@@ -174,6 +185,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
     endIndex,
     currentPage,
     selectedDate,
+    selectedDateAdjusted,
     sortConfig,
     t,
     toast,
