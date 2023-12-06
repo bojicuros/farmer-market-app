@@ -45,7 +45,7 @@
   "tryAgain": "Pokušajte ponovno ovdje.",
   "emptyMarket": "Cijene za ovaj datum nisu unesene.",
   "pricesOn": "Cijene na dan: ",
-  "name": "Ime",
+  "name": "Naziv",
   "price": "Cijena",
   "measureUnit": "Mjerna jedinica",
   "products": "Proizvodi",
@@ -90,7 +90,7 @@
   "changePassword": "Promijenite šifru",
   "turnOn": "Uključite ",
   "mode": " režim",
-  "priceAnalytic": "Cijenovna analitika",
+  "priceAnalytic": "Cjenovna analitika",
   "dashboard": "Kontrolna tabla",
   "employeesTable": "Tabela zaposlenih",
   "unconfirmedRequests": "Nepotvrđeni zahtjevi",
@@ -198,5 +198,14 @@
   "employees": "Zaposleni",
   "keepAllPrices": "Zadrži sve cijene",
   "errorAddingPrices": "Greška pri dodavanju cijena",
-  "pricesSuccessfullyAdded": "Cijene uspješno dodate"
+  "pricesSuccessfullyAdded": "Cijene uspješno dodate",
+  "noTodaysPrices": "Unesite današnje cijene proizvoda kako biste mogli da ih uređujete",
+  "noTodaysPricesToEdit": "Dodajte proizvode kako biste mogli unijeti današnje cijene",
+  "noVendorsProducts": "Trenutno nemate svoje proizvode, izaberite opciju Dodavanje proizvoda da biste dodali prozivode",
+  "noMarketsProducts" : "Trenutno ne postoje prozivodi u ovom lancu pijaca",
+  "selectMarkets": "Izaberi pijace",
+  "active": "Aktivan",
+  "inactive": "Neaktivan",
+  "open": "Otvorena",
+  "closed": "Zatvorena"
 }
