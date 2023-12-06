@@ -180,7 +180,7 @@ const MarketTableRow = ({
         </Flex>
       </Td>
 
-      <Td pl={3}>
+      <Td pl={0}>
         <Badge
           bg={is_open ? "green.400" : "transparent"}
           color={is_open ? "white" : "gray.400"}
@@ -190,7 +190,7 @@ const MarketTableRow = ({
           cursor={"pointer"}
           onClick={toggleMarketOpenStatus}
         >
-          {is_open ? "Open" : "Closed"}
+          {is_open ? t("open") : t("closed")}
         </Badge>
       </Td>
       <Td>
