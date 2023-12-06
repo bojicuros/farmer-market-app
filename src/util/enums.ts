@@ -18,7 +18,7 @@ export enum MenuItems {
 }
 
 export enum MeasureUnits {
-  PIECE = "piece",
+  PIECE = "komad",
   KILOGRAM = "kilogram",
-  BAG = "bag",
+  BAG = "vrecica",
 }
