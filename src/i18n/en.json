@@ -191,5 +191,14 @@
   "employees": "Employees",
   "keepAllPrices": "Keep all prices",
   "errorAddingPrices": "Error adding prices",
-  "pricesSuccessfullyAdded": "Prices successfully added"
+  "pricesSuccessfullyAdded": "Prices successfully added",
+  "noTodaysPrices": "Enter today's product prices to be able to edit them",
+  "noTodaysPricesToEdit": "Add products to be able to enter today's prices",
+  "noVendorsProducts": "You currently have no products. Choose the option to Add Products to add products.",
+  "noMarketsProducts": "Currently, there are no products in this market chain.",
+  "selectMarkets": "Select markets",
+  "active": "Active",
+  "inactive": "Inactive",
+  "open": "Open",
+  "closed": "Closed"
 }
