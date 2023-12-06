@@ -248,67 +248,78 @@ const ProductInfoTable = ({
             </Button>
           )}
         </Flex>
-        <Box>
-          <Table variant="simple" color={textColor}>
-            <Thead>
-              <Tr my=".8rem" pl="0px" color="gray.400">
-                {captions.map((caption: string, index: number) => {
-                  return (
-                    <Th
-                      color="gray.400"
-                      key={index}
-                      ps={index === 0 ? "0px" : undefined}
-                    >
-                      {caption}
-                    </Th>
-                  );
-                })}
-              </Tr>
-            </Thead>
-            <Tbody>
-              {!areProductsVendors
-                ? productData &&
-                  productData.map((row: ProductInfo) => (
-                    <ProductTableRow
-                      key={`${row.id}`}
-                      id={row.id}
-                      name={row.name}
-                      unit_of_measurement={row.unit_of_measurement}
-                      created_at={row.created_at}
-                      onChildAction={handleChildAction}
-                    />
-                  ))
-                : !vendorsProductAdding
-                ? vendorsProducts &&
-                  vendorsProducts.map((row: VendorProductInfo) => (
-                    <VendorProductRow
-                      key={row.id + row.market_id}
-                      id={row.id}
-                      name={row.name}
-                      unit_of_measurement={row.unit_of_measurement}
-                      market={row.market}
-                      market_id={row.market_id}
-                      user_id={user.userId}
-                      onChildAction={handleChildAction}
-                    />
-                  ))
-                : nonVendorsProducts &&
-                  nonVendorsProducts.map((row: VendorProductInfo) => (
-                    <VendorProductAddingRow
-                      key={row.id + row.market_id}
-                      id={row.id}
-                      name={row.name}
-                      unit_of_measurement={row.unit_of_measurement}
-                      market={row.market}
-                      market_id={row.market_id}
-                      user_id={user.userId}
-                      onChildAction={handleChildAction}
-                    />
-                  ))}
-            </Tbody>
-          </Table>
-        </Box>
+        {(productData && productData.length > 0) ||
+        (vendorsProducts && vendorsProducts.length > 0) ||
+        vendorsProductAdding ? (
+          <Box>
+            <Table variant="simple" color={textColor}>
+              <Thead>
+                <Tr my=".8rem" pl="0px" color="gray.400">
+                  {captions.map((caption: string, index: number) => {
+                    return (
+                      <Th
+                        color="gray.400"
+                        key={index}
+                        ps={index === 0 ? "0px" : undefined}
+                      >
+                        {caption}
+                      </Th>
+                    );
+                  })}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {!areProductsVendors
+                  ? productData &&
+                    productData.map((row: ProductInfo) => (
+                      <ProductTableRow
+                        key={`${row.id}`}
+                        id={row.id}
+                        name={row.name}
+                        unit_of_measurement={row.unit_of_measurement}
+                        created_at={row.created_at}
+                        onChildAction={handleChildAction}
+                      />
+                    ))
+                  : !vendorsProductAdding
+                  ? vendorsProducts &&
+                    vendorsProducts.map((row: VendorProductInfo) => (
+                      <VendorProductRow
+                        key={row.id + row.market_id}
+                        id={row.id}
+                        name={row.name}
+                        unit_of_measurement={row.unit_of_measurement}
+                        market={row.market}
+                        market_id={row.market_id}
+                        user_id={user.userId}
+                        onChildAction={handleChildAction}
+                      />
+                    ))
+                  : nonVendorsProducts &&
+                    nonVendorsProducts.map((row: VendorProductInfo) => (
+                      <VendorProductAddingRow
+                        key={row.id + row.market_id}
+                        id={row.id}
+                        name={row.name}
+                        unit_of_measurement={row.unit_of_measurement}
+                        market={row.market}
+                        market_id={row.market_id}
+                        user_id={user.userId}
+                        onChildAction={handleChildAction}
+                      />
+                    ))}
+              </Tbody>
+            </Table>
+          </Box>
+        ) : (
+          <Text mt={5} ml={5}>
+            {areProductsVendors
+              ? t("noVendorsProducts")
+              : t("noMarketsProducts")}
+          </Text>
+        )}
       </Box>
+
       <AddProductForm
         isOpen={isAddingProductActive}
         close={hideAddingProductForm}
