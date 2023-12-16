@@ -108,7 +108,7 @@ const VendorsMarketSelectForm = ({
       <AlertDialogOverlay />
       <AlertDialogContent>
         <AlertDialogHeader fontSize="lg" fontWeight="bold">
-          Select Markets
+          {t("selectMarkets")}
         </AlertDialogHeader>
         <AlertDialogCloseButton />
         <AlertDialogBody>
@@ -134,7 +134,7 @@ const VendorsMarketSelectForm = ({
             onClick={handleConfirm}
             isDisabled={selectedMarkets.length === 0}
           >
-            Confirm
+            {t("confirm")}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarAlt } from "react-icons/fa";
+import { MeasureUnits } from "../../util/enums";
 
 type Product = {
   id: string;
@@ -202,7 +203,7 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
   const productTable = (
     <>
       {" "}
-      <TableContainer mt={10} w={isSmallerScreen ? undefined : "60%"}>
+      <TableContainer mt={10} w={isSmallerScreen ? undefined : "65%"}>
         <Table>
           <Thead>
             <Tr cursor={"pointer"}>
@@ -240,7 +241,9 @@ export const ProductTable = ({ activeMarket }: ProductTableProps) => {
               <Tr key={product.id}>
                 <Td textAlign={"center"}>{product.name}</Td>
                 <Td textAlign={"center"}>{`${product.price.toFixed(2)} KM/${
-                  product.measureUnit
+                  product.measureUnit === MeasureUnits.KILOGRAM
+                    ? "kg"
+                    : product.measureUnit
                 }`}</Td>
                 <Td textAlign={"center"}>{product.vendor}</Td>
               </Tr>

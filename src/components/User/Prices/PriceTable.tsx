@@ -172,26 +172,29 @@ const PriceTable = ({ user }: ProductInfoTableProps) => {
               {t("editPrices")}
             </Text>
           </HStack>
-          {!pricesEditing && (
-            <Button
-              bg={colorMode === "light" ? "green.400" : "green.500"}
-              _hover={{
-                bg: colorMode === "light" ? "green.500" : "green.600",
-              }}
-              color={colorMode === "light" ? "white" : "gray.900"}
-              onClick={keepPricesForUser}
-              mr={6}
-            >
-              {t("keepAllPrices")}
-            </Button>
-          )}
+          {!pricesEditing &&
+            priceData &&
+            priceData.some((item) => item.latest_price !== null) && (
+              <Button
+                bg={colorMode === "light" ? "green.400" : "green.500"}
+                _hover={{
+                  bg: colorMode === "light" ? "green.500" : "green.600",
+                }}
+                color={colorMode === "light" ? "white" : "gray.900"}
+                onClick={keepPricesForUser}
+                mr={6}
+              >
+                {t("keepAllPrices")}
+              </Button>
+            )}
         </Flex>
         <Box>
-          <Table variant="simple" color={textColor}>
-            <Thead>
-              <Tr my=".8rem" pl="0px" color="gray.400">
-                {captions.map((caption: string, index: number) => {
-                  return (
+          {(priceData && priceData.length > 0) ||
+          (priceEditData && priceEditData.length > 0) ? (
+            <Table variant="simple" color={textColor}>
+              <Thead>
+                <Tr my=".8rem" pl="0px" color="gray.400">
+                  {captions.map((caption: string, index: number) => (
                     <Th
                       color="gray.400"
                       key={index}
@@ -199,40 +202,44 @@ const PriceTable = ({ user }: ProductInfoTableProps) => {
                     >
                       {caption}
                     </Th>
-                  );
-                })}
-              </Tr>
-            </Thead>
-            <Tbody>
-              {pricesEditing
-                ? priceEditData &&
-                  priceEditData.map((row: PriceEditInfo) => (
-                    <PriceEditRow
-                      key={row.id}
-                      id={row.id}
-                      price_value={row.price_value}
-                      price_date={row.price_date}
-                      product_name={row.product_name}
-                      market_name={row.market_name}
-                      user_id={user.userId}
-                      onChildAction={handleChildAction}
-                    />
-                  ))
-                : priceData &&
-                  priceData.map((row: PriceInfo, index: number) => (
-                    <PriceTableRow
-                      key={index}
-                      product_id={row.product_id}
-                      product_name={row.product_name}
-                      market_id={row.market_id}
-                      market_name={row.market_name}
-                      latest_price={row.latest_price}
-                      user_id={user.userId}
-                      onChildAction={handleChildAction}
-                    />
                   ))}
-            </Tbody>
-          </Table>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {pricesEditing
+                  ? priceEditData &&
+                    priceEditData.map((row: PriceEditInfo) => (
+                      <PriceEditRow
+                        key={row.id}
+                        id={row.id}
+                        price_value={row.price_value}
+                        price_date={row.price_date}
+                        product_name={row.product_name}
+                        market_name={row.market_name}
+                        user_id={user.userId}
+                        onChildAction={handleChildAction}
+                      />
+                    ))
+                  : priceData &&
+                    priceData.map((row: PriceInfo, index: number) => (
+                      <PriceTableRow
+                        key={index}
+                        product_id={row.product_id}
+                        product_name={row.product_name}
+                        market_id={row.market_id}
+                        market_name={row.market_name}
+                        latest_price={row.latest_price}
+                        user_id={user.userId}
+                        onChildAction={handleChildAction}
+                      />
+                    ))}
+              </Tbody>
+            </Table>
+          ) : (
+            <Text mt={5} ml={5}>
+              {pricesEditing ? t("noTodaysPrices") : t("noTodaysPricesToEdit")}
+            </Text>
+          )}
         </Box>
       </Box>
     </Flex>

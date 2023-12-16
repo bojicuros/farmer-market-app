@@ -301,7 +301,7 @@ const EmployeeTableRow = ({
           cursor={"pointer"}
           onClick={toggleEmployeeActiveStatus}
         >
-          {active ? "Active" : "Inactive"}
+          {active ? t("active") : t("inactive")}
         </Badge>
       </Td>
       <Td>
